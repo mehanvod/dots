@@ -2,7 +2,7 @@
 # Install script for Arch Linux
 # autor: Sergey Prostov
 
-# https://raw.githubusercontent.com/creio/dots/master/.bin/creio.sh
+# https://raw.githubusercontent.com/mehanvod/dots/master/.bin/mehv.sh
 
 # wget git.io/creio.sh
 # nano creio.sh

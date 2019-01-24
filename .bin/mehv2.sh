@@ -2,7 +2,7 @@
 # Install script for Arch Linux
 # autor: Sergey Prostov
 
-# https://raw.githubusercontent.com/creio/dots/master/.bin/mehv2.sh
+# https://raw.githubusercontent.com/mehanvod/dots/master/.bin/mehv2.sh
 
 # wget git.io/mehv2.sh
 # nano mehv2.sh
