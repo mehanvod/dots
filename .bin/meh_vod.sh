@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 # Install script for Arch Linux
 # autor: Sergey Prostov
-
 # https://raw.githubusercontent.com/mehanvod/dots/master/.bin/meh_vod.sh
-
 # wget git.io/meh_vod.sh 
 # nano meh_vod.sh 
 # sh meh_vod.sh 
@@ -15,7 +13,6 @@ if [[ $EUID -ne 0 ]]; then
    echo ""
    exit 1
 fi
-
 
 R_DISK="sda1"
 B_DISK="sda2"
@@ -42,7 +39,6 @@ mkdir /mnt/{boot,home}
 
 mount /dev/$B_DISK /mnt/boot
 # mount /dev/$B_DISK /mnt/boot/efi
-
 
 mount /dev/$H_DISK /mnt/home
 swapon /dev/$S_DISK

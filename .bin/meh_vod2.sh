@@ -1,21 +1,16 @@
 #!/usr/bin/env bash
 # Install script for Arch Linux
 # autor: Sergey Prostov
-
 # https://raw.githubusercontent.com/mehanvod/dots/master/.bin/meh_vod2.sh
-
 # wget git.io/meh_vod2.sh
 # nano meh_vod2.sh
 
-
 DISK="sda"
-
 
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Sy --noconfirm --needed reflector
 reflector -c "Russia" -c "Belarus" -c "Ukraine" -c "Poland" -f 20 -l 20 -p https -p http -n 20 --save /etc/pacman.d/mirrorlist --sort rate
-
 
 echo "Arch Linux Virtualbox?"
 read -p "yes, no: " virtualbox_setting
@@ -26,7 +21,6 @@ elif [[ $virtualbox_setting == yes ]]; then
 fi
 echo
 pacman -S --noconfirm --needed $virtualbox_install
-
 
 pack="xorg-apps xorg-server xorg-xinit \
 mesa xf86-video-ati xf86-input-synaptics \
@@ -49,10 +43,8 @@ awesome lightdm lightdm-gtk-greeter"
 
 pacman -S --noconfirm --needed $pack
 
-
 # Root password
 passwd
-
 
 # user add & password
 while true; do
@@ -75,7 +67,6 @@ useradd -m -g users -G "adm,audio,log,network,rfkill,scanner,storage,optical,pow
 passwd "$USER"
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 
-
 echo "bear" > /etc/hostname
 
 ln -svf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
@@ -83,7 +74,6 @@ ln -svf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
-
 
 echo "LANG=ru_RU.UTF-8" > /etc/locale.conf
 echo "KEYMAP=ru" >> /etc/vconsole.conf
@@ -98,7 +88,6 @@ grub-install /dev/$DISK
 # grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
 
 grub-mkconfig -o /boot/grub/grub.cfg
-
 
 # systemctl enable NetworkManager
 systemctl enable lightdm netctl
