@@ -2,11 +2,11 @@
 # Install script for Arch Linux
 # autor: Sergey Prostov
 
-# https://raw.githubusercontent.com/mehanvod/dots/master/.bin/mehv.sh
+# https://raw.githubusercontent.com/mehanvod/dots/master/.bin/meh_vod.sh
 
-# wget git.io/creio.sh
-# nano creio.sh
-# sh creio.sh
+# wget git.io/meh_vod.sh 
+# nano meh_vod.sh 
+# sh meh_vod.sh 
 
 Check for root
 if [[ $EUID -ne 0 ]]; then
@@ -52,10 +52,10 @@ reflector -c "Russia" -c "Belarus" -c "Ukraine" -c "Poland" -f 20 -l 20 -p https
 
 pacstrap /mnt base base-devel
 
-cp mehv2.sh /mnt/mehv2.sh
-chmod u+x /mnt/mehv2.sh
+cp meh_vod2.sh /mnt/meh_vod2.sh
+chmod u+x /mnt/meh_vod2.sh
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-# arch-chroot /mnt sh -c "$(curl -fsSL git.io/mehv2.sh)"
-arch-chroot /mnt ./mehv2.sh
+# arch-chroot /mnt sh -c "$(curl -fsSL git.io/meh_vod2.sh)"
+arch-chroot /mnt ./meh_vod2.sh
