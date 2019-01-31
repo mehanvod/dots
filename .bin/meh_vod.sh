@@ -6,7 +6,7 @@
 # nano meh_vod.sh 
 # sh meh_vod.sh 
 
-Check for root
+# Check for root
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root." >&2
    echo "Try 'sudo sh'"
