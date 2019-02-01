@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Install script for Arch Linux
-# autor: Sergey Prostov
-# https://raw.githubusercontent.com/mehanvod/dots/master/.bin/meh_vod2.sh
-# wget git.io/meh_vod2.sh
-# nano meh_vod2.sh
+# autor: Sergey Prostov (taken from Alex Creio https://github.com/creio )
+# https://raw.githubusercontent.com/mehanvod/dots/master/.bin/berb2.sh
+# wget git.io/berb2.sh
+# nano berb2.sh
 
 DISK="sda"
 
