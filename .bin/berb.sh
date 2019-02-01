@@ -48,10 +48,10 @@ reflector -c "Russia" -c "Belarus" -c "Ukraine" -c "Poland" -f 20 -l 20 -p https
 
 pacstrap /mnt base base-devel
 
-cp meh_vod2.sh /mnt/berb2.sh
+cp berb2.sh /mnt/berb2.sh
 chmod u+x /mnt/berb2.sh
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-# arch-chroot /mnt sh -c "$(curl -fsSL git.io/meh_vod2.sh)"
+# arch-chroot /mnt sh -c "$(curl -fsSL git.io/berb2.sh)"
 arch-chroot /mnt ./berb2.sh
