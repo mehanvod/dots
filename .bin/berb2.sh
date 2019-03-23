@@ -9,10 +9,10 @@ DISK="sda"
 
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
+pacman -Sy
+
 # pacman -Sy --noconfirm --needed reflector
 # reflector -c "Russia" -c "Denmark" -f 5 -l 5 -p https -n 5 --save /etc/pacman.d/mirrorlist --sort rate
-
-echo "Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
 
 echo "Arch Linux Virtualbox?"
 read -p "yes, no: " virtualbox_setting
@@ -23,6 +23,12 @@ elif [[ $virtualbox_setting == yes ]]; then
 fi
 echo
 pacman -S --noconfirm --needed $virtualbox_install
+
+echo "Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
+echo "Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
+echo "Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
+
+pacman -Syy
 
 pack="xorg-apps xorg-server xorg-xinit \
 mesa xf86-video-ati xf86-input-synaptics \
