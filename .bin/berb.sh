@@ -43,8 +43,10 @@ mount /dev/$B_DISK /mnt/boot
 mount /dev/$H_DISK /mnt/home
 swapon /dev/$S_DISK
 
-pacman -Sy --noconfirm --needed reflector
-reflector -c "Russia" -c "Denmark" -f 5 -l 5 -p https -n 5 --save /etc/pacman.d/mirrorlist --sort rate
+# pacman -Sy --noconfirm --needed reflector
+# reflector -c "Russia" -c "Denmark" -f 5 -l 5 -p https -n 5 --save /etc/pacman.d/mirrorlist --sort rate
+
+echo "Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
 
 pacstrap /mnt base base-devel
 
