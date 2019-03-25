@@ -42,7 +42,7 @@ bash-completion gtk2-perl termite xterm wmctrl zsh zsh-syntax-highlighting \
 reflector htop scrot imagemagick compton \
 openssh \
 curl wget git rsync python-pip unzip file-roller unrar p7zip \
-gvfs gvfs-afc gvfs-goa gvfs-mtp gvfs-smb ntfs-3g \
+gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 gamin pcmanfm \
 gsimplecal redshift numlockx \
 atril galculator gimp firefox firefox-i18n-ru \
