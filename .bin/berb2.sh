@@ -9,8 +9,10 @@ DISK="sda"
 
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
-pacman -Sy --noconfirm --needed reflector
-reflector -c "Russia" -c "Denmark" -f 5 -l 5 -p https -n 5 --save /etc/pacman.d/mirrorlist --sort rate
+pacman -Sy
+
+# pacman -Sy --noconfirm --needed reflector
+# reflector -c "Russia" -c "Denmark" -f 5 -l 5 -p https -n 5 --save /etc/pacman.d/mirrorlist --sort rate
 
 echo "Arch Linux Virtualbox?"
 read -p "yes, no: " virtualbox_setting
@@ -22,6 +24,12 @@ fi
 echo
 pacman -S --noconfirm --needed $virtualbox_install
 
+echo "Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
+echo "Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
+echo "Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
+
+pacman -Syy
+
 pack="xorg-apps xorg-server xorg-xinit \
 mesa xf86-video-ati xf86-input-synaptics \
 dialog wpa_supplicant net-tools \
@@ -32,10 +40,9 @@ alsa-utils gstreamer pulseaudio pulseaudio-alsa \
 ffmpeg mpc mpd mpv ncmpcpp streamlink youtube-dl youtube-viewer \
 bash-completion gtk2-perl termite xterm wmctrl zsh zsh-syntax-highlighting \
 reflector htop scrot imagemagick compton \
-openssh \
+openssh pcmanfm samba \
 curl wget git rsync python-pip unzip file-roller unrar p7zip \
 gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
-pcmanfm \
 gsimplecal redshift numlockx \
 galculator gimp firefox firefox-i18n-ru \
 pavucontrol qbittorrent viewnior \
