@@ -40,7 +40,7 @@ alsa-utils gstreamer pulseaudio pulseaudio-alsa \
 ffmpeg mpc mpd mpv ncmpcpp streamlink youtube-dl youtube-viewer \
 bash-completion gtk2-perl termite xterm wmctrl zsh zsh-syntax-highlighting \
 reflector htop scrot imagemagick compton \
-openssh pcmanfm samba \
+openssh pcmanfm samba hddtemp \
 curl wget git rsync python-pip unzip file-roller unrar p7zip \
 gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 gsimplecal redshift numlockx \
