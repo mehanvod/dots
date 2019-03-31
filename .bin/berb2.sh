@@ -35,7 +35,7 @@ mesa xf86-video-ati xf86-input-synaptics \
 dialog wpa_supplicant net-tools \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt4 qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
-ttf-dejavu ttf-font-awesome terminus-font \
+ttf-dejavu ttf-font-awesome \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa \
 ffmpeg mpc mpd mpv ncmpcpp streamlink youtube-dl youtube-viewer \
 bash-completion gtk2-perl termite xterm wmctrl zsh zsh-syntax-highlighting \
