@@ -31,7 +31,7 @@ echo "Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch" >> /etc/pacma
 pacman -Syy
 
 pack="xorg-apps xorg-server xorg-xinit \
-mesa xf86-video-ati xf86-input-synaptics \
+mesa xf86-video-ati amd-ucode xf86-input-synaptics \
 dialog wpa_supplicant net-tools \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt4 qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
