@@ -16,8 +16,8 @@ fi
 
 Root_D="sda1"
 Boot_D="sda2"
-Swap_D="sda3"
-Home_D="sda4"
+Home_D="sda3"
+Swap_D="sda4"
 
 loadkeys ru
 setfont cyr-sun16
@@ -29,8 +29,8 @@ mkfs.ext4 /dev/$Root_D
 mkfs.ext2 /dev/$Boot_D -L boot
 # mkfs.fat -F32 /dev/$Boot_D -L boot
 
-mkswap /dev/$Swap_D -L swap
 # mkfs.ext4 /dev/$Home_D -L home
+mkswap /dev/$Swap_D -L swap
 
 mount /dev/$Root_D /mnt
 
