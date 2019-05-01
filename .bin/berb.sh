@@ -14,10 +14,10 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-Root_D="sda1"
-Boot_D="sda2"
-Home_D="sda3"
-Swap_D="sda4"
+Boot_D="sda1"
+Root_D="sda2"
+Swap_D="sda3"
+Home_D="sda4"
 
 loadkeys ru
 setfont cyr-sun16
@@ -26,19 +26,19 @@ timedatectl set-ntp true
 
 mkfs.ext4 /dev/$Root_D
 
-mkfs.ext2 /dev/$Boot_D -L boot
-# mkfs.fat -F32 /dev/$Boot_D -L boot
+# mkfs.ext2 /dev/$Boot_D -L boot
+mkfs.fat -F32 /dev/$Boot_D
 
 # mkfs.ext4 /dev/$Home_D -L home
 mkswap /dev/$Swap_D -L swap
 
 mount /dev/$Root_D /mnt
 
-mkdir /mnt/{boot,home}
-# mkdir -p /mnt/{boot/efi,home}
+# mkdir /mnt/{boot,home}
+mkdir -p /mnt/{boot/efi,home}
 
-mount /dev/$Boot_D /mnt/boot
-# mount /dev/$Boot_D /mnt/boot/efi
+# mount /dev/$Boot_D /mnt/boot
+mount /dev/$Boot_D /mnt/boot/efi
 
 mount /dev/$Home_D /mnt/home
 swapon /dev/$Swap_D
@@ -49,6 +49,8 @@ swapon /dev/$Swap_D
 echo "Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
 echo "Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
 echo "Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
+
+pacman -Sy
 
 pacstrap /mnt base base-devel
 

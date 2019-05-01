@@ -28,7 +28,7 @@ echo "Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch" > /etc/pac
 echo "Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
 echo "Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
 
-pacman -Syy
+pacman -Sy
 
 pack="xorg-apps xorg-server xorg-xinit \
 mesa xf86-video-ati amd-ucode xf86-input-synaptics \
@@ -88,15 +88,17 @@ echo "FONT=cyr-sun16" >> /etc/vconsole.conf
 
 mkinitcpio -p linux
 
-pacman -S --noconfirm --needed grub
-# pacman -S --noconfirm --needed grub efibootmgr
+# pacman -S --noconfirm --needed grub
+pacman -S --noconfirm --needed grub efibootmgr
 
-grub-install /dev/$DISK
-# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
+# grub-install /dev/$DISK
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # systemctl enable NetworkManager
 systemctl enable lightdm netctl
+
+umount -R /mnt
 
 echo "System Setup Complete"
