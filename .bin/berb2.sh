@@ -97,8 +97,6 @@ grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch 
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # systemctl enable NetworkManager
-systemctl enable lightdm netctl
-
-umount -R /mnt
+systemctl enable lightdm netctl dhcpcd
 
 echo "System Setup Complete"
