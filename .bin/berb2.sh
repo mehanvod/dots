@@ -32,8 +32,8 @@ pacman -Sy
 
 pack="xorg-apps xorg-server xorg-xinit \
 mesa xf86-video-amdgpu amd-ucode xf86-input-synaptics \
-dialog wpa_supplicant net-tools \
-gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt4 qt5-styleplugins qt5ct \
+dialog wpa_supplicant net-tools linux-headers dkms \
+gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
 ttf-dejavu ttf-font-awesome \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa \
