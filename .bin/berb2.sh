@@ -44,7 +44,7 @@ openssh pcmanfm samba gxkb hddtemp xclip \
 curl wget git rsync python-pip unzip file-roller unrar p7zip \
 gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 gsimplecal redshift numlockx \
-galculator gimp firefox firefox-i18n-ru \
+galculator firefox firefox-i18n-ru \
 pavucontrol qbittorrent viewnior \
 awesome lightdm lightdm-gtk-greeter"
 
