@@ -14,8 +14,8 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-Boot_D="sda1"
-Root_D="sda2"
+Root_D="sda1"
+Boot_D="sda2"
 Swap_D="sda3"
 Home_D="sda4"
 
@@ -35,10 +35,10 @@ mkswap /dev/$Swap_D -L swap
 mount /dev/$Root_D /mnt
 
 # mkdir /mnt/{boot,home}
-mkdir -p /mnt/{boot/efi,home}
+mkdir -p /mnt/{boot,home}
 
 # mount /dev/$Boot_D /mnt/boot
-mount /dev/$Boot_D /mnt/boot/efi
+mount /dev/$Boot_D /mnt/boot
 
 mount /dev/$Home_D /mnt/home
 swapon /dev/$Swap_D

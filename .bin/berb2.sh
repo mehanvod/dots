@@ -32,7 +32,7 @@ pacman -Sy
 
 pack="xorg-apps xorg-server xorg-xinit \
 mesa xf86-video-amdgpu amd-ucode xf86-input-synaptics \
-dialog wpa_supplicant net-tools linux-headers dkms \
+dialog wpa_supplicant iw net-tools linux-headers dkms \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
 ttf-dejavu ttf-font-awesome \
@@ -77,6 +77,7 @@ echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 echo "bear" > /etc/hostname
 
 ln -svf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+hwclock --systohc --utc
 
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen
@@ -89,12 +90,22 @@ echo "FONT=cyr-sun16" >> /etc/vconsole.conf
 mkinitcpio -p linux
 
 # pacman -S --noconfirm --needed grub
-pacman -S --noconfirm --needed grub efibootmgr
+pacman -S --noconfirm --needed efibootmgr
 
 # grub-install /dev/$DISK
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
+# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
+# grub-mkconfig -o /boot/grub/grub.cfg
 
-grub-mkconfig -o /boot/grub/grub.cfg
+bootctl install
+
+echo "default arch" > /boot/loader/loader.conf
+echo "timeout 0" >> /boot/loader/loader.conf
+echo "editor 1" >> /boot/loader/loader.conf
+
+echo "title Arch Linux" > /boot/loader/entries/arch.conf
+echo "linux /vmlinuz-linux" >> /boot/loader/entries/arch.conf
+echo "initrd /initramfs-linux.img" >> /boot/loader/entries/arch.conf
+echo "options root=/dev/sda1 rw" >> /boot/loader/entries/arch.conf
 
 # systemctl enable NetworkManager
 systemctl enable lightdm netctl dhcpcd
