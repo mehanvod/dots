@@ -105,7 +105,7 @@ echo "editor 1" >> /boot/loader/loader.conf
 echo "title Arch Linux" > /boot/loader/entries/arch.conf
 echo "linux /vmlinuz-linux" >> /boot/loader/entries/arch.conf
 echo "initrd /initramfs-linux.img" >> /boot/loader/entries/arch.conf
-echo "options root=/dev/sda1 rw quiet add_efi_memmap" >> /boot/loader/entries/arch.conf
+echo "options root=/dev/sda1 rw quiet" >> /boot/loader/entries/arch.conf
 
 # systemctl enable NetworkManager
 systemctl enable lightdm netctl dhcpcd
