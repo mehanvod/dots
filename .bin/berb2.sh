@@ -127,6 +127,19 @@ Section "InputClass"
 EndSection
 EOF
 
+cat <<EOF > /usr/share/X11/xorg.conf.d/10-amdgpu.conf
+Section "OutputClass"
+    Identifier "AMDgpu"
+    MatchDriver "amdgpu"
+    Driver "amdgpu"
+    Option "DRI" "3"
+    Option "TearFree" "true"
+    Option "VariableRefresh" "true"
+    Option "ShadowPrimary" "true"
+    Option "AccelMethod" "string"
+EndSection
+EOF
+
 echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
 echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
 sed -i 's/export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
