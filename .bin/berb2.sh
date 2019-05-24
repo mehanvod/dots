@@ -98,19 +98,18 @@ pacman -S --noconfirm --needed efibootmgr
 
 bootctl install
 
-echo "default arch" > /boot/loader/loader.conf
-echo "timeout 0" >> /boot/loader/loader.conf
-echo "editor 1" >> /boot/loader/loader.conf
+cat <<EOF > /boot/loader/loader.conf
+default arch
+timeout 0
+editor 1
+EOF
 
-echo "title Arch Linux" > /boot/loader/entries/arch.conf
-echo "linux /vmlinuz-linux" >> /boot/loader/entries/arch.conf
-echo "initrd /initramfs-linux.img" >> /boot/loader/entries/arch.conf
-echo "options root=/dev/sda1  rw quiet" >> /boot/loader/entries/arch.conf
-
-echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
-echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
-
-sed -i 's/export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
+cat <<EOF > /boot/loader/entries/arch.conf
+title Arch Linux
+linux /vmlinuz-linux
+initrd /initramfs-linux.img
+options root=/dev/sda1  rw quiet splash
+EOF
 
 cat <<EOF > /etc/X11/xorg.conf.d/70-synaptics.conf
 Section "InputClass"
@@ -127,6 +126,10 @@ Section "InputClass"
         Option "CircularScrolling" "off"        
 EndSection
 EOF
+
+echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
+echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
+sed -i 's/export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
 
 # systemctl enable NetworkManager
 systemctl enable lightdm netctl dhcpcd
