@@ -31,7 +31,7 @@ echo "Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch" >> /etc/pacma
 pacman -Sy
 
 pack="xorg-apps xorg-server xorg-xinit \
-mesa xf86-video-amdgpu amd-ucode xf86-input-synaptics \
+mesa xf86-video-amdgpu xf86-input-synaptics \
 dialog wpa_supplicant iw net-tools linux-headers dkms \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
@@ -105,7 +105,28 @@ echo "editor 1" >> /boot/loader/loader.conf
 echo "title Arch Linux" > /boot/loader/entries/arch.conf
 echo "linux /vmlinuz-linux" >> /boot/loader/entries/arch.conf
 echo "initrd /initramfs-linux.img" >> /boot/loader/entries/arch.conf
-echo "options root=/dev/sda1 rw quiet" >> /boot/loader/entries/arch.conf
+echo "options root=/dev/sda1  rw quiet" >> /boot/loader/entries/arch.conf
+
+echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
+echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
+
+sed -i 's/export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
+
+cat <<EOF > /etc/X11/xorg.conf.d/70-synaptics.conf
+Section "InputClass"
+    Identifier "touchpad"
+    Driver "synaptics"
+    MatchIsTouchpad "on"
+        Option "TapButton1" "1"
+        Option "TapButton2" "3"
+        Option "TapButton3" "2"
+        Option "VertEdgeScroll" "on"
+        Option "VertTwoFingerScroll" "on"
+        Option "HorizEdgeScroll" "off"
+        Option "HorizTwoFingerScroll" "off"
+        Option "CircularScrolling" "off"        
+EndSection
+EOF
 
 # systemctl enable NetworkManager
 systemctl enable lightdm netctl dhcpcd
