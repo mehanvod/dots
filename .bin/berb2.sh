@@ -142,7 +142,18 @@ EOF
 
 echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
 echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
-sed -i 's/export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
+sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
+
+# Создаём yay_install директорию и переходим в неё
+mkdir -p /tmp/yay_install
+cd /tmp/yay_install
+# Установка "yay" из AUR
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -sir --needed --noconfirm --skippgpcheck
+rm -rf yay_install
+
+yay -S rtlwifi_new-extended-dkms
 
 # systemctl enable NetworkManager
 systemctl enable lightdm netctl dhcpcd
