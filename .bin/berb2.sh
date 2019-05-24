@@ -87,6 +87,13 @@ echo "LANG=ru_RU.UTF-8" > /etc/locale.conf
 echo "KEYMAP=ru" >> /etc/vconsole.conf
 echo "FONT=cyr-sun16" >> /etc/vconsole.conf
 
+echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
+echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
+echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
+sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
+sed -i 's/MODULES=()/MODULES=(amdgpu)/g' /etc/mkinitcpio.conf
+sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
+
 mkinitcpio -p linux
 
 # pacman -S --noconfirm --needed grub
@@ -139,13 +146,6 @@ Section "OutputClass"
     Option "AccelMethod" "string"
 EndSection
 EOF
-
-echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
-echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
-echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
-sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
-sed -i 's/MODULES=()/MODULES=(amdgpu)/g' /etc/mkinitcpio.conf
-sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
 
 # systemctl enable NetworkManager
 systemctl enable lightdm netctl dhcpcd
