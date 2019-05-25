@@ -7,6 +7,11 @@
 
 DISK="sda"
 
+sed -i 's/.*\[options\].*/&\nILoveCandy/' /etc/pacman.conf
+sed -i 's/^#Color/Color/g' /etc/pacman.conf
+sed -i 's/^#TotalDownload/TotalDownload/g' /etc/pacman.conf
+sed -i 's/^#CheckSpace/CheckSpace/g' /etc/pacman.conf
+sed -i 's/^#VerbosePkgLists/VerbosePkgLists/g' /etc/pacman.conf
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Sy
@@ -14,19 +19,32 @@ pacman -Sy
 # pacman -Sy --noconfirm --needed reflector
 # reflector -c "Russia" -c "Denmark" -f 5 -l 5 -p https -n 5 --save /etc/pacman.d/mirrorlist --sort rate
 
-echo "Arch Linux Virtualbox?"
-read -p "yes, no: " virtualbox_setting
-if [[ $virtualbox_setting == no ]]; then
-  virtualbox_install=""
-elif [[ $virtualbox_setting == yes ]]; then
-  virtualbox_install="virtualbox-guest-modules-arch virtualbox-guest-utils"
-fi
-echo
-pacman -S --noconfirm --needed $virtualbox_install
+# echo "Arch Linux Virtualbox?"
+# read -p "yes, no: " virtualbox_setting
+# if [[ $virtualbox_setting == no ]]; then
+#   virtualbox_install=""
+# elif [[ $virtualbox_setting == yes ]]; then
+#   virtualbox_install="virtualbox-guest-modules-arch virtualbox-guest-utils"
+# fi
+# echo
+# pacman -S --noconfirm --needed $virtualbox_install
 
-echo "Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
-echo "Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
-echo "Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
+cat <<EOF > /etc/pacman.d/mirrorlist
+################################################################################
+############################ Arch Linux mirrorlist #############################
+################################################################################
+
+Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch
+Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch
+Server = http://archlinux.mirror.ba/\$repo/os/\$arch
+Server = https://arch.mirror.constant.com/\$repo/os/\$arch
+Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch
+Server = http://mirror.rol.ru/archlinux/\$repo/os/\$arch
+Server = http://ftp.vectranet.pl/archlinux/\$repo/os/\$arch
+Server = http://archlinux.dynamict.se/\$repo/os/\$arch
+Server = https://mirrors.nix.org.ua/linux/archlinux/\$repo/os/\$arch
+Server = http://arch.mirror.constant.com/\$repo/os/\$arch
+EOF
 
 pacman -Sy
 
