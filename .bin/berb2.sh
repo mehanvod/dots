@@ -56,7 +56,7 @@ arc-gtk-theme papirus-icon-theme \
 ttf-dejavu ttf-font-awesome \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa \
 ffmpeg mpc mpd mpv ncmpcpp streamlink youtube-dl youtube-viewer \
-bash-completion gtk2-perl termite xterm wmctrl zsh zsh-syntax-highlighting \
+bash-completion gtk2-perl termite xterm wmctrl zsh zsh-syntax-highlighting neovim \
 reflector htop scrot imagemagick compton \
 openssh pcmanfm samba gxkb hddtemp xclip \
 curl wget git rsync python-pip unzip file-roller unrar p7zip \
