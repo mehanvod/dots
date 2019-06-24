@@ -50,7 +50,8 @@ pacman -Sy
 
 pack="xorg-apps xorg-server xorg-xinit \
 mesa xf86-video-amdgpu xf86-input-synaptics \
-dialog wpa_supplicant iw net-tools linux-headers dkms \
+iw net-tools linux-headers dkms \
+networkmanager networkmanager-openconnect networkmanager-openvpn networkmanager-pptp networkmanager-vpnc network-manager-applet \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
 ttf-dejavu ttf-font-awesome \
@@ -166,6 +167,6 @@ EndSection
 EOF
 
 # systemctl enable NetworkManager
-systemctl enable lightdm netctl dhcpcd
+systemctl enable lightdm NetworkManager
 
 echo "System Setup Complete"
