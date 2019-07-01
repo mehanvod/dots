@@ -166,6 +166,6 @@ EndSection
 EOF
 
 # systemctl enable NetworkManager
-systemctl enable lightdm netctl dhcpcd
+systemctl enable lightdm
 
 echo "System Setup Complete"
