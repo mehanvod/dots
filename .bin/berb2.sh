@@ -74,13 +74,13 @@ passwd
 # user add & password
 while true; do
     clear
-    echo -e "\nWhat would you like your username to be?
-    \n\nDo NOT pick the name of an already existing user. This will overwrite their files!"
+    echo -e "\nКаким должно быть ваше имя пользователя?
+    \n\nНе выбирайте имя уже существующего пользователя. Это перезапишет его файлы!"
 
     printf "\n\nUsername: "
     read -r USER
 
-    printf "You chose %s for your name. Wanna continue? [y/N]: " "$USER"
+    printf "Вы выбрали %s для своего имени. Хотите продолжить? [y/N]: " "$USER"
     read -r answer
 
     case $answer in
@@ -166,6 +166,6 @@ EndSection
 EOF
 
 # systemctl enable NetworkManager
-systemctl enable lightdm
+systemctl enable lightdm dhcpcd
 
-echo "System Setup Complete"
+echo "Настройка Системы Завершена"
