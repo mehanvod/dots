@@ -92,7 +92,7 @@ useradd -m -g users -G "adm,audio,log,network,rfkill,scanner,storage,optical,pow
 passwd "$USER"
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 
-echo "bear" > /etc/hostname
+echo "lone" > /etc/hostname
 
 ln -svf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 hwclock --systohc --utc
