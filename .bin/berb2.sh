@@ -74,8 +74,7 @@ passwd
 # user add & password
 while true; do
     clear
-    echo -e "\nКаким должно быть ваше имя пользователя?
-    \n\nНе выбирайте имя уже существующего пользователя. Это перезапишет его файлы!"
+    echo -e "\nКаким должно быть ваше имя пользователя?"
 
     printf "\n\nUsername: "
     read -r USER
