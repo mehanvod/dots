@@ -81,6 +81,14 @@ while true; do
     esac
 done
 
+echo "Прописываем имя компьютера"
+echo $HOST > /etc/hostname
+
+cat > /etc/hosts << EOF
+127.0.0.1       localhost.localdomain   localhost   $HOST
+::1             localhost.localdomain   localhost   $HOST
+EOF
+
 # user add & password
 while true; do
     clear
@@ -106,19 +114,10 @@ echo 'Добавляем пароль для пользователя '$USER' '
 passwd "$USER"
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 
-echo 'Прописываем имя компьютера'
-echo $HOST > /etc/hostname
-
-cat <<EOF > /etc/hosts
-127.0.0.1       localhost.localdomain   localhost   $HOST
-::1             localhost.localdomain   localhost   $HOST
-EOF
-
 usermod -c 'Сергей Простов' $USER
 chmod a+s /usr/sbin/hddtemp
-papirus-folders -C red --theme Papirus-Dark
 
-cat <<EOF > /etc/lightdm/lightdm-gtk-greeter.conf
+cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
 [greeter]
 background=/usr/share/pixmaps/010.jpg
 theme-name=Fantome
@@ -132,7 +131,7 @@ indicators=~clock;~session;~power;
 position=5% 40%
 EOF
 
-cat <<EOF > /etc/X11/xorg.conf.d/70-synaptics.conf
+cat > /etc/X11/xorg.conf.d/70-synaptics.conf << EOF
 Section "InputClass"
     Identifier "touchpad"
     Driver "synaptics"
@@ -148,7 +147,7 @@ Section "InputClass"
 EndSection
 EOF
 
-cat <<EOF > /usr/share/X11/xorg.conf.d/10-amdgpu.conf
+cat > /usr/share/X11/xorg.conf.d/10-amdgpu.conf << EOF
 Section "OutputClass"
     Identifier "AMDgpu"
     MatchDriver "amdgpu"
@@ -161,7 +160,7 @@ Section "OutputClass"
 EndSection
 EOF
 
-cat <<EOF > /etc/X11/xorg.conf.d/00-keyboard.conf
+cat > /etc/X11/xorg.conf.d/00-keyboard.conf << EOF
 Section "InputClass"
         Identifier "system-keyboard"
         MatchIsKeyboard "on"
@@ -172,7 +171,7 @@ Section "InputClass"
 EndSection
 EOF
 
-cat <<EOF > /etc/samba/smb.conf
+cat > /etc/samba/smb.conf << EOF
 [global]
 workgroup = WORKGROUP
 server string = Sergei  
@@ -266,13 +265,13 @@ pacman -S --noconfirm --needed efibootmgr
 
 bootctl install
 
-cat <<EOF > /boot/loader/loader.conf
+cat > /boot/loader/loader.conf << EOF
 default arch
 timeout 0
 editor 1
 EOF
 
-cat <<EOF > /boot/loader/entries/arch.conf
+cat > /boot/loader/entries/arch.conf << EOF
 title Arch Linux
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
@@ -290,8 +289,59 @@ git clone https://aur.archlinux.org/rtlwifi_new-extended-dkms.git
 chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms   
 chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms/PKGBUILD 
 cd /home/$USER/rtlwifi_new-extended-dkms
-# sudo -u $USER  makepkg -si --noconfirm
-makepkg -si --noconfirm  
+sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/rtlwifi_new-extended-dkms
+
+TARGET_DEVICE=wlp3s0
+read -p "Введите имя WiFi(ESSID): " WIFI_ESSID
+read -p "Введите пароль: " WIFI_PASSF
+
+cat > /etc/systemd/network/$TARGET_DEVICE-wireless.network << EOF
+[Match]
+Name=$TARGET_DEVICE
+
+[Network]
+Address=192.168.1.3/24
+Gateway=192.168.1.1
+DNS=8.8.8.8
+EOF
+
+# Если вдруг отсутствует
+cat > /etc/systemd/system/wpa_supplicant@$TARGET_DEVICE.service << EOF
+[Unit]
+Description=WPA supplicant for $TARGET_DEVICE
+
+[Service]
+ExecStart=/sbin/wpa_supplicant -i $TARGET_DEVICE -c/etc/wpa_supplicant/wpa_supplicant-$TARGET_DEVICE.conf
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+cat > /etc/wpa_supplicant/wpa_supplicant.conf << EOF
+update_config=1
+eapol_version=1
+ap_scan=1
+fast_reauth=1
+EOF
+
+# passphrase будет записан в файле, в том числе, открытым текстом!
+wpa_passphrase $WIFI_ESSID $WIFI_PASSF >> /etc/wpa_supplicant/wpa_supplicant.conf
+
+chmod go-rwx /etc/wpa_supplicant/wpa_supplicant.conf
+
+ln -s /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-$TARGET_DEVICE.conf
+
+rm /etc/resolv.conf 
+ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
+
+systemctl stop wpa_supplicant
+systemctl disable wpa_supplicant
+systemctl enable wpa_supplicant@$TARGET_DEVICE.service
+systemctl enable systemd-networkd.service
+systemctl enable systemd-resolved.service
+systemctl start wpa_supplicant@$TARGET_DEVICE.service
+systemctl start systemd-networkd.service 
+systemctl start systemd-resolved.service 
 
 echo "Настройка Системы Завершена"
