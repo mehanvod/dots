@@ -7,11 +7,11 @@
 
 DISK="sda"
 
-sed -i 's/.*\[options\].*/&\nILoveCandy/' /etc/pacman.conf
 sed -i 's/^#Color/Color/g' /etc/pacman.conf
 sed -i 's/^#TotalDownload/TotalDownload/g' /etc/pacman.conf
 sed -i 's/^#CheckSpace/CheckSpace/g' /etc/pacman.conf
 sed -i 's/^#VerbosePkgLists/VerbosePkgLists/g' /etc/pacman.conf
+sed -i 's/.*\VerbosePkgLists\.*/&\nILoveCandy/' /etc/pacman.conf
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Syy
@@ -114,7 +114,6 @@ passwd "$USER"
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 
 usermod -c 'Сергей Простов' $USER
-chmod a+s /usr/sbin/hddtemp
 
 cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
 [greeter]
@@ -347,5 +346,8 @@ systemctl enable wpa_supplicant@$TARGET_DEVICE.service
 systemctl enable systemd-networkd.service
 systemctl enable systemd-resolved.service
 systemctl enable dhcpcd
+
+# Права
+chmod a+s /usr/sbin/hddtemp
 
 echo "Настройка Системы Завершена"
