@@ -16,35 +16,6 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Syy
 
-# echo "Arch Linux Virtualbox?"
-# read -p "yes, no: " virtualbox_setting
-# if [[ $virtualbox_setting == no ]]; then
-#   virtualbox_install=""
-# elif [[ $virtualbox_setting == yes ]]; then
-#   virtualbox_install="virtualbox-guest-modules-arch virtualbox-guest-utils"
-# fi
-# echo
-# pacman -S --noconfirm --needed $virtualbox_install
-
-# cat <<EOF > /etc/pacman.d/mirrorlist
-# ################################################################################
-# ############################ Arch Linux mirrorlist #############################
-# ################################################################################
-
-# Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch
-# Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch
-# Server = http://archlinux.mirror.ba/\$repo/os/\$arch
-# Server = https://arch.mirror.constant.com/\$repo/os/\$arch
-# Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch
-# Server = http://mirror.rol.ru/archlinux/\$repo/os/\$arch
-# Server = http://ftp.vectranet.pl/archlinux/\$repo/os/\$arch
-# Server = http://archlinux.dynamict.se/\$repo/os/\$arch
-# Server = https://mirrors.nix.org.ua/linux/archlinux/\$repo/os/\$arch
-# Server = http://arch.mirror.constant.com/\$repo/os/\$arch
-# EOF
-
-# pacman -Sy
-
 pack="xorg-apps xorg-server xorg-xinit \
 mesa xf86-video-amdgpu xf86-input-synaptics \
 dialog wpa_supplicant iw net-tools linux-headers dkms \
@@ -60,10 +31,38 @@ curl wget git rsync python-pip unzip file-roller unrar p7zip \
 gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 gsimplecal redshift numlockx \
 galculator firefox firefox-i18n-ru \
-pavucontrol qbittorrent viewnior \
-awesome lightdm lightdm-gtk-greeter"
+pavucontrol qbittorrent viewnior"
 
 pacman -S --noconfirm --needed $pack
+
+echo "#####################################################################"
+echo ""
+echo " Установка DE(WM). Выберите пункт для установки "
+while 
+    read -n1 -p  "
+    1 - Awesome(WM)+lightdm
+    
+    2 - Xfce+lightdm 
+
+    0 - пропустить " x_de
+    echo ''
+    [[ "$x_de" =~ [^120] ]]
+do
+    :
+done
+if [[ $x_de == 0 ]]; then
+  echo 'уcтановка DE пропущена' 
+elif [[ $x_de == 1 ]]; then
+pacman -S  awesome lightdm lightdm-gtk-greeter --noconfirm
+systemctl enable lightdm
+clear
+echo "Awesome(WM) успешно установлено"
+elif [[ $x_de == 2 ]]; then
+pacman -S  xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm
+systemctl enable lightdm
+clear
+echo "Xfce успешно установлено"
+fi
 
 # Root password
 while true; do
@@ -285,9 +284,6 @@ initrd /initramfs-linux.img
 options root=/dev/sda1  rw quiet splash
 EOF
 
-# systemctl enable NetworkManager
-systemctl enable lightdm dhcpcd
-
 echo "##################################################################################"
 echo "###################   <<<< установка программ из AUR >>>    ######################"
 echo "##################################################################################"
@@ -299,6 +295,9 @@ cd /home/$USER/rtlwifi_new-extended-dkms
 sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/rtlwifi_new-extended-dkms
 
+echo "##################################################################################"
+echo "###################   <<<< Настройка сети >>>    ######################"
+echo "##################################################################################"
 TARGET_DEVICE=wlp3s0
 read -p "Введите имя WiFi(ESSID): " WIFI_ESSID
 read -p "Введите пароль: " WIFI_PASSF
@@ -347,5 +346,6 @@ systemctl disable wpa_supplicant
 systemctl enable wpa_supplicant@$TARGET_DEVICE.service
 systemctl enable systemd-networkd.service
 systemctl enable systemd-resolved.service
+systemctl enable dhcpcd
 
 echo "Настройка Системы Завершена"

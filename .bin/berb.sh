@@ -78,11 +78,7 @@ do
     :
 done
  if [[ $mirrors == 1 ]]; then
-cat <<EOF > /etc/pacman.d/mirrorlist
-################################################################################
-############################ Arch Linux mirrorlist #############################
-################################################################################
-
+cat > /etc/pacman.d/mirrorlist << EOF
 Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch
 Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch
 Server = http://archlinux.mirror.ba/\$repo/os/\$arch
