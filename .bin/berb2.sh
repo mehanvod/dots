@@ -347,8 +347,5 @@ systemctl disable wpa_supplicant
 systemctl enable wpa_supplicant@$TARGET_DEVICE.service
 systemctl enable systemd-networkd.service
 systemctl enable systemd-resolved.service
-systemctl start wpa_supplicant@$TARGET_DEVICE.service
-systemctl start systemd-networkd.service 
-systemctl start systemd-resolved.service 
 
 echo "Настройка Системы Завершена"
