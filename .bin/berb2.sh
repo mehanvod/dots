@@ -53,12 +53,12 @@ done
 if [[ $x_de == 0 ]]; then
   echo 'уcтановка DE пропущена' 
 elif [[ $x_de == 1 ]]; then
-pacman -S  awesome lightdm lightdm-gtk-greeter --noconfirm
+pacman -S awesome lightdm lightdm-gtk-greeter --noconfirm
 systemctl enable lightdm
 clear
 echo "Awesome(WM) успешно установлено"
 elif [[ $x_de == 2 ]]; then
-pacman -S  xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm
+pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm
 systemctl enable lightdm
 clear
 echo "Xfce успешно установлено"
