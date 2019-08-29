@@ -43,14 +43,62 @@ mount /dev/$Boot_D /mnt/boot
 mount /dev/$Home_D /mnt/home
 swapon /dev/$Swap_D
 
-# pacman -Sy --noconfirm --needed reflector
-# reflector -c "Russia" -c "Denmark" -f 5 -l 5 -p https -n 5 --save /etc/pacman.d/mirrorlist --sort rate
+# Обновление ключей
+echo "
+Данный этап поможет вам избежать проблем с ключами 
+Pacmаn, если использкуете не свежий образ ArchLinux для установки! "
+echo " Обновим ключи?  "
+while 
+    read -n1 -p  "
+    1 - да
+    
+    0 - нет: " x_key 
+    echo ''
+    [[ "$x_key" =~ [^10] ]]
+do
+    :
+done
+ if [[ $x_key == 1 ]]; then
+  clear
+  pacman-key --refresh-keys 
+  elif [[ $x_key == 0 ]]; then
+   echo " Обновление ключей пропущено "   
+fi
 
-echo "Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
-echo "Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
-echo "Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
+# Зеркала
+echo 'Хотите сменить зеркала на более быстрые?'
+while 
+    read -n1 -p  "
+    1 - да
+    
+    0 - нет: " mirrors # sends right after the keypress
+    echo ''
+    [[ "$mirrors" =~ [^10] ]]
+do
+    :
+done
+ if [[ $mirrors == 1 ]]; then
+cat <<EOF > /etc/pacman.d/mirrorlist
+################################################################################
+############################ Arch Linux mirrorlist #############################
+################################################################################
 
-pacman -Sy
+Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch
+Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch
+Server = http://archlinux.mirror.ba/\$repo/os/\$arch
+Server = https://arch.mirror.constant.com/\$repo/os/\$arch
+Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch
+Server = http://mirror.rol.ru/archlinux/\$repo/os/\$arch
+Server = http://ftp.vectranet.pl/archlinux/\$repo/os/\$arch
+Server = http://archlinux.dynamict.se/\$repo/os/\$arch
+Server = https://mirrors.nix.org.ua/linux/archlinux/\$repo/os/\$arch
+Server = http://arch.mirror.constant.com/\$repo/os/\$arch
+EOF
+  elif [[ $mirrors == 0 ]]; then
+   echo 'смена зеркал пропущена.'   
+fi
+
+pacman -Syy
 
 pacstrap /mnt base base-devel
 

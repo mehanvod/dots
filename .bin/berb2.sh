@@ -16,9 +16,6 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Sy
 
-# pacman -Sy --noconfirm --needed reflector
-# reflector -c "Russia" -c "Denmark" -f 5 -l 5 -p https -n 5 --save /etc/pacman.d/mirrorlist --sort rate
-
 # echo "Arch Linux Virtualbox?"
 # read -p "yes, no: " virtualbox_setting
 # if [[ $virtualbox_setting == no ]]; then
@@ -69,7 +66,20 @@ awesome lightdm lightdm-gtk-greeter"
 pacman -S --noconfirm --needed $pack
 
 # Root password
-passwd
+while true; do
+    clear
+    echo -e "\nКаким должно быть ваше имя компьютера?"
+
+    printf "\n\nHostname: "
+    read -r HOST
+
+    printf "Вы выбрали %s для своего компьютера. Хотите продолжить? [y/N]: " "$HOST"
+    read -r answer
+
+    case $answer in
+        y*|Y*) break
+    esac
+done
 
 # user add & password
 while true; do
@@ -88,12 +98,56 @@ while true; do
 done
 
 useradd -m -g users -G "adm,audio,log,network,rfkill,scanner,storage,optical,power,wheel" -s /bin/zsh "$USER"
+
+echo " Укажите пароль для "ROOT" "
+passwd
+
+echo 'Добавляем пароль для пользователя '$USER' '
 passwd "$USER"
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 
-echo "lone" > /etc/hostname
+echo 'Прописываем имя компьютера'
+echo $HOST > /etc/hostname
 
-ln -svf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+echo " Настроим localtime "
+while 
+    read -n1 -p  "
+    1 - Москва
+
+    2 - Саратов
+    
+    3 - Екатеринбург
+    
+    4-  Новосибирск
+
+    5 - Якутск
+
+    0 - пропустить(если нет вашего варианта) : " wm_time 
+    echo ''
+    [[ "$wm_time" =~ [^123450] ]]
+do
+    :
+done
+if [[ $wm_time == 1 ]]; then
+ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+echo " Москва "
+elif [[ $wm_time == 2 ]]; then
+ln -sf /usr/share/zoneinfo/Europe/Saratov /etc/localtime
+echo " Саратов "
+elif [[ $wm_time == 3 ]]; then  
+ln -sf /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
+echo " Екатеринбург "
+elif [[ $wm_time == 4 ]]; then 
+ln -sf /usr/share/zoneinfo/Asia/Novosibirsk /etc/localtime
+echo " Новосибирск "
+elif [[ $wm_time == 5 ]]; then
+ln -sf /usr/share/zoneinfo/Asia/Yakutsk /etc/localtime
+echo " Якутск "
+elif [[ $wm_time == 0 ]]; then 
+clear
+echo  " этап пропущен " 
+fi
+
 hwclock --systohc --utc
 
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
