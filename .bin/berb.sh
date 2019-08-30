@@ -71,7 +71,7 @@ while
     read -n1 -p  "
     1 - Максимальная скорость
 
-    2 - Средняя скорость
+    2 - Средняя скорость(стабильнее)
     
     0 - нет: " mirrors # sends right after the keypress
     echo ''
