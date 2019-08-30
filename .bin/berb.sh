@@ -69,15 +69,17 @@ fi
 echo 'Хотите сменить зеркала на более быстрые?'
 while 
     read -n1 -p  "
-    1 - да
+    1 - Максимальная скорость
+
+    2 - Средняя скорость
     
     0 - нет: " mirrors # sends right after the keypress
     echo ''
-    [[ "$mirrors" =~ [^10] ]]
+    [[ "$mirrors" =~ [^120] ]]
 do
     :
 done
- if [[ $mirrors == 1 ]]; then
+if [[ $mirrors == 1 ]]; then
 cat > /etc/pacman.d/mirrorlist << EOF
 Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch
 Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch
@@ -89,6 +91,19 @@ Server = http://ftp.vectranet.pl/archlinux/\$repo/os/\$arch
 Server = http://archlinux.dynamict.se/\$repo/os/\$arch
 Server = https://mirrors.nix.org.ua/linux/archlinux/\$repo/os/\$arch
 Server = http://arch.mirror.constant.com/\$repo/os/\$arch
+EOF
+elif [[ $mirrors == 2 ]]; then
+cat > /etc/pacman.d/mirrorlist << EOF
+Server = https://mirror.yandex.ru/archlinux/\$repo/os/\$arch
+Server = http://mirror.aur.rocks/\$repo/os/\$arch
+Server = https://mirror.aur.rocks/\$repo/os/\$arch
+Server = http://mirror.rol.ru/archlinux/\$repo/os/\$arch
+Server = https://mirror.rol.ru/archlinux/\$repo/os/\$arch
+Server = http://mirror.truenetwork.ru/archlinux/\$repo/os/\$arch
+Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch
+Server = http://archlinux.zepto.cloud/\$repo/os/\$arch
+Server = http://ftp.byfly.by/pub/archlinux/\$repo/os/\$arch
+Server = http://mirror.datacenter.by/pub/archlinux/\$repo/os/\$arch
 EOF
   elif [[ $mirrors == 0 ]]; then
    echo 'смена зеркал пропущена.'   
