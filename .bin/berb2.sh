@@ -206,36 +206,26 @@ echo " Настроим localtime "
 while 
     read -n1 -p  "
     1 - Москва
-
-    2 - Саратов
     
-    3 - Екатеринбург
+    2 - Екатеринбург
     
-    4-  Новосибирск
-
-    5 - Якутск
+    3 - Новосибирск
 
     0 - пропустить(если нет вашего варианта) : " wm_time 
     echo ''
-    [[ "$wm_time" =~ [^123450] ]]
+    [[ "$wm_time" =~ [^1230] ]]
 do
     :
 done
 if [[ $wm_time == 1 ]]; then
 ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 echo " Москва "
-elif [[ $wm_time == 2 ]]; then
-ln -sf /usr/share/zoneinfo/Europe/Saratov /etc/localtime
-echo " Саратов "
-elif [[ $wm_time == 3 ]]; then  
+elif [[ $wm_time == 2 ]]; then  
 ln -sf /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
 echo " Екатеринбург "
-elif [[ $wm_time == 4 ]]; then 
+elif [[ $wm_time == 3 ]]; then 
 ln -sf /usr/share/zoneinfo/Asia/Novosibirsk /etc/localtime
 echo " Новосибирск "
-elif [[ $wm_time == 5 ]]; then
-ln -sf /usr/share/zoneinfo/Asia/Yakutsk /etc/localtime
-echo " Якутск "
 elif [[ $wm_time == 0 ]]; then 
 clear
 echo  " этап пропущен " 
