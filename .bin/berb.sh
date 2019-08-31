@@ -65,6 +65,8 @@ done
    echo " Обновление ключей пропущено "   
 fi
 
+pacman -Sy --noconfirm --needed python
+
 # Зеркала
 echo 'Хотите сменить зеркала на более быстрые?'
 while 
@@ -72,10 +74,12 @@ while
     1 - Максимальная скорость
 
     2 - Средняя скорость(стабильнее)
+
+    3 - Сгенерировать   
     
     0 - нет: " mirrors # sends right after the keypress
     echo ''
-    [[ "$mirrors" =~ [^120] ]]
+    [[ "$mirrors" =~ [^1230] ]]
 do
     :
 done
@@ -103,7 +107,9 @@ Server = http://archlinux.zepto.cloud/\$repo/os/\$arch
 Server = http://ftp.byfly.by/pub/archlinux/\$repo/os/\$arch
 Server = http://mirror.datacenter.by/pub/archlinux/\$repo/os/\$arch
 EOF
-  elif [[ $mirrors == 0 ]]; then
+elif [[ $mirrors == 3 ]]; then
+  rankmirrors -n 6 /etc/pacman.d/mirrorlist
+elif [[ $mirrors == 0 ]]; then
    echo 'смена зеркал пропущена.'   
 fi
 
