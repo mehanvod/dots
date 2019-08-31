@@ -71,20 +71,18 @@ while
     read -n1 -p  "
     1 - Максимальная скорость
 
-    3 - Высокая скорость
-
-    3 - Средняя скорость(стабильнее)
+    2 - Средняя скорость(стабильнее)
     
     0 - нет: " mirrors # sends right after the keypress
     echo ''
-    [[ "$mirrors" =~ [^1230] ]]
+    [[ "$mirrors" =~ [^120] ]]
 do
     :
 done
 if [[ $mirrors == 1 ]]; then
 cat > /etc/pacman.d/mirrorlist << EOF
-Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch
 Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch
+Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch
 Server = https://archlinux.beccacervello.it/archlinux/\$repo/os/\$arch
 Server = http://archlinux.mirror.garr.it/archlinux/\$repo/os/\$arch
 Server = https://appuals.com/archlinux/\$repo/os/\$arch
@@ -93,19 +91,6 @@ Server = https://mirrors.xtom.nl/archlinux/\$repo/os/\$arch
 Server = http://mirror.truenetwork.ru/archlinux/\$repo/os/\$arch
 EOF
 elif [[ $mirrors == 2 ]]; then
-cat > /etc/pacman.d/mirrorlist << EOF
-Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch
-Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch
-Server = http://archlinux.mirror.ba/\$repo/os/\$arch
-Server = https://arch.mirror.constant.com/\$repo/os/\$arch
-Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch
-Server = http://mirror.rol.ru/archlinux/\$repo/os/\$arch
-Server = http://ftp.vectranet.pl/archlinux/\$repo/os/\$arch
-Server = http://archlinux.dynamict.se/\$repo/os/\$arch
-Server = https://mirrors.nix.org.ua/linux/archlinux/\$repo/os/\$arch
-Server = http://arch.mirror.constant.com/\$repo/os/\$arch
-EOF
-elif [[ $mirrors == 3 ]]; then
 cat > /etc/pacman.d/mirrorlist << EOF
 Server = https://mirror.yandex.ru/archlinux/\$repo/os/\$arch
 Server = http://mirror.aur.rocks/\$repo/os/\$arch
