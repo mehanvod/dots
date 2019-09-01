@@ -14,8 +14,8 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-Root_D="sda1"
-Boot_D="sda2"
+Boot_D="sda1"
+Root_D="sda2"
 Swap_D="sda3"
 Home_D="sda4"
 
@@ -24,12 +24,13 @@ setfont cyr-sun16
 
 timedatectl set-ntp true
 
-mkfs.ext4 /dev/$Root_D
-
 # mkfs.ext2 /dev/$Boot_D -L boot
 mkfs.fat -F32 /dev/$Boot_D
 
-# mkfs.ext4 /dev/$Home_D -L home
+mkfs.ext4 /dev/$Root_D
+
+mkfs.ext4 /dev/$Home_D -L home
+
 mkswap /dev/$Swap_D -L swap
 
 mount /dev/$Root_D /mnt
@@ -41,6 +42,7 @@ mkdir -p /mnt/{boot,home}
 mount /dev/$Boot_D /mnt/boot
 
 mount /dev/$Home_D /mnt/home
+
 swapon /dev/$Swap_D
 
 # Обновление ключей
