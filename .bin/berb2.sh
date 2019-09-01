@@ -270,11 +270,11 @@ cat > /boot/loader/entries/arch.conf << EOF
 title Arch Linux
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
-options root=/dev/sda1  rw quiet splash
+options root=/dev/sda2  rw quiet splash
 EOF
 
 echo "##################################################################################"
-echo "###################   <<<< установка программ из AUR >>>    ######################"
+echo "###################    <<< установка программ из AUR >>>    ######################"
 echo "##################################################################################"
 cd /home/$USER
 git clone https://aur.archlinux.org/rtlwifi_new-extended-dkms.git
@@ -285,7 +285,7 @@ sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/rtlwifi_new-extended-dkms
 
 echo "##################################################################################"
-echo "###################         <<<< Настройка сети >>>         ######################"
+echo "###################          <<< Настройка сети >>>         ######################"
 echo "##################################################################################"
 TARGET_DEVICE=wlp3s0
 read -p "Введите имя WiFi(ESSID): " WIFI_ESSID

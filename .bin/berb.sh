@@ -26,23 +26,14 @@ timedatectl set-ntp true
 
 # mkfs.ext2 /dev/$Boot_D -L boot
 mkfs.fat -F32 /dev/$Boot_D
-
 mkfs.ext4 /dev/$Root_D
-
 mkfs.ext4 /dev/$Home_D -L home
-
 mkswap /dev/$Swap_D -L swap
 
 mount /dev/$Root_D /mnt
-
-# mkdir /mnt/{boot,home}
 mkdir -p /mnt/{boot,home}
-
-# mount /dev/$Boot_D /mnt/boot
 mount /dev/$Boot_D /mnt/boot
-
 mount /dev/$Home_D /mnt/home
-
 swapon /dev/$Swap_D
 
 # Обновление ключей
