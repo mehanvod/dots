@@ -17,7 +17,7 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Syy
 
 pack="xorg-apps xorg-server xorg-xinit \
-mesa xf86-video-amdgpu xf86-input-synaptics \
+mesa xf86-video-amdgpu amd-ucode xf86-input-synaptics \
 dialog wpa_supplicant iw net-tools linux-headers dkms \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
@@ -269,6 +269,7 @@ EOF
 cat > /boot/loader/entries/arch.conf << EOF
 title Arch Linux
 linux /vmlinuz-linux
+initrd  /amd-ucode.img
 initrd /initramfs-linux.img
 options root=/dev/sda2  rw quiet splash
 EOF
