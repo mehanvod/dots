@@ -26,7 +26,7 @@ timedatectl set-ntp true
 
 # mkfs.ext2 /dev/$Boot_D -L boot
 mkfs.fat -F32 /dev/$Boot_D
-mkfs.ext4 /dev/$Root_D -L root
+mkfs.ext4 /dev/$Root_D
 # mkfs.ext4 /dev/$Home_D -L home
 mkswap /dev/$Swap_D -L swap
 
