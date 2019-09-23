@@ -84,8 +84,9 @@ echo "Прописываем имя компьютера"
 echo $HOST > /etc/hostname
 
 cat > /etc/hosts << EOF
-127.0.0.1       localhost.localdomain   localhost   $HOST
-::1             localhost.localdomain   localhost   $HOST
+127.0.0.1       localhost
+::1             localhost
+127.0.0.1       $HOST.localdomain $HOST
 EOF
 
 # user add & password
