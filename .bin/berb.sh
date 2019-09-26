@@ -31,8 +31,9 @@ mkfs.ext4 /dev/$Root_D
 mkswap /dev/$Swap_D -L swap
 
 mount /dev/$Root_D /mnt
-mkdir -p /mnt/{boot,home}
-mount /dev/$Boot_D /mnt/boot
+mkdir -p /mnt/home
+mkdir -p /mnt/boot/efi
+mount /dev/$Boot_D /mnt/boot/efi
 mount /dev/$Home_D /mnt/home
 swapon /dev/$Swap_D
 
