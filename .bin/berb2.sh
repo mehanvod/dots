@@ -140,8 +140,8 @@ Section "InputClass"
         Option "TapButton3" "2"
         Option "VertEdgeScroll" "on"
         Option "VertTwoFingerScroll" "on"
-        Option "HorizEdgeScroll" "on"
-        Option "HorizTwoFingerScroll" "on"
+        Option "HorizEdgeScroll" "0"
+        Option "HorizTwoFingerScroll" "0"
         Option "CircularScrolling" "0"        
 EndSection
 EOF
