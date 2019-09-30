@@ -32,8 +32,8 @@ mkswap /dev/$Swap_D -L swap
 
 mount /dev/$Root_D /mnt
 mkdir -p /mnt/home
-mkdir -p /mnt/boot/efi
-mount /dev/$Boot_D /mnt/boot/efi
+mkdir -p /mnt/boot
+mount /dev/$Boot_D /mnt/boot
 mount /dev/$Home_D /mnt/home
 swapon /dev/$Swap_D
 
