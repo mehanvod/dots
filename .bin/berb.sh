@@ -109,7 +109,7 @@ fi
 
 pacman -Syy
 
-pacstrap -i /mnt base base-devel
+pacstrap /mnt base base-devel
 
 cp berb2.sh /mnt/berb2.sh
 chmod u+x /mnt/berb2.sh
