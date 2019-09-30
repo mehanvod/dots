@@ -24,20 +24,26 @@ setfont cyr-sun16
 
 timedatectl set-ntp true
 
-# mkfs.ext2 /dev/$Boot_D -L boot
-mkfs.fat -F32 /dev/$Boot_D
+## root ##
 mkfs.ext4 /dev/$Root_D -L "Arch"
-# mkfs.ext4 /dev/$Home_D -L home
-mkswap /dev/$Swap_D -L swap
-
 mount /dev/$Root_D /mnt
-mkdir -p /mnt/home
+
+## boot ##
+# mkfs.ext2 /dev/$Boot_D -L boot
+mkfs.vfat -F32 /dev/$Boot_D
 mkdir -p /mnt/boot
 mount /dev/$Boot_D /mnt/boot
-mount /dev/$Home_D /mnt/home
+
+## swap ##
+mkswap /dev/$Swap_D -L swap
 swapon /dev/$Swap_D
 
-# Обновление ключей
+## home ##
+# mkfs.ext4 /dev/$Home_D -L home
+mkdir -p /mnt/home
+mount /dev/$Home_D /mnt/home
+
+## Обновление ключей ##
 echo "
 Данный этап поможет вам избежать проблем с ключами 
 Pacmаn, если использкуете не свежий образ ArchLinux для установки! "
@@ -59,7 +65,7 @@ done
    echo " Обновление ключей пропущено "   
 fi
 
-# Зеркала
+## Зеркала ##
 echo 'Хотите сменить зеркала на более быстрые?'
 while 
     read -n1 -p  "
