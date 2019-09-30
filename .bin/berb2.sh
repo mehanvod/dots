@@ -345,4 +345,18 @@ systemctl enable dhcpcd
 # Права
 chmod a+s /usr/sbin/hddtemp
 
+mkdir /etc/pacman.d/hooks
+
+cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Updating systemd-boot...
+When = PostTransaction
+Exec = /usr/bin/bootctl update
+EOF
+
 echo "Настройка Системы Завершена"
