@@ -16,8 +16,8 @@ fi
 
 Boot_D="sda1"
 Root_D="sda2"
-Swap_D="sda3"
-Home_D="sda4"
+Home_D="sda3"
+Swap_D="sda4"
 
 loadkeys ru
 setfont cyr-sun16
@@ -25,23 +25,23 @@ setfont cyr-sun16
 timedatectl set-ntp true
 
 ## root ##
-mkfs.ext4 /dev/$Root_D -L "Arch"
+mkfs.ext4 -L "Arch" /dev/$Root_D
 mount /dev/$Root_D /mnt
 
 ## boot ##
 # mkfs.ext2 /dev/$Boot_D -L boot
-mkfs.vfat -F32 /dev/$Boot_D
+mkfs.vfat -F32 -n "Boot" /dev/$Boot_D
 mkdir -p /mnt/boot
 mount /dev/$Boot_D /mnt/boot
 
-## swap ##
-mkswap /dev/$Swap_D -L swap
-swapon /dev/$Swap_D
-
 ## home ##
-# mkfs.ext4 /dev/$Home_D -L home
+# mkfs.ext4 -L "Home" /dev/$Home_D
 mkdir -p /mnt/home
 mount /dev/$Home_D /mnt/home
+
+## swap ##
+mkswap -L "Swap" /dev/$Swap_D
+swapon /dev/$Swap_D
 
 ## Обновление ключей ##
 echo "
