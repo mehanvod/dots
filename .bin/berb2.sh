@@ -289,58 +289,58 @@ cd /home/$USER/rtlwifi_new-extended-dkms
 sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/rtlwifi_new-extended-dkms
 
-echo "##################################################################################"
-echo "###################          <<< Настройка сети >>>         ######################"
-echo "##################################################################################"
-TARGET_DEVICE=wlp3s0
-read -p "Введите имя WiFi(ESSID): " WIFI_ESSID
-read -p "Введите пароль: " WIFI_PASSF
+# echo "##################################################################################"
+# echo "###################          <<< Настройка сети >>>         ######################"
+# echo "##################################################################################"
+# TARGET_DEVICE=wlp3s0
+# read -p "Введите имя WiFi(ESSID): " WIFI_ESSID
+# read -p "Введите пароль: " WIFI_PASSF
 
-cat > /etc/systemd/network/$TARGET_DEVICE-wireless.network << EOF
-[Match]
-Name=$TARGET_DEVICE
+# cat > /etc/systemd/network/$TARGET_DEVICE-wireless.network << EOF
+# [Match]
+# Name=$TARGET_DEVICE
 
-[Network]
-Address=192.168.1.3/24
-Gateway=192.168.1.1
-DNS=8.8.8.8
-EOF
+# [Network]
+# Address=192.168.1.3/24
+# Gateway=192.168.1.1
+# DNS=8.8.8.8
+# EOF
 
-# Если вдруг отсутствует
-cat > /etc/systemd/system/wpa_supplicant@$TARGET_DEVICE.service << EOF
-[Unit]
-Description=WPA supplicant for $TARGET_DEVICE
+# # Если вдруг отсутствует
+# cat > /etc/systemd/system/wpa_supplicant@$TARGET_DEVICE.service << EOF
+# [Unit]
+# Description=WPA supplicant for $TARGET_DEVICE
 
-[Service]
-ExecStart=/sbin/wpa_supplicant -i $TARGET_DEVICE -c/etc/wpa_supplicant/wpa_supplicant-$TARGET_DEVICE.conf
+# [Service]
+# ExecStart=/sbin/wpa_supplicant -i $TARGET_DEVICE -c/etc/wpa_supplicant/wpa_supplicant-$TARGET_DEVICE.conf
 
-[Install]
-WantedBy=multi-user.target
-EOF
+# [Install]
+# WantedBy=multi-user.target
+# EOF
 
-cat > /etc/wpa_supplicant/wpa_supplicant.conf << EOF
-update_config=1
-eapol_version=1
-ap_scan=1
-fast_reauth=1
-EOF
+# cat > /etc/wpa_supplicant/wpa_supplicant.conf << EOF
+# update_config=1
+# eapol_version=1
+# ap_scan=1
+# fast_reauth=1
+# EOF
 
-# passphrase будет записан в файле, в том числе, открытым текстом!
-wpa_passphrase $WIFI_ESSID $WIFI_PASSF >> /etc/wpa_supplicant/wpa_supplicant.conf
+# # passphrase будет записан в файле, в том числе, открытым текстом!
+# wpa_passphrase $WIFI_ESSID $WIFI_PASSF >> /etc/wpa_supplicant/wpa_supplicant.conf
 
-chmod go-rwx /etc/wpa_supplicant/wpa_supplicant.conf
+# chmod go-rwx /etc/wpa_supplicant/wpa_supplicant.conf
 
-ln -s /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-$TARGET_DEVICE.conf
+# ln -s /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-$TARGET_DEVICE.conf
 
-rm /etc/resolv.conf 
-ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
+# rm /etc/resolv.conf 
+# ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 
-systemctl stop wpa_supplicant
-systemctl disable wpa_supplicant
-systemctl enable wpa_supplicant@$TARGET_DEVICE.service
-systemctl enable systemd-networkd.service
-systemctl enable systemd-resolved.service
-systemctl enable dhcpcd
+# systemctl stop wpa_supplicant
+# systemctl disable wpa_supplicant
+# systemctl enable wpa_supplicant@$TARGET_DEVICE.service
+# systemctl enable systemd-networkd.service
+# systemctl enable systemd-resolved.service
+# systemctl enable dhcpcd
 
 # Права
 chmod a+s /usr/sbin/hddtemp
