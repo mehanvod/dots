@@ -278,16 +278,16 @@ options root=/dev/sda2 rw
 options quiet mitigations=off acpi_rev_override=1
 EOF
 
-echo "##################################################################################"
-echo "###################    <<< установка программ из AUR >>>    ######################"
-echo "##################################################################################"
-cd /home/$USER
-git clone https://aur.archlinux.org/rtlwifi_new-extended-dkms.git
-chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms   
-chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms/PKGBUILD 
-cd /home/$USER/rtlwifi_new-extended-dkms
-sudo -u $USER  makepkg -si --noconfirm
-rm -Rf /home/$USER/rtlwifi_new-extended-dkms
+# echo "##################################################################################"
+# echo "###################    <<< установка программ из AUR >>>    ######################"
+# echo "##################################################################################"
+# cd /home/$USER
+# git clone https://aur.archlinux.org/rtlwifi_new-extended-dkms.git
+# chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms   
+# chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms/PKGBUILD 
+# cd /home/$USER/rtlwifi_new-extended-dkms
+# sudo -u $USER  makepkg -si --noconfirm
+# rm -Rf /home/$USER/rtlwifi_new-extended-dkms
 
 # echo "##################################################################################"
 # echo "###################          <<< Настройка сети >>>         ######################"
@@ -345,18 +345,18 @@ rm -Rf /home/$USER/rtlwifi_new-extended-dkms
 # Права
 chmod a+s /usr/sbin/hddtemp
 
-mkdir /etc/pacman.d/hooks
+# mkdir /etc/pacman.d/hooks
 
-cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
-[Trigger]
-Type = Package
-Operation = Upgrade
-Target = systemd
+# cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
+# [Trigger]
+# Type = Package
+# Operation = Upgrade
+# Target = systemd
 
-[Action]
-Description = Updating systemd-boot...
-When = PostTransaction
-Exec = /usr/bin/bootctl update
-EOF
+# [Action]
+# Description = Updating systemd-boot...
+# When = PostTransaction
+# Exec = /usr/bin/bootctl update
+# EOF
 
 echo "Настройка Системы Завершена"
