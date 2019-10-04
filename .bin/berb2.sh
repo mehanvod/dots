@@ -172,35 +172,6 @@ Section "InputClass"
 EndSection
 EOF
 
-cat > /etc/samba/smb.conf << EOF
-[global]
-workgroup = WORKGROUP
-server string = Sergei  
-server role = standalone server
-log file = /var/log/samba/%m.log
-dns proxy = no 
-map to guest = bad password
-
-[Файлы]
-path = /home/bear/Public
-force user = bear
-browseable = yes
-guest ok = yes
-public = yes
-writable = yes
-
-[Фильмы]
-path = /home/bear/Videos
-force user = bear
-browseable = yes
-guest ok = yes
-public = yes
-writable = yes
-EOF
-
-sudo systemctl enable smb.service
-sudo systemctl enable nmb.service
-
 ##Change your username here
 read -p "Какой у Ваc логин? Он будет использоваться для добавления этого пользователя в smb : " choice
 sudo smbpasswd -a $choice
