@@ -268,7 +268,7 @@ if [[ -d "/sys/firmware/efi/efivars" ]]; then
     initrd     /amd-ucode.img
     initrd     /initramfs-linux.img
     options    root=/dev/sda2 rw
-    options quiet mitigations=off acpi_rev_override=1
+    options    quiet mitigations=off acpi_rev_override=1
 EOF
 
   cat <<EOF > /boot/loader/loader.conf
