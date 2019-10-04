@@ -172,10 +172,6 @@ Section "InputClass"
 EndSection
 EOF
 
-##Change your username here
-read -p "Какой у Ваc логин? Он будет использоваться для добавления этого пользователя в smb : " choice
-sudo smbpasswd -a $choice
-
 echo " Настроим localtime "
 while 
     read -n1 -p  "
