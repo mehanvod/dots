@@ -232,22 +232,69 @@ pacman -S --noconfirm --needed efibootmgr
 # grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
 # grub-mkconfig -o /boot/grub/grub.cfg
 
-bootctl install
+# bootctl install
 
-cat > /boot/loader/loader.conf << EOF
-default arch
-timeout 0
-editor 1
+# cat > /boot/loader/loader.conf << EOF
+# default arch
+# timeout 0
+# editor 1
+# EOF
+
+# cat > /boot/loader/entries/arch.conf << EOF
+# title Arch Linux
+# linux /vmlinuz-linux
+# initrd /amd-ucode.img
+# initrd /initramfs-linux.img
+# options root=/dev/sda2 rw
+# options quiet mitigations=off acpi_rev_override=1
+# EOF
+
+
+
+# Install amd-ucode for AMD CPU
+is_amd_cpu=$(lscpu | grep 'AMD' &> /dev/null && echo 'yes' || echo '')
+if [[ -n "$is_amd_cpu" ]]; then
+  pacman -S --noconfirm amd-ucode
+fi
+
+# Bootloader
+# Use system-boot for EFI mode, and grub for others
+if [[ -d "/sys/firmware/efi/efivars" ]]; then
+  bootctl install
+
+  cat <<EOF > /boot/loader/entries/arch.conf
+    title      Arch Linux
+    linux      /vmlinuz-linux
+    initrd     /amd-ucode.img
+    initrd     /initramfs-linux.img
+    options    root=/dev/sda2 rw
+    options quiet mitigations=off acpi_rev_override=1
 EOF
 
-cat > /boot/loader/entries/arch.conf << EOF
-title Arch Linux
-linux /vmlinuz-linux
-initrd /amd-ucode.img
-initrd /initramfs-linux.img
-options root=/dev/sda2 rw
-options quiet mitigations=off acpi_rev_override=1
+  cat <<EOF > /boot/loader/loader.conf
+    default arch
+    timeout 0
+    editor 1
 EOF
+
+  if [[ -z "$is_amd_cpu" ]]; then
+    sed -i '/amd-ucode/d' /boot/loader/entries/arch.conf
+  fi
+
+  # remove leading spaces
+  sed -i 's#^ \+##g' /boot/loader/entries/arch.conf
+  sed -i 's#^ \+##g' /boot/loader/loader.conf
+
+  # modify root partion in loader conf
+  root_partition=$(mount  | grep 'on / ' | cut -d' ' -f1)
+  root_partition=$(df / | tail -1 | cut -d' ' -f1)
+  sed -i "s#/dev/sda2#$root_partition#" /boot/loader/entries/arch.conf
+else
+  disk=$(df / | tail -1 | cut -d' ' -f1 | sed 's#[0-9]\+##g')
+  pacman --noconfirm -S grub os-prober
+  grub-install --target=x86_64-efi "$disk"
+  grub-mkconfig -o /boot/grub/grub.cfg
+fi
 
 echo "##################################################################################"
 echo "###################    <<< установка программ из AUR >>>    ######################"
