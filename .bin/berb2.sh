@@ -17,7 +17,7 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Syy
 
 pack="xorg-apps xorg-server xorg-xinit \
-mesa xf86-video-amdgpu xf86-input-synaptics \
+xf86-input-synaptics \
 dialog wpa_supplicant iw net-tools linux-headers dkms \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
@@ -34,6 +34,28 @@ galculator firefox firefox-i18n-ru \
 pavucontrol qbittorrent viewnior"
 
 pacman -S --noconfirm --needed $pack
+
+# graphics driver
+amd=$(lspci | grep -e VGA -e 3D | grep 'AMD' 2> /dev/null || echo '')
+nvidia=$(lspci | grep -e VGA -e 3D | grep 'NVIDIA' 2> /dev/null || echo '')
+intel=$(lspci | grep -e VGA -e 3D | grep 'Intel' 2> /dev/null || echo '')
+if [[ -n "$nvidia" ]]; then
+  pacman -S --noconfirm nvidia
+fi
+
+if [[ -n "$amd" ]]; then
+  pacman -S --noconfirm xf86-video-amdgpu
+fi
+
+if [[ -n "$intel" ]]; then
+  pacman -S --noconfirm xf86-video-intel
+fi
+
+if [[ -n "$nvidia" && -n "$intel" ]]; then
+  pacman -S --noconfirm bumblebee
+  gpasswd -a $username bumblebee
+  systemctl enable bumblebeed
+fi
 
 echo "#####################################################################"
 echo ""
