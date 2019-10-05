@@ -221,31 +221,7 @@ sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g'
 
 mkinitcpio -p linux
 
-# pacman -S --noconfirm --needed grub
 pacman -S --noconfirm --needed efibootmgr
-
-# grub-install /dev/$DISK
-# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
-# grub-mkconfig -o /boot/grub/grub.cfg
-
-# bootctl install
-
-# cat > /boot/loader/loader.conf << EOF
-# default arch
-# timeout 0
-# editor 1
-# EOF
-
-# cat > /boot/loader/entries/arch.conf << EOF
-# title Arch Linux
-# linux /vmlinuz-linux
-# initrd /amd-ucode.img
-# initrd /initramfs-linux.img
-# options root=/dev/sda2 rw
-# options quiet mitigations=off acpi_rev_override=1
-# EOF
-
-
 
 # Install amd-ucode for AMD CPU
 is_amd_cpu=$(lscpu | grep 'AMD' &> /dev/null && echo 'yes' || echo '')
@@ -291,6 +267,20 @@ else
   grub-install --target=x86_64-efi "$disk"
   grub-mkconfig -o /boot/grub/grub.cfg
 fi
+
+mkdir /etc/pacman.d/hooks
+
+cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Updating systemd-boot...
+When = PostTransaction
+Exec = /usr/bin/bootctl update
+EOF
 
 echo "##################################################################################"
 echo "###################    <<< установка программ из AUR >>>    ######################"
@@ -363,19 +353,5 @@ systemctl enable dhcpcd
 
 # Права
 chmod a+s /usr/sbin/hddtemp
-
-mkdir /etc/pacman.d/hooks
-
-cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
-[Trigger]
-Type = Package
-Operation = Upgrade
-Target = systemd
-
-[Action]
-Description = Updating systemd-boot...
-When = PostTransaction
-Exec = /usr/bin/bootctl update
-EOF
 
 echo "Настройка Системы Завершена"
