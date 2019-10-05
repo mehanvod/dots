@@ -105,8 +105,6 @@ while true; do
     esac
 done
 
-# useradd -m -g users -G "adm,audio,log,network,rfkill,scanner,storage,optical,power,wheel" -s /bin/zsh "$USER"
-
 useradd -m -g users -G audio,games,lp,optical,power,scanner,storage,video,wheel -s /bin/zsh $USER
 
 echo " Укажите пароль для "ROOT" "
