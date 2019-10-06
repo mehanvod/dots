@@ -17,7 +17,7 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Syy
 
 pack="xorg-apps xorg-server xorg-xinit \
-xf86-input-synaptics \
+xf86-input-synaptics xf86-video-ati amd-ucode \
 dialog wpa_supplicant iw net-tools linux-headers dkms \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
@@ -34,28 +34,6 @@ galculator firefox firefox-i18n-ru \
 pavucontrol qbittorrent viewnior"
 
 pacman -S --noconfirm --needed $pack
-
-# graphics driver
-amd=$(lspci | grep -e VGA -e 3D | grep 'AMD' 2> /dev/null || echo '')
-nvidia=$(lspci | grep -e VGA -e 3D | grep 'NVIDIA' 2> /dev/null || echo '')
-intel=$(lspci | grep -e VGA -e 3D | grep 'Intel' 2> /dev/null || echo '')
-if [[ -n "$nvidia" ]]; then
-  pacman -S --noconfirm nvidia
-fi
-
-if [[ -n "$amd" ]]; then
-  pacman -S --noconfirm xf86-video-amdgpu
-fi
-
-if [[ -n "$intel" ]]; then
-  pacman -S --noconfirm xf86-video-intel
-fi
-
-if [[ -n "$nvidia" && -n "$intel" ]]; then
-  pacman -S --noconfirm bumblebee
-  gpasswd -a $username bumblebee
-  systemctl enable bumblebeed
-fi
 
 echo "#####################################################################"
 echo ""
@@ -168,19 +146,6 @@ Section "InputClass"
 EndSection
 EOF
 
-cat > /usr/share/X11/xorg.conf.d/10-amdgpu.conf << EOF
-Section "OutputClass"
-    Identifier "AMDgpu"
-    MatchDriver "amdgpu"
-    Driver "amdgpu"
-    Option "DRI" "3"
-    Option "TearFree" "true"
-    Option "VariableRefresh" "true"
-    Option "ShadowPrimary" "true"
-    Option "AccelMethod" "string"
-EndSection
-EOF
-
 cat > /etc/X11/xorg.conf.d/00-keyboard.conf << EOF
 Section "InputClass"
         Identifier "system-keyboard"
@@ -235,7 +200,6 @@ echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
 echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
 echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
-sed -i 's/MODULES=()/MODULES=(amdgpu)/g' /etc/mkinitcpio.conf
 sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
 sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
 
@@ -243,16 +207,7 @@ mkinitcpio -p linux
 
 pacman -S --noconfirm --needed efibootmgr
 
-# Install amd-ucode for AMD CPU
-is_amd_cpu=$(lscpu | grep 'AMD' &> /dev/null && echo 'yes' || echo '')
-if [[ -n "$is_amd_cpu" ]]; then
-  pacman -S --noconfirm amd-ucode
-fi
-
-# Bootloader
-# Use system-boot for EFI mode, and grub for others
-if [[ -d "/sys/firmware/efi/efivars" ]]; then
-  bootctl install
+bootctl install
 
   cat <<EOF > /boot/loader/entries/arch.conf
     title    Arch Linux
@@ -267,39 +222,6 @@ EOF
     default arch
     timeout 0
     editor 1
-EOF
-
-  if [[ -z "$is_amd_cpu" ]]; then
-    sed -i '/amd-ucode/d' /boot/loader/entries/arch.conf
-  fi
-
-  # remove leading spaces
-  sed -i 's#^ \+##g' /boot/loader/entries/arch.conf
-  sed -i 's#^ \+##g' /boot/loader/loader.conf
-
-  # modify root partion in loader conf
-  root_partition=$(mount  | grep 'on / ' | cut -d' ' -f1)
-  root_partition=$(df / | tail -1 | cut -d' ' -f1)
-  sed -i "s#/dev/sda2#$root_partition#" /boot/loader/entries/arch.conf
-else
-  disk=$(df / | tail -1 | cut -d' ' -f1 | sed 's#[0-9]\+##g')
-  pacman --noconfirm -S grub os-prober
-  grub-install --target=x86_64-efi "$disk"
-  grub-mkconfig -o /boot/grub/grub.cfg
-fi
-
-mkdir /etc/pacman.d/hooks
-
-cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
-[Trigger]
-Type = Package
-Operation = Upgrade
-Target = systemd
-
-[Action]
-Description = Updating systemd-boot...
-When = PostTransaction
-Exec = /usr/bin/bootctl update
 EOF
 
 echo "##################################################################################"
