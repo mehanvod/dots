@@ -17,7 +17,7 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Syy
 
 pack="xorg-apps xorg-server xorg-xinit \
-xf86-input-synaptics xf86-video-ati amd-ucode \
+mesa xf86-video-amdgpu xf86-input-synaptics \
 dialog wpa_supplicant iw net-tools linux-headers dkms \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
@@ -105,6 +105,8 @@ while true; do
     esac
 done
 
+# useradd -m -g users -G "adm,audio,log,network,rfkill,scanner,storage,optical,power,wheel" -s /bin/zsh "$USER"
+
 useradd -m -g users -G audio,games,lp,optical,power,scanner,storage,video,wheel -s /bin/zsh $USER
 
 echo " Укажите пароль для "ROOT" "
@@ -143,6 +145,19 @@ Section "InputClass"
         Option "HorizEdgeScroll" "0"
         Option "HorizTwoFingerScroll" "0"
         Option "CircularScrolling" "0"        
+EndSection
+EOF
+
+cat > /usr/share/X11/xorg.conf.d/10-amdgpu.conf << EOF
+Section "OutputClass"
+    Identifier "AMDgpu"
+    MatchDriver "amdgpu"
+    Driver "amdgpu"
+    Option "DRI" "3"
+    Option "TearFree" "true"
+    Option "VariableRefresh" "true"
+    Option "ShadowPrimary" "true"
+    Option "AccelMethod" "string"
 EndSection
 EOF
 
@@ -200,14 +215,48 @@ echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
 echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
 echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
+sed -i 's/MODULES=()/MODULES=(amdgpu)/g' /etc/mkinitcpio.conf
 sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
 sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
 
 mkinitcpio -p linux
 
+# pacman -S --noconfirm --needed grub
 pacman -S --noconfirm --needed efibootmgr
 
-bootctl install
+# grub-install /dev/$DISK
+# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
+# grub-mkconfig -o /boot/grub/grub.cfg
+
+# bootctl install
+
+# cat > /boot/loader/loader.conf << EOF
+# default arch
+# timeout 0
+# editor 1
+# EOF
+
+# cat > /boot/loader/entries/arch.conf << EOF
+# title Arch Linux
+# linux /vmlinuz-linux
+# initrd /amd-ucode.img
+# initrd /initramfs-linux.img
+# options root=/dev/sda2 rw
+# options quiet mitigations=off acpi_rev_override=1
+# EOF
+
+
+
+# Install amd-ucode for AMD CPU
+is_amd_cpu=$(lscpu | grep 'AMD' &> /dev/null && echo 'yes' || echo '')
+if [[ -n "$is_amd_cpu" ]]; then
+  pacman -S --noconfirm amd-ucode
+fi
+
+# Bootloader
+# Use system-boot for EFI mode, and grub for others
+if [[ -d "/sys/firmware/efi/efivars" ]]; then
+  bootctl install
 
   cat <<EOF > /boot/loader/entries/arch.conf
     title    Arch Linux
@@ -215,7 +264,7 @@ bootctl install
     initrd   /amd-ucode.img
     initrd   /initramfs-linux.img
     options  root=/dev/sda2 rw
-    options  quiet acpi_rev_override=1
+    options  quiet mitigations=off acpi_rev_override=1
 EOF
 
   cat <<EOF > /boot/loader/loader.conf
@@ -223,6 +272,25 @@ EOF
     timeout 0
     editor 1
 EOF
+
+  if [[ -z "$is_amd_cpu" ]]; then
+    sed -i '/amd-ucode/d' /boot/loader/entries/arch.conf
+  fi
+
+  # remove leading spaces
+  sed -i 's#^ \+##g' /boot/loader/entries/arch.conf
+  sed -i 's#^ \+##g' /boot/loader/loader.conf
+
+  # modify root partion in loader conf
+  root_partition=$(mount  | grep 'on / ' | cut -d' ' -f1)
+  root_partition=$(df / | tail -1 | cut -d' ' -f1)
+  sed -i "s#/dev/sda2#$root_partition#" /boot/loader/entries/arch.conf
+else
+  disk=$(df / | tail -1 | cut -d' ' -f1 | sed 's#[0-9]\+##g')
+  pacman --noconfirm -S grub os-prober
+  grub-install --target=x86_64-efi "$disk"
+  grub-mkconfig -o /boot/grub/grub.cfg
+fi
 
 echo "##################################################################################"
 echo "###################    <<< установка программ из AUR >>>    ######################"
@@ -295,5 +363,19 @@ systemctl enable dhcpcd
 
 # Права
 chmod a+s /usr/sbin/hddtemp
+
+mkdir /etc/pacman.d/hooks
+
+cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Updating systemd-boot...
+When = PostTransaction
+Exec = /usr/bin/bootctl update
+EOF
 
 echo "Настройка Системы Завершена"
