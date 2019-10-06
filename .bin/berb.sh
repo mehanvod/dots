@@ -35,7 +35,7 @@ mkdir -p /mnt/boot
 mount /dev/$Boot_D /mnt/boot
 
 ## home ##
-# mkfs.ext4 -L "Home" /dev/$Home_D
+mkfs.ext4 -L "Home" /dev/$Home_D
 mkdir -p /mnt/home
 mount /dev/$Home_D /mnt/home
 
@@ -109,7 +109,7 @@ fi
 
 pacman -Syy
 
-pacstrap /mnt base base-devel
+pacstrap /mnt base base-devel linux
 
 cp berb2.sh /mnt/berb2.sh
 chmod u+x /mnt/berb2.sh
