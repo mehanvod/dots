@@ -17,7 +17,7 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Syy
 
 pack="xorg-apps xorg-server xorg-xinit \
-mesa xf86-video-amdgpu xf86-input-synaptics \
+xf86-input-synaptics nano man-db dhcpcd \
 dialog wpa_supplicant iw net-tools linux-headers dkms \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
@@ -34,6 +34,28 @@ galculator firefox firefox-i18n-ru \
 pavucontrol qbittorrent viewnior"
 
 pacman -S --noconfirm --needed $pack
+
+# graphics driver
+amd=$(lspci | grep -e VGA -e 3D | grep 'AMD' 2> /dev/null || echo '')
+nvidia=$(lspci | grep -e VGA -e 3D | grep 'NVIDIA' 2> /dev/null || echo '')
+intel=$(lspci | grep -e VGA -e 3D | grep 'Intel' 2> /dev/null || echo '')
+if [[ -n "$nvidia" ]]; then
+  pacman -S --noconfirm nvidia
+fi
+
+if [[ -n "$amd" ]]; then
+  pacman -S --noconfirm xf86-video-amdgpu
+fi
+
+if [[ -n "$intel" ]]; then
+  pacman -S --noconfirm xf86-video-intel
+fi
+
+if [[ -n "$nvidia" && -n "$intel" ]]; then
+  pacman -S --noconfirm bumblebee
+  gpasswd -a $username bumblebee
+  systemctl enable bumblebeed
+fi
 
 echo "#####################################################################"
 echo ""
@@ -117,6 +139,20 @@ passwd "$USER"
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 
 usermod -c 'Сергей Простов' $USER
+
+mkdir /etc/pacman.d/hooks
+
+cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Updating systemd-boot...
+When = PostTransaction
+Exec = /usr/bin/bootctl update
+EOF
 
 cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
 [greeter]
@@ -227,25 +263,6 @@ pacman -S --noconfirm --needed efibootmgr
 # grub-install /dev/$DISK
 # grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
 # grub-mkconfig -o /boot/grub/grub.cfg
-
-# bootctl install
-
-# cat > /boot/loader/loader.conf << EOF
-# default arch
-# timeout 0
-# editor 1
-# EOF
-
-# cat > /boot/loader/entries/arch.conf << EOF
-# title Arch Linux
-# linux /vmlinuz-linux
-# initrd /amd-ucode.img
-# initrd /initramfs-linux.img
-# options root=/dev/sda2 rw
-# options quiet mitigations=off acpi_rev_override=1
-# EOF
-
-
 
 # Install amd-ucode for AMD CPU
 is_amd_cpu=$(lscpu | grep 'AMD' &> /dev/null && echo 'yes' || echo '')
@@ -363,19 +380,5 @@ systemctl enable dhcpcd
 
 # Права
 chmod a+s /usr/sbin/hddtemp
-
-mkdir /etc/pacman.d/hooks
-
-cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
-[Trigger]
-Type = Package
-Operation = Upgrade
-Target = systemd
-
-[Action]
-Description = Updating systemd-boot...
-When = PostTransaction
-Exec = /usr/bin/bootctl update
-EOF
 
 echo "Настройка Системы Завершена"
