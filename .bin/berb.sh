@@ -35,7 +35,7 @@ mkdir -p /mnt/boot
 mount /dev/$Boot_D /mnt/boot
 
 ## home ##
-mkfs.ext4 -L "Home" /dev/$Home_D
+# mkfs.ext4 -L "Home" /dev/$Home_D
 mkdir -p /mnt/home
 mount /dev/$Home_D /mnt/home
 
