@@ -17,7 +17,7 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Syy
 
 pack="xorg-apps xorg-server xorg-xinit \
-xf86-input-synaptics nano man-db dhcpcd \
+xf86-input-synaptics nano man-db \
 dialog wpa_supplicant iw net-tools linux-headers dkms \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
@@ -376,7 +376,6 @@ systemctl disable wpa_supplicant
 systemctl enable wpa_supplicant@$TARGET_DEVICE.service
 systemctl enable systemd-networkd.service
 systemctl enable systemd-resolved.service
-systemctl enable dhcpcd
 
 # Права
 chmod a+s /usr/sbin/hddtemp
