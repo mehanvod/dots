@@ -30,9 +30,13 @@ mount /dev/$Root_D /mnt
 
 ## boot ##
 # mkfs.ext2 /dev/$Boot_D -L boot
-mkfs.vfat -F32 -n "Boot" /dev/$Boot_D
-mkdir -p /mnt/boot
+# mkfs.vfat -F32 -n "Boot" /dev/$Boot_D
+# mkdir -p /mnt/boot
 mount /dev/$Boot_D /mnt/boot
+cd /mnt/boot
+ls | grep -v EFI | xargs rm -rfv
+cd /mnt/boot/EFI
+ls | grep -v Boot | grep -v Microsoft | xargs rm -rfv
 
 ## home ##
 # mkfs.ext4 -L "Home" /dev/$Home_D
