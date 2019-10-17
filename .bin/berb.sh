@@ -24,9 +24,7 @@ setfont cyr-sun16
 
 timedatectl set-ntp true
 
-## root ##
-mkfs.ext4 -L "Arch" /dev/$Root_D
-mount /dev/$Root_D /mnt
+pacman -Sy --noconfirm
 
 ## boot ##
 # mkfs.ext2 /dev/$Boot_D -L boot
@@ -37,6 +35,14 @@ cd /mnt/boot
 ls | grep -v EFI | xargs rm -rfv
 cd /mnt/boot/EFI
 ls | grep -v Boot | grep -v Microsoft | xargs rm -rfv
+
+pacman -Sy --noconfirm
+##############################
+clear
+
+## root ##
+mkfs.ext4 -L "Arch" /dev/$Root_D
+mount /dev/$Root_D /mnt
 
 ## home ##
 # mkfs.ext4 -L "Home" /dev/$Home_D
