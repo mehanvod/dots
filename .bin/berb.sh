@@ -24,15 +24,21 @@ setfont cyr-sun16
 
 timedatectl set-ntp true
 
-## root ##
-mkfs.ext4 -L "Arch" /dev/$Root_D
-mount /dev/$Root_D /mnt
+pacman -Sy --noconfirm
 
 ## boot ##
 # mkfs.ext2 /dev/$Boot_D -L boot
 mkfs.vfat -F32 -n "Boot" /dev/$Boot_D
 mkdir -p /mnt/boot
 mount /dev/$Boot_D /mnt/boot
+
+pacman -Sy --noconfirm
+##############################
+clear
+
+## root ##
+mkfs.ext4 -L "Arch" /dev/$Root_D
+mount /dev/$Root_D /mnt
 
 ## home ##
 # mkfs.ext4 -L "Home" /dev/$Home_D
