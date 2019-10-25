@@ -17,7 +17,7 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Syy
 
 pack="xorg-apps xorg-server xorg-xinit \
-xf86-input-synaptics nano man-db \
+xf86-input-synaptics nano man-db dhcpcd \
 dialog wpa_supplicant iw net-tools linux-headers dkms \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
@@ -350,34 +350,36 @@ fi
 # #Type=simple
 # #ExecStart=/sbin/wpa_supplicant -c/etc/wpa_supplicant/wpa_supplicant-%I.conf -i%I
 
-#[Install]
-#Alias=multi-user.target.wants/wpa_supplicant@%i.service
-#EOF
+# [Install]
+# Alias=multi-user.target.wants/wpa_supplicant@%i.service
+# EOF
 
-#cat > /etc/wpa_supplicant/wpa_supplicant.conf << EOF
-#update_config=1
-#eapol_version=1
-#ap_scan=1
-#fast_reauth=1
-#EOF
+# cat > /etc/wpa_supplicant/wpa_supplicant.conf << EOF
+# update_config=1
+# eapol_version=1
+# ap_scan=1
+# fast_reauth=1
+# EOF
 
-# passphrase будет записан в файле, в том числе, открытым текстом!
-#wpa_passphrase $WIFI_ESSID $WIFI_PASSF >> /etc/wpa_supplicant/wpa_supplicant.conf
+## passphrase будет записан в файле, в том числе, открытым текстом!
+# wpa_passphrase $WIFI_ESSID $WIFI_PASSF >> /etc/wpa_supplicant/wpa_supplicant.conf
 
-#chmod go-rwx /etc/wpa_supplicant/wpa_supplicant.conf
+# chmod go-rwx /etc/wpa_supplicant/wpa_supplicant.conf
 
-#ln -s /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-$TARGET_DEVICE.conf
+# ln -s /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-$TARGET_DEVICE.conf
 
-#rm /etc/resolv.conf 
-#ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
+# rm /etc/resolv.conf 
+# ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 
-#systemctl stop wpa_supplicant
-#systemctl disable wpa_supplicant
-#systemctl enable wpa_supplicant@$TARGET_DEVICE.service
-#systemctl enable systemd-networkd.service
-#systemctl enable systemd-resolved.service
+# systemctl stop wpa_supplicant
+# systemctl disable wpa_supplicant
+# systemctl enable wpa_supplicant@$TARGET_DEVICE.service
+# systemctl enable systemd-networkd.service
+# systemctl enable systemd-resolved.service
 
 # Права
 chmod a+s /usr/sbin/hddtemp
+
+systemctl enable dhcpcd
 
 echo "Настройка Системы Завершена"
