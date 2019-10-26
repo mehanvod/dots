@@ -21,7 +21,6 @@ Swap_D="sda4"
 
 loadkeys ru
 setfont cyr-sun16
-
 timedatectl set-ntp true
 
 ## root ##
