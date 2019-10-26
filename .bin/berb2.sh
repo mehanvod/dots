@@ -327,28 +327,28 @@ fi
 # read -p "Введите имя WiFi(ESSID): " WIFI_ESSID
 # read -p "Введите пароль: " WIFI_PASSF
 
-# #cat > /etc/systemd/network/$TARGET_DEVICE-wireless.network << EOF
-# #[Match]
-# #Name=$TARGET_DEVICE
+# cat > /etc/systemd/network/$TARGET_DEVICE-wireless.network << EOF
+# [Match]
+# Name=$TARGET_DEVICE
 
-# #[Network]
-# #Address=192.168.1.3/24
-# #Gateway=192.168.1.1
-# #DNS=8.8.8.8
-# #EOF
+# [Network]
+# Address=192.168.1.3/24
+# Gateway=192.168.1.1
+# DNS=8.8.8.8
+# EOF
 
-# Если вдруг отсутствует
-# #cat > /etc/systemd/system/wpa_supplicant@$TARGET_DEVICE.service << EOF
-# #[Unit]
-# #Description=Interface-specific version of WPA supplicant daemon
-# #Requires=sys-subsystem-net-devices-%i.device
-# #After=sys-subsystem-net-devices-%i.device
-# #Before=network.target
-# #Wants=network.target
+### Если вдруг отсутствует
+# cat > /etc/systemd/system/wpa_supplicant@$TARGET_DEVICE.service << EOF
+# [Unit]
+# Description=Interface-specific version of WPA supplicant daemon
+# Requires=sys-subsystem-net-devices-%i.device
+# After=sys-subsystem-net-devices-%i.device
+# Before=network.target
+# Wants=network.target
 
-# #[Service]
-# #Type=simple
-# #ExecStart=/sbin/wpa_supplicant -c/etc/wpa_supplicant/wpa_supplicant-%I.conf -i%I
+# [Service]
+# Type=simple
+# ExecStart=/sbin/wpa_supplicant -c/etc/wpa_supplicant/wpa_supplicant-%I.conf -i%I
 
 # [Install]
 # Alias=multi-user.target.wants/wpa_supplicant@%i.service
@@ -361,7 +361,7 @@ fi
 # fast_reauth=1
 # EOF
 
-## passphrase будет записан в файле, в том числе, открытым текстом!
+### passphrase будет записан в файле, в том числе, открытым текстом!
 # wpa_passphrase $WIFI_ESSID $WIFI_PASSF >> /etc/wpa_supplicant/wpa_supplicant.conf
 
 # chmod go-rwx /etc/wpa_supplicant/wpa_supplicant.conf
