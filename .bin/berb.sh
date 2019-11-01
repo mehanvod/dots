@@ -29,7 +29,7 @@ mount /dev/$Root_D /mnt
 
 ## boot ##
 # mkfs.ext2 /dev/$Boot_D -L boot
-mkfs.vfat -F32 -n "Boot" /dev/$Boot_D
+# mkfs.vfat -F32 -n "Boot" /dev/$Boot_D
 mkdir -p /mnt/boot
 mount /dev/$Boot_D /mnt/boot
 
