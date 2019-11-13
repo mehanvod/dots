@@ -180,7 +180,8 @@ Section "InputClass"
         Option "VertTwoFingerScroll" "on"
         Option "HorizEdgeScroll" "0"
         Option "HorizTwoFingerScroll" "0"
-        Option "CircularScrolling" "0"        
+        Option "EmulateTwoFingerMinZ" "40"
+        Option "EmulateTwoFingerMinW" "8"          
 EndSection
 EOF
 
