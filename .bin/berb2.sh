@@ -310,73 +310,73 @@ else
   grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
-# echo "##################################################################################"
-# echo "###################    <<< установка программ из AUR >>>    ######################"
-# echo "##################################################################################"
-# cd /home/$USER
-# git clone https://aur.archlinux.org/rtlwifi_new-extended-dkms.git
-# chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms   
-# chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms/PKGBUILD 
-# cd /home/$USER/rtlwifi_new-extended-dkms
-# sudo -u $USER  makepkg -si --noconfirm
-# rm -Rf /home/$USER/rtlwifi_new-extended-dkms
+echo "##################################################################################"
+echo "###################    <<< установка программ из AUR >>>    ######################"
+echo "##################################################################################"
+cd /home/$USER
+git clone https://aur.archlinux.org/rtlwifi_new-extended-dkms.git
+chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms   
+chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms/PKGBUILD 
+cd /home/$USER/rtlwifi_new-extended-dkms
+sudo -u $USER  makepkg -si --noconfirm
+rm -Rf /home/$USER/rtlwifi_new-extended-dkms
 
-# echo "##################################################################################"
-# echo "###################          <<< Настройка сети >>>         ######################"
-# echo "##################################################################################"
-# TARGET_DEVICE=wlp3s0
-# read -p "Введите имя WiFi(ESSID): " WIFI_ESSID
-# read -p "Введите пароль: " WIFI_PASSF
+echo "##################################################################################"
+echo "###################          <<< Настройка сети >>>         ######################"
+echo "##################################################################################"
+TARGET_DEVICE=wlp3s0
+read -p "Введите имя WiFi(ESSID): " WIFI_ESSID
+read -p "Введите пароль: " WIFI_PASSF
 
-# cat > /etc/systemd/network/$TARGET_DEVICE-wireless.network << EOF
-# [Match]
-# Name=$TARGET_DEVICE
+cat > /etc/systemd/network/$TARGET_DEVICE-wireless.network << EOF
+[Match]
+Name=$TARGET_DEVICE
 
-# [Network]
-# Address=192.168.1.3/24
-# Gateway=192.168.1.1
-# DNS=8.8.8.8
-# EOF
+[Network]
+Address=192.168.1.3/24
+Gateway=192.168.1.1
+DNS=8.8.8.8
+EOF
 
-# ## Если вдруг отсутствует
-# cat > /etc/systemd/system/wpa_supplicant@$TARGET_DEVICE.service << EOF
-# [Unit]
-# Description=Interface-specific version of WPA supplicant daemon
-# Requires=sys-subsystem-net-devices-%i.device
-# After=sys-subsystem-net-devices-%i.device
-# Before=network.target
-# Wants=network.target
+## Если вдруг отсутствует
+cat > /etc/systemd/system/wpa_supplicant@$TARGET_DEVICE.service << EOF
+[Unit]
+Description=Interface-specific version of WPA supplicant daemon
+Requires=sys-subsystem-net-devices-%i.device
+After=sys-subsystem-net-devices-%i.device
+Before=network.target
+Wants=network.target
 
-# [Service]
-# Type=simple
-# ExecStart=/sbin/wpa_supplicant -c/etc/wpa_supplicant/wpa_supplicant-%I.conf -i%I
+[Service]
+Type=simple
+ExecStart=/sbin/wpa_supplicant -c/etc/wpa_supplicant/wpa_supplicant-%I.conf -i%I
 
-# [Install]
-# Alias=multi-user.target.wants/wpa_supplicant@%i.service
-# EOF
+[Install]
+Alias=multi-user.target.wants/wpa_supplicant@%i.service
+EOF
 
-# cat > /etc/wpa_supplicant/wpa_supplicant.conf << EOF
-# update_config=1
-# eapol_version=1
-# ap_scan=1
-# fast_reauth=1
-# EOF
+cat > /etc/wpa_supplicant/wpa_supplicant.conf << EOF
+update_config=1
+eapol_version=1
+ap_scan=1
+fast_reauth=1
+EOF
 
-# ## passphrase будет записан в файле, в том числе, открытым текстом!
-# wpa_passphrase $WIFI_ESSID $WIFI_PASSF >> /etc/wpa_supplicant/wpa_supplicant.conf
+## passphrase будет записан в файле, в том числе, открытым текстом!
+wpa_passphrase $WIFI_ESSID $WIFI_PASSF >> /etc/wpa_supplicant/wpa_supplicant.conf
 
-# chmod go-rwx /etc/wpa_supplicant/wpa_supplicant.conf
+chmod go-rwx /etc/wpa_supplicant/wpa_supplicant.conf
 
-# ln -s /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-$TARGET_DEVICE.conf
+ln -s /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-$TARGET_DEVICE.conf
 
-# rm /etc/resolv.conf 
-# ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
+rm /etc/resolv.conf 
+ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 
-# systemctl stop wpa_supplicant
-# systemctl disable wpa_supplicant
-# systemctl enable wpa_supplicant@$TARGET_DEVICE.service
-# systemctl enable systemd-networkd.service
-# systemctl enable systemd-resolved.service
+systemctl stop wpa_supplicant
+systemctl disable wpa_supplicant
+systemctl enable wpa_supplicant@$TARGET_DEVICE.service
+systemctl enable systemd-networkd.service
+systemctl enable systemd-resolved.service
 
 # Права
 chmod a+s /usr/sbin/hddtemp
