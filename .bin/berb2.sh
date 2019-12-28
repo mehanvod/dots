@@ -333,8 +333,8 @@ cat > /etc/systemd/network/$TARGET_DEVICE-wireless.network << EOF
 Name=$TARGET_DEVICE
 
 [Network]
-Address=192.168.1.3/24
-Gateway=192.168.1.1
+Address=192.168.0.102
+Gateway=192.168.0.1
 DNS=8.8.8.8
 EOF
 
