@@ -278,9 +278,9 @@ if [[ -d "/sys/firmware/efi/efivars" ]]; then
 
   cat <<EOF > /boot/loader/entries/arch.conf
     title    Arch Linux
-    linux    /vmlinuz-linux
+    linux    /vmlinuz-linux-lts
     initrd   /amd-ucode.img
-    initrd   /initramfs-linux.img
+    initrd   /initramfs-linux-lts.img
     options  root=/dev/sda2 rw
     options  quiet mitigations=off acpi_rev_override=1
 EOF
@@ -310,16 +310,16 @@ else
   grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
-# echo "##################################################################################"
-# echo "###################    <<< установка программ из AUR >>>    ######################"
-# echo "##################################################################################"
-# cd /home/$USER
-# git clone https://aur.archlinux.org/rtlwifi_new-extended-dkms.git
-# chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms   
-# chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms/PKGBUILD 
-# cd /home/$USER/rtlwifi_new-extended-dkms
-# sudo -u $USER  makepkg -si --noconfirm
-# rm -Rf /home/$USER/rtlwifi_new-extended-dkms
+echo "##################################################################################"
+echo "###################    <<< установка программ из AUR >>>    ######################"
+echo "##################################################################################"
+cd /home/$USER
+git clone https://aur.archlinux.org/rtlwifi_new-extended-dkms.git
+chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms   
+chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms/PKGBUILD 
+cd /home/$USER/rtlwifi_new-extended-dkms
+sudo -u $USER  makepkg -si --noconfirm
+rm -Rf /home/$USER/rtlwifi_new-extended-dkms
 
 # echo "##################################################################################"
 # echo "###################          <<< Настройка сети >>>         ######################"
