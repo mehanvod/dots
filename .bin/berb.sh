@@ -108,7 +108,7 @@ fi
 
 pacman -Syy
 
-pacstrap /mnt base base-devel linux-lts linux-firmware
+pacstrap /mnt base base-devel linux linux-firmware
 
 cp berb2.sh /mnt/berb2.sh
 chmod u+x /mnt/berb2.sh

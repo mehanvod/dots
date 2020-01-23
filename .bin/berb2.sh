@@ -278,9 +278,9 @@ if [[ -d "/sys/firmware/efi/efivars" ]]; then
 
   cat <<EOF > /boot/loader/entries/arch.conf
     title    Arch Linux
-    linux    /vmlinuz-linux-lts
+    linux    /vmlinuz-linux
     initrd   /amd-ucode.img
-    initrd   /initramfs-linux-lts.img
+    initrd   /initramfs-linux.img
     options  root=/dev/sda2 rw
     options  quiet mitigations=off acpi_rev_override=1
 EOF
