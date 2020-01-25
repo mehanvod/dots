@@ -310,16 +310,16 @@ else
   grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
-echo "##################################################################################"
-echo "###################    <<< установка программ из AUR >>>    ######################"
-echo "##################################################################################"
-cd /home/$USER
-git clone https://aur.archlinux.org/rtlwifi_new-extended-dkms.git
-chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms   
-chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms/PKGBUILD 
-cd /home/$USER/rtlwifi_new-extended-dkms
-sudo -u $USER  makepkg -si --noconfirm
-rm -Rf /home/$USER/rtlwifi_new-extended-dkms
+# echo "##################################################################################"
+# echo "###################    <<< установка программ из AUR >>>    ######################"
+# echo "##################################################################################"
+# cd /home/$USER
+# git clone https://aur.archlinux.org/rtlwifi_new-extended-dkms.git
+# chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms   
+# chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms/PKGBUILD 
+# cd /home/$USER/rtlwifi_new-extended-dkms
+# sudo -u $USER  makepkg -si --noconfirm
+# rm -Rf /home/$USER/rtlwifi_new-extended-dkms
 
 # echo "##################################################################################"
 # echo "###################          <<< Настройка сети >>>         ######################"
