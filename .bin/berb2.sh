@@ -102,6 +102,9 @@ while true; do
     esac
 done
 
+echo " Укажите пароль для "ROOT" "
+passwd
+
 echo "Прописываем имя компьютера"
 echo $HOST > /etc/hostname
 
@@ -130,9 +133,6 @@ done
 # useradd -m -g users -G "adm,audio,log,network,rfkill,scanner,storage,optical,power,wheel" -s /bin/zsh "$USER"
 
 useradd -m -g users -G audio,games,lp,optical,power,scanner,storage,video,wheel -s /bin/zsh $USER
-
-echo " Укажите пароль для "ROOT" "
-passwd
 
 echo 'Добавляем пароль для пользователя '$USER' '
 passwd "$USER"
@@ -176,12 +176,32 @@ Section "InputClass"
         Option "TapButton1" "1"
         Option "TapButton2" "3"
         Option "TapButton3" "2"
-        Option "VertEdgeScroll" "on"
-        Option "VertTwoFingerScroll" "on"
+        Option "VertEdgeScroll" "1"
+        Option "VertTwoFingerScroll" "1"
         Option "HorizEdgeScroll" "0"
-        Option "HorizTwoFingerScroll" "0"
-        Option "EmulateTwoFingerMinZ" "40"
-        Option "EmulateTwoFingerMinW" "8"          
+        Option "HorizTwoFingerScroll" "0"        
+EndSection
+
+Section "InputClass"
+        Identifier "touchpad ignore duplicates"
+        MatchIsTouchpad "on"
+        MatchOS "Linux"
+        MatchDevicePath "/dev/input/mouse*"
+        Option "Ignore" "on"
+EndSection
+
+Section "InputClass"
+        Identifier "Default clickpad buttons"
+        MatchDriver "synaptics"
+        Option "SoftButtonAreas" "50% 0 82% 0 0 0 0 0"
+        Option "SecondarySoftButtonAreas" "58% 0 0 15% 42% 58% 0 15%"
+EndSection
+
+Section "InputClass"
+        Identifier "Disable clickpad buttons on Apple touchpads"
+        MatchProduct "Apple|bcm5974"
+        MatchDriver "synaptics"
+        Option "SoftButtonAreas" "0 0 0 0 0 0 0 0"
 EndSection
 EOF
 
@@ -310,73 +330,17 @@ else
   grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
-# echo "##################################################################################"
-# echo "###################    <<< установка программ из AUR >>>    ######################"
-# echo "##################################################################################"
-# cd /home/$USER
-# git clone https://aur.archlinux.org/rtlwifi_new-extended-dkms.git
-# chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms   
-# chown -R $USER:users /home/$USER/rtlwifi_new-extended-dkms/PKGBUILD 
-# cd /home/$USER/rtlwifi_new-extended-dkms
-# sudo -u $USER  makepkg -si --noconfirm
-# rm -Rf /home/$USER/rtlwifi_new-extended-dkms
+echo "########################################################################################"
+echo "###################    <<< установка драйвера на WiFi(AUR) >>>    ######################"
+echo "########################################################################################"
+cd /home/$USER
+git clone https://aur.archlinux.org/rtl8821ce-dkms-git.git
+chown -R $USER:users /home/$USER/rtl8821ce-dkms-git   
+chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD 
+cd /home/$USER/rtl8821ce-dkms-git
+sudo -u $USER  makepkg -si --noconfirm
+rm -Rf /home/$USER/rtl8821ce-dkms-git
 
-# echo "##################################################################################"
-# echo "###################          <<< Настройка сети >>>         ######################"
-# echo "##################################################################################"
-# TARGET_DEVICE=wlp3s0
-# read -p "Введите имя WiFi(ESSID): " WIFI_ESSID
-# read -p "Введите пароль: " WIFI_PASSF
-
-# cat > /etc/systemd/network/$TARGET_DEVICE-wireless.network << EOF
-# [Match]
-# Name=$TARGET_DEVICE
-
-# [Network]
-# Address=192.168.0.102
-# Gateway=192.168.0.1
-# DNS=8.8.8.8
-# EOF
-
-# ## Если вдруг отсутствует
-# cat > /etc/systemd/system/wpa_supplicant@$TARGET_DEVICE.service << EOF
-# [Unit]
-# Description=Interface-specific version of WPA supplicant daemon
-# Requires=sys-subsystem-net-devices-%i.device
-# After=sys-subsystem-net-devices-%i.device
-# Before=network.target
-# Wants=network.target
-
-# [Service]
-# Type=simple
-# ExecStart=/sbin/wpa_supplicant -c/etc/wpa_supplicant/wpa_supplicant-%I.conf -i%I
-
-# [Install]
-# Alias=multi-user.target.wants/wpa_supplicant@%i.service
-# EOF
-
-# cat > /etc/wpa_supplicant/wpa_supplicant.conf << EOF
-# update_config=1
-# eapol_version=1
-# ap_scan=1
-# fast_reauth=1
-# EOF
-
-# ## passphrase будет записан в файле, в том числе, открытым текстом!
-# wpa_passphrase $WIFI_ESSID $WIFI_PASSF >> /etc/wpa_supplicant/wpa_supplicant.conf
-
-# chmod go-rwx /etc/wpa_supplicant/wpa_supplicant.conf
-
-# ln -s /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-$TARGET_DEVICE.conf
-
-# rm /etc/resolv.conf 
-# ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
-
-# systemctl stop wpa_supplicant
-# systemctl disable wpa_supplicant
-# systemctl enable wpa_supplicant@$TARGET_DEVICE.service
-# systemctl enable systemd-networkd.service
-# systemctl enable systemd-resolved.service
 
 # Права
 chmod a+s /usr/sbin/hddtemp
