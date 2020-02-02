@@ -21,7 +21,7 @@ xf86-input-synaptics nano man-db dhcpcd \
 dialog wpa_supplicant iw net-tools linux-headers dkms \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
-ttf-dejavu ttf-font-awesome ttf-fantasque-sans-mono \
+ttf-dejavu ttf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa \
 ffmpeg mpc mpd mpv ncmpcpp streamlink youtube-dl youtube-viewer \
 bash-completion gtk2-perl termite xterm wmctrl zsh zsh-syntax-highlighting neovim \
