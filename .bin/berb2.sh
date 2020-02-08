@@ -18,7 +18,7 @@ pacman -Syy
 
 pack="xorg-apps xorg-server xorg-xinit \
 xf86-input-synaptics nano man-db dhcpcd \
-dialog wpa_supplicant iw net-tools linux-headers dkms \
+dialog wpa_supplicant netctl iw net-tools linux-headers dkms \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
 arc-gtk-theme papirus-icon-theme \
 ttf-dejavu ttf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono \
