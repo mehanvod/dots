@@ -156,7 +156,7 @@ EOF
 
 cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
 [greeter]
-background=/usr/share/pixmaps/015.jpg
+background=/usr/share/pixmaps/013.jpg
 theme-name=Fantome
 icon-theme-name=Papirus
 font-name=Roboto 9
