@@ -64,7 +64,9 @@ while
     read -n1 -p  "
     1 - Awesome(WM)+lightdm
     
-    2 - Xfce+lightdm 
+    2 - Xfce+lightdm
+
+    3 - KDE(Plasma)+sddm
 
     0 - пропустить " x_de
     echo ''
@@ -84,6 +86,12 @@ pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm
 systemctl enable lightdm
 clear
 echo "Xfce успешно установлено"
+elif [[ $x_de == 3 ]]; then
+pacman -S plasma-meta kdebase kwalletmanager sddm sddm-kcm --noconfirm
+pacman -R konqueror --noconfirm
+systemctl enable sddm.service -f
+clear
+echo "Plasma KDE успешно установлена"
 fi
 
 # Root password
@@ -154,19 +162,19 @@ When = PostTransaction
 Exec = /usr/bin/bootctl update
 EOF
 
-cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
-[greeter]
-background=/usr/share/pixmaps/010.jpg
-theme-name=Fantome
-icon-theme-name=Papirus
-font-name=Roboto 9
-xft-antialias=true
-xft-dpi=96
-xft-hintstyle=true
-xft-rgba=rgb
-indicators=~clock;~session;~power;
-position=5% 40%
-EOF
+# cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
+# [greeter]
+# background=/usr/share/pixmaps/010.jpg
+# theme-name=Fantome
+# icon-theme-name=Papirus
+# font-name=Roboto 9
+# xft-antialias=true
+# xft-dpi=96
+# xft-hintstyle=true
+# xft-rgba=rgb
+# indicators=~clock;~session;~power;
+# position=5% 40%
+# EOF
 
 cat > /etc/X11/xorg.conf.d/70-synaptics.conf << EOF
 Section "InputClass"
@@ -274,7 +282,7 @@ echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
 sed -i 's/MODULES=()/MODULES=(amdgpu)/g' /etc/mkinitcpio.conf
 sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
-sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
+# sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
 
 mkinitcpio -p linux
 
