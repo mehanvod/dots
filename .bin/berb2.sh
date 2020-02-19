@@ -304,7 +304,7 @@ pacman -S --noconfirm --needed grub
 # pacman -S --noconfirm --needed efibootmgr
 
 grub-install /dev/$DISK
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
+# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Install amd-ucode for AMD CPU
@@ -352,16 +352,16 @@ grub-mkconfig -o /boot/grub/grub.cfg
 #   grub-mkconfig -o /boot/grub/grub.cfg
 # fi
 
-echo "########################################################################################"
-echo "###################    <<< установка драйвера на WiFi(AUR) >>>    ######################"
-echo "########################################################################################"
-cd /home/$USER
-git clone https://aur.archlinux.org/rtl8821ce-dkms-git.git
-chown -R $USER:users /home/$USER/rtl8821ce-dkms-git   
-chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD 
-cd /home/$USER/rtl8821ce-dkms-git
-sudo -u $USER  makepkg -si --noconfirm
-rm -Rf /home/$USER/rtl8821ce-dkms-git
+# echo "########################################################################################"
+# echo "###################    <<< установка драйвера на WiFi(AUR) >>>    ######################"
+# echo "########################################################################################"
+# cd /home/$USER
+# git clone https://aur.archlinux.org/rtl8821ce-dkms-git.git
+# chown -R $USER:users /home/$USER/rtl8821ce-dkms-git   
+# chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD 
+# cd /home/$USER/rtl8821ce-dkms-git
+# sudo -u $USER  makepkg -si --noconfirm
+# rm -Rf /home/$USER/rtl8821ce-dkms-git
 
 
 # Права
