@@ -16,25 +16,6 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Syy
 
-pack="xorg-apps xorg-server xorg-xinit \
-xf86-input-synaptics nano man-db dhcpcd \
-dialog wpa_supplicant netctl iw net-tools linux-headers dkms \
-gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
-arc-gtk-theme papirus-icon-theme \
-ttf-dejavu ttf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono \
-alsa-utils gstreamer pulseaudio pulseaudio-alsa \
-ffmpeg mpc mpd mpv ncmpcpp streamlink youtube-dl youtube-viewer \
-bash-completion gtk2-perl termite xterm wmctrl zsh zsh-syntax-highlighting neovim \
-reflector htop scrot imagemagick picom \
-openssh pcmanfm samba hddtemp xclip gxkb \
-curl wget git rsync python-pip unzip file-roller unrar p7zip \
-gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
-gsimplecal redshift numlockx \
-galculator firefox firefox-i18n-ru \
-pavucontrol qbittorrent viewnior"
-
-pacman -S --noconfirm --needed $pack
-
 # graphics driver
 amd=$(lspci | grep -e VGA -e 3D | grep 'AMD' 2> /dev/null || echo '')
 nvidia=$(lspci | grep -e VGA -e 3D | grep 'NVIDIA' 2> /dev/null || echo '')
@@ -70,7 +51,7 @@ while
 
     0 - пропустить " x_de
     echo ''
-    [[ "$x_de" =~ [^120] ]]
+    [[ "$x_de" =~ [^1230] ]]
 do
     :
 done
@@ -79,6 +60,26 @@ if [[ $x_de == 0 ]]; then
 elif [[ $x_de == 1 ]]; then
 pacman -S awesome lightdm lightdm-gtk-greeter --noconfirm
 systemctl enable lightdm
+
+pack="xorg-apps xorg-server xorg-xinit \
+xf86-input-synaptics nano man-db dhcpcd \
+dialog wpa_supplicant netctl iw net-tools linux-headers dkms \
+gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
+arc-gtk-theme papirus-icon-theme \
+ttf-dejavu ttf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono \
+alsa-utils gstreamer pulseaudio pulseaudio-alsa \
+ffmpeg mpc mpd mpv ncmpcpp streamlink youtube-dl youtube-viewer \
+bash-completion gtk2-perl termite xterm wmctrl zsh zsh-syntax-highlighting neovim \
+reflector htop scrot imagemagick picom \
+openssh pcmanfm samba hddtemp xclip gxkb \
+curl wget git rsync python-pip unzip file-roller unrar p7zip \
+gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
+gsimplecal redshift numlockx \
+galculator firefox firefox-i18n-ru \
+pavucontrol qbittorrent viewnior"
+
+pacman -S --noconfirm --needed $pack
+
 cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
 [greeter]
 background=/usr/share/pixmaps/010.jpg
@@ -92,6 +93,72 @@ xft-rgba=rgb
 indicators=~clock;~session;~power;
 position=5% 40%
 EOF
+
+cat > /etc/X11/xorg.conf.d/70-synaptics.conf << EOF
+Section "InputClass"
+    Identifier "touchpad"
+    Driver "synaptics"
+    MatchIsTouchpad "on"
+        Option "TapButton1" "1"
+        Option "TapButton2" "3"
+        Option "TapButton3" "2"
+        Option "VertEdgeScroll" "1"
+        Option "VertTwoFingerScroll" "1"
+        Option "HorizEdgeScroll" "0"
+        Option "HorizTwoFingerScroll" "0"        
+EndSection
+
+Section "InputClass"
+        Identifier "touchpad ignore duplicates"
+        MatchIsTouchpad "on"
+        MatchOS "Linux"
+        MatchDevicePath "/dev/input/mouse*"
+        Option "Ignore" "on"
+EndSection
+
+Section "InputClass"
+        Identifier "Default clickpad buttons"
+        MatchDriver "synaptics"
+        Option "SoftButtonAreas" "50% 0 82% 0 0 0 0 0"
+        Option "SecondarySoftButtonAreas" "58% 0 0 15% 42% 58% 0 15%"
+EndSection
+
+Section "InputClass"
+        Identifier "Disable clickpad buttons on Apple touchpads"
+        MatchProduct "Apple|bcm5974"
+        MatchDriver "synaptics"
+        Option "SoftButtonAreas" "0 0 0 0 0 0 0 0"
+EndSection
+EOF
+
+cat > /usr/share/X11/xorg.conf.d/10-amdgpu.conf << EOF
+Section "OutputClass"
+    Identifier "AMDgpu"
+    MatchDriver "amdgpu"
+    Driver "amdgpu"
+    Option "DRI" "3"
+    Option "TearFree" "true"
+    Option "VariableRefresh" "true"
+    Option "ShadowPrimary" "true"
+    Option "AccelMethod" "string"
+EndSection
+EOF
+
+cat > /etc/X11/xorg.conf.d/00-keyboard.conf << EOF
+Section "InputClass"
+        Identifier "system-keyboard"
+        MatchIsKeyboard "on"
+        Option "XkbLayout" "us,ru"
+        Option "XkbModel" "pc105"
+        Option "XkbVariant" ","
+        Option "XkbOptions" "grp:alt_shift_toggle,terminate:ctrl_alt_bksp"
+EndSection
+EOF
+echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
+echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
+echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
+sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
+sed -i 's/MODULES=()/MODULES=(amdgpu)/g' /etc/mkinitcpio.conf
 sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
 clear
 echo "Awesome(WM) успешно установлено"
@@ -115,9 +182,9 @@ sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g'
 clear
 echo "Xfce успешно установлено"
 elif [[ $x_de == 3 ]]; then
-pacman -S plasma-meta kdebase kwalletmanager sddm sddm-kcm --noconfirm
+pacman -S plasma-meta kdebase sddm sddm-kcm networkmanager networkmanager-openconnect networkmanager-openvpn networkmanager-pptp networkmanager-vpnc network-manager-applet --noconfirm
 pacman -R konqueror --noconfirm
-systemctl enable sddm.service -f
+systemctl enable sddm NetworkManager
 clear
 echo "Plasma KDE успешно установлена"
 fi
@@ -190,67 +257,6 @@ When = PostTransaction
 Exec = /usr/bin/bootctl update
 EOF
 
-cat > /etc/X11/xorg.conf.d/70-synaptics.conf << EOF
-Section "InputClass"
-    Identifier "touchpad"
-    Driver "synaptics"
-    MatchIsTouchpad "on"
-        Option "TapButton1" "1"
-        Option "TapButton2" "3"
-        Option "TapButton3" "2"
-        Option "VertEdgeScroll" "1"
-        Option "VertTwoFingerScroll" "1"
-        Option "HorizEdgeScroll" "0"
-        Option "HorizTwoFingerScroll" "0"        
-EndSection
-
-Section "InputClass"
-        Identifier "touchpad ignore duplicates"
-        MatchIsTouchpad "on"
-        MatchOS "Linux"
-        MatchDevicePath "/dev/input/mouse*"
-        Option "Ignore" "on"
-EndSection
-
-Section "InputClass"
-        Identifier "Default clickpad buttons"
-        MatchDriver "synaptics"
-        Option "SoftButtonAreas" "50% 0 82% 0 0 0 0 0"
-        Option "SecondarySoftButtonAreas" "58% 0 0 15% 42% 58% 0 15%"
-EndSection
-
-Section "InputClass"
-        Identifier "Disable clickpad buttons on Apple touchpads"
-        MatchProduct "Apple|bcm5974"
-        MatchDriver "synaptics"
-        Option "SoftButtonAreas" "0 0 0 0 0 0 0 0"
-EndSection
-EOF
-
-cat > /usr/share/X11/xorg.conf.d/10-amdgpu.conf << EOF
-Section "OutputClass"
-    Identifier "AMDgpu"
-    MatchDriver "amdgpu"
-    Driver "amdgpu"
-    Option "DRI" "3"
-    Option "TearFree" "true"
-    Option "VariableRefresh" "true"
-    Option "ShadowPrimary" "true"
-    Option "AccelMethod" "string"
-EndSection
-EOF
-
-cat > /etc/X11/xorg.conf.d/00-keyboard.conf << EOF
-Section "InputClass"
-        Identifier "system-keyboard"
-        MatchIsKeyboard "on"
-        Option "XkbLayout" "us,ru"
-        Option "XkbModel" "pc105"
-        Option "XkbVariant" ","
-        Option "XkbOptions" "grp:alt_shift_toggle,terminate:ctrl_alt_bksp"
-EndSection
-EOF
-
 echo " Настроим localtime "
 while 
     read -n1 -p  "
@@ -290,11 +296,6 @@ echo "LANG=ru_RU.UTF-8" > /etc/locale.conf
 echo "KEYMAP=ru" >> /etc/vconsole.conf
 echo "FONT=cyr-sun16" >> /etc/vconsole.conf
 
-echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
-echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
-echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
-sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
-sed -i 's/MODULES=()/MODULES=(amdgpu)/g' /etc/mkinitcpio.conf
 sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
 
 mkinitcpio -p linux
