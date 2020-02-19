@@ -79,11 +79,39 @@ if [[ $x_de == 0 ]]; then
 elif [[ $x_de == 1 ]]; then
 pacman -S awesome lightdm lightdm-gtk-greeter --noconfirm
 systemctl enable lightdm
+cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
+[greeter]
+background=/usr/share/pixmaps/010.jpg
+theme-name=Fantome
+icon-theme-name=Papirus
+font-name=Roboto 9
+xft-antialias=true
+xft-dpi=96
+xft-hintstyle=true
+xft-rgba=rgb
+indicators=~clock;~session;~power;
+position=5% 40%
+EOF
+sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
 clear
 echo "Awesome(WM) успешно установлено"
 elif [[ $x_de == 2 ]]; then
 pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm
 systemctl enable lightdm
+cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
+[greeter]
+background=/usr/share/pixmaps/010.jpg
+theme-name=Fantome
+icon-theme-name=Papirus
+font-name=Roboto 9
+xft-antialias=true
+xft-dpi=96
+xft-hintstyle=true
+xft-rgba=rgb
+indicators=~clock;~session;~power;
+position=5% 40%
+EOF
+sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
 clear
 echo "Xfce успешно установлено"
 elif [[ $x_de == 3 ]]; then
@@ -161,20 +189,6 @@ Description = Updating systemd-boot...
 When = PostTransaction
 Exec = /usr/bin/bootctl update
 EOF
-
-# cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
-# [greeter]
-# background=/usr/share/pixmaps/010.jpg
-# theme-name=Fantome
-# icon-theme-name=Papirus
-# font-name=Roboto 9
-# xft-antialias=true
-# xft-dpi=96
-# xft-hintstyle=true
-# xft-rgba=rgb
-# indicators=~clock;~session;~power;
-# position=5% 40%
-# EOF
 
 cat > /etc/X11/xorg.conf.d/70-synaptics.conf << EOF
 Section "InputClass"
@@ -282,7 +296,6 @@ echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
 sed -i 's/MODULES=()/MODULES=(amdgpu)/g' /etc/mkinitcpio.conf
 sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
-# sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
 
 mkinitcpio -p linux
 
