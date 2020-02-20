@@ -16,6 +16,25 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Syy
 
+pack="xorg-apps xorg-server xorg-xinit \
+xf86-input-synaptics nano man-db dhcpcd \
+dialog wpa_supplicant netctl iw net-tools linux-headers dkms \
+gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
+arc-gtk-theme papirus-icon-theme \
+ttf-dejavu ttf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono \
+alsa-utils gstreamer pulseaudio pulseaudio-alsa \
+ffmpeg mpc mpd mpv ncmpcpp streamlink youtube-dl youtube-viewer \
+bash-completion gtk2-perl termite xterm wmctrl zsh zsh-syntax-highlighting neovim \
+reflector htop scrot imagemagick picom \
+openssh pcmanfm samba hddtemp xclip gxkb \
+curl wget git rsync python-pip unzip file-roller unrar p7zip \
+gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
+gsimplecal redshift numlockx \
+galculator firefox firefox-i18n-ru \
+pavucontrol qbittorrent viewnior"
+
+pacman -S --noconfirm --needed $pack
+
 # graphics driver
 amd=$(lspci | grep -e VGA -e 3D | grep 'AMD' 2> /dev/null || echo '')
 nvidia=$(lspci | grep -e VGA -e 3D | grep 'NVIDIA' 2> /dev/null || echo '')
@@ -45,13 +64,11 @@ while
     read -n1 -p  "
     1 - Awesome(WM)+lightdm
     
-    2 - Xfce+lightdm
-
-    3 - KDE(Plasma)+sddm
+    2 - Xfce+lightdm 
 
     0 - пропустить " x_de
     echo ''
-    [[ "$x_de" =~ [^1230] ]]
+    [[ "$x_de" =~ [^120] ]]
 do
     :
 done
@@ -60,29 +77,86 @@ if [[ $x_de == 0 ]]; then
 elif [[ $x_de == 1 ]]; then
 pacman -S awesome lightdm lightdm-gtk-greeter --noconfirm
 systemctl enable lightdm
+clear
+echo "Awesome(WM) успешно установлено"
+elif [[ $x_de == 2 ]]; then
+pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm
+systemctl enable lightdm
+clear
+echo "Xfce успешно установлено"
+fi
 
-pack="xorg-apps xorg-server xorg-xinit \
-xf86-input-synaptics nano man-db dhcpcd \
-dialog wpa_supplicant netctl iw net-tools linux-headers dkms \
-gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
-arc-gtk-theme papirus-icon-theme \
-ttf-dejavu ttf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono \
-alsa-utils gstreamer pulseaudio pulseaudio-alsa \
-ffmpeg mpc mpd mpv ncmpcpp streamlink youtube-dl youtube-viewer \
-bash-completion gtk2-perl termite xterm wmctrl zsh zsh-syntax-highlighting neovim \
-reflector htop scrot imagemagick picom \
-openssh pcmanfm samba hddtemp xclip gxkb \
-curl wget git rsync python-pip unzip file-roller unrar p7zip \
-gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
-gsimplecal redshift numlockx \
-galculator firefox firefox-i18n-ru \
-pavucontrol qbittorrent viewnior"
+# Root password
+while true; do
+    clear
+    echo -e "\nКаким должно быть ваше имя компьютера?"
 
-pacman -S --noconfirm --needed $pack
+    printf "\n\nHostname: "
+    read -r HOST
+
+    printf "Вы выбрали %s для своего компьютера. Хотите продолжить? [y/N]: " "$HOST"
+    read -r answer
+
+    case $answer in
+        y*|Y*) break
+    esac
+done
+
+echo " Укажите пароль для "ROOT" "
+passwd
+
+echo "Прописываем имя компьютера"
+echo $HOST > /etc/hostname
+
+cat > /etc/hosts << EOF
+127.0.0.1       localhost
+::1             localhost
+127.0.0.1       $HOST.localdomain $HOST
+EOF
+
+# user add & password
+while true; do
+    clear
+    echo -e "\nКаким должно быть ваше имя пользователя?"
+
+    printf "\n\nUsername: "
+    read -r USER
+
+    printf "Вы выбрали %s для своего имени. Хотите продолжить? [y/N]: " "$USER"
+    read -r answer
+
+    case $answer in
+        y*|Y*) break
+    esac
+done
+
+# useradd -m -g users -G "adm,audio,log,network,rfkill,scanner,storage,optical,power,wheel" -s /bin/zsh "$USER"
+
+useradd -m -g users -G audio,games,lp,optical,power,scanner,storage,video,wheel -s /bin/zsh $USER
+
+echo 'Добавляем пароль для пользователя '$USER' '
+passwd "$USER"
+echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+
+usermod -c 'Сергей Простов' $USER
+
+mkdir /etc/pacman.d/hooks
+
+cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Updating systemd-boot...
+When = PostTransaction
+Exec = /usr/bin/bootctl update
+EOF
 
 cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
 [greeter]
-background=/usr/share/pixmaps/010.jpg
+background=/usr/share/pixmaps/013.jpg
 theme-name=Fantome
 icon-theme-name=Papirus
 font-name=Roboto 9
@@ -154,108 +228,6 @@ Section "InputClass"
         Option "XkbOptions" "grp:alt_shift_toggle,terminate:ctrl_alt_bksp"
 EndSection
 EOF
-echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
-echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
-echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
-sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
-sed -i 's/MODULES=()/MODULES=(amdgpu)/g' /etc/mkinitcpio.conf
-sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
-clear
-echo "Awesome(WM) успешно установлено"
-elif [[ $x_de == 2 ]]; then
-pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm
-systemctl enable lightdm
-cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
-[greeter]
-background=/usr/share/pixmaps/010.jpg
-theme-name=Fantome
-icon-theme-name=Papirus
-font-name=Roboto 9
-xft-antialias=true
-xft-dpi=96
-xft-hintstyle=true
-xft-rgba=rgb
-indicators=~clock;~session;~power;
-position=5% 40%
-EOF
-sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
-clear
-echo "Xfce успешно установлено"
-elif [[ $x_de == 3 ]]; then
-pacman -S plasma-meta kdebase sddm sddm-kcm networkmanager networkmanager-openconnect networkmanager-openvpn networkmanager-pptp networkmanager-vpnc network-manager-applet --noconfirm
-pacman -R konqueror --noconfirm
-systemctl enable sddm NetworkManager
-clear
-echo "Plasma KDE успешно установлена"
-fi
-
-# Root password
-while true; do
-    clear
-    echo -e "\nКаким должно быть ваше имя компьютера?"
-
-    printf "\n\nHostname: "
-    read -r HOST
-
-    printf "Вы выбрали %s для своего компьютера. Хотите продолжить? [y/N]: " "$HOST"
-    read -r answer
-
-    case $answer in
-        y*|Y*) break
-    esac
-done
-
-echo " Укажите пароль для "ROOT" "
-passwd
-
-echo "Прописываем имя компьютера"
-echo $HOST > /etc/hostname
-
-cat > /etc/hosts << EOF
-127.0.0.1       localhost
-::1             localhost
-127.0.0.1       $HOST.localdomain $HOST
-EOF
-
-# user add & password
-while true; do
-    clear
-    echo -e "\nКаким должно быть ваше имя пользователя?"
-
-    printf "\n\nUsername: "
-    read -r USER
-
-    printf "Вы выбрали %s для своего имени. Хотите продолжить? [y/N]: " "$USER"
-    read -r answer
-
-    case $answer in
-        y*|Y*) break
-    esac
-done
-
-# useradd -m -g users -G "adm,audio,log,network,rfkill,scanner,storage,optical,power,wheel" -s /bin/zsh "$USER"
-
-useradd -m -g users -G audio,games,lp,optical,power,scanner,storage,video,wheel -s /bin/bash $USER
-
-echo 'Добавляем пароль для пользователя '$USER' '
-passwd "$USER"
-echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
-
-usermod -c 'Сергей Простов' $USER
-
-# mkdir /etc/pacman.d/hooks
-
-# cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
-# [Trigger]
-# Type = Package
-# Operation = Upgrade
-# Target = systemd
-
-# [Action]
-# Description = Updating systemd-boot...
-# When = PostTransaction
-# Exec = /usr/bin/bootctl update
-# EOF
 
 echo " Настроим localtime "
 while 
@@ -296,76 +268,82 @@ echo "LANG=ru_RU.UTF-8" > /etc/locale.conf
 echo "KEYMAP=ru" >> /etc/vconsole.conf
 echo "FONT=cyr-sun16" >> /etc/vconsole.conf
 
+echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
+echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
+echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
+sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
+sed -i 's/MODULES=()/MODULES=(amdgpu)/g' /etc/mkinitcpio.conf
 sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
+sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
 
 mkinitcpio -p linux
 
-pacman -S --noconfirm --needed grub
-# pacman -S --noconfirm --needed efibootmgr
+# pacman -S --noconfirm --needed grub
+pacman -S --noconfirm --needed efibootmgr
 
-grub-install /dev/$DISK
+# grub-install /dev/$DISK
 # grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
-grub-mkconfig -o /boot/grub/grub.cfg
+# grub-mkconfig -o /boot/grub/grub.cfg
 
 # Install amd-ucode for AMD CPU
-# is_amd_cpu=$(lscpu | grep 'AMD' &> /dev/null && echo 'yes' || echo '')
-# if [[ -n "$is_amd_cpu" ]]; then
-#   pacman -S --noconfirm amd-ucode
-# fi
+is_amd_cpu=$(lscpu | grep 'AMD' &> /dev/null && echo 'yes' || echo '')
+if [[ -n "$is_amd_cpu" ]]; then
+  pacman -S --noconfirm amd-ucode
+fi
 
 # Bootloader
 # Use system-boot for EFI mode, and grub for others
-# if [[ -d "/sys/firmware/efi/efivars" ]]; then
-#   bootctl install
+if [[ -d "/sys/firmware/efi/efivars" ]]; then
+  bootctl install
 
-#   cat <<EOF > /boot/loader/entries/arch.conf
-#     title    Arch Linux
-#     linux    /vmlinuz-linux
-#     initrd   /amd-ucode.img
-#     initrd   /initramfs-linux.img
-#     options  root=/dev/sda2 rw
-#     options  quiet mitigations=off acpi_rev_override=1
-# EOF
+  cat <<EOF > /boot/loader/entries/arch.conf
+    title    Arch Linux
+    linux    /vmlinuz-linux
+    initrd   /amd-ucode.img
+    initrd   /initramfs-linux.img
+    options  root=/dev/sda2 rw
+    options  quiet mitigations=off acpi_rev_override=1
+EOF
 
-#   cat <<EOF > /boot/loader/loader.conf
-#     default arch
-#     timeout 0
-#     editor 1
-# EOF
+  cat <<EOF > /boot/loader/loader.conf
+    default arch
+    timeout 0
+    editor 1
+EOF
 
-#   if [[ -z "$is_amd_cpu" ]]; then
-#     sed -i '/amd-ucode/d' /boot/loader/entries/arch.conf
-#   fi
+  if [[ -z "$is_amd_cpu" ]]; then
+    sed -i '/amd-ucode/d' /boot/loader/entries/arch.conf
+  fi
 
-#   # remove leading spaces
-#   sed -i 's#^ \+##g' /boot/loader/entries/arch.conf
-#   sed -i 's#^ \+##g' /boot/loader/loader.conf
+  # remove leading spaces
+  sed -i 's#^ \+##g' /boot/loader/entries/arch.conf
+  sed -i 's#^ \+##g' /boot/loader/loader.conf
 
-#   # modify root partion in loader conf
-#   root_partition=$(mount  | grep 'on / ' | cut -d' ' -f1)
-#   root_partition=$(df / | tail -1 | cut -d' ' -f1)
-#   sed -i "s#/dev/sda2#$root_partition#" /boot/loader/entries/arch.conf
-# else
-#   disk=$(df / | tail -1 | cut -d' ' -f1 | sed 's#[0-9]\+##g')
-#   pacman --noconfirm -S grub os-prober
-#   grub-install --target=x86_64-efi "$disk"
-#   grub-mkconfig -o /boot/grub/grub.cfg
-# fi
+  # modify root partion in loader conf
+  root_partition=$(mount  | grep 'on / ' | cut -d' ' -f1)
+  root_partition=$(df / | tail -1 | cut -d' ' -f1)
+  sed -i "s#/dev/sda2#$root_partition#" /boot/loader/entries/arch.conf
+else
+  disk=$(df / | tail -1 | cut -d' ' -f1 | sed 's#[0-9]\+##g')
+  pacman --noconfirm -S grub os-prober
+  grub-install --target=x86_64-efi "$disk"
+  grub-mkconfig -o /boot/grub/grub.cfg
+fi
 
-# echo "########################################################################################"
-# echo "###################    <<< установка драйвера на WiFi(AUR) >>>    ######################"
-# echo "########################################################################################"
-# cd /home/$USER
-# git clone https://aur.archlinux.org/rtl8821ce-dkms-git.git
-# chown -R $USER:users /home/$USER/rtl8821ce-dkms-git   
-# chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD 
-# cd /home/$USER/rtl8821ce-dkms-git
-# sudo -u $USER  makepkg -si --noconfirm
-# rm -Rf /home/$USER/rtl8821ce-dkms-git
+echo "########################################################################################"
+echo "###################    <<< установка драйвера на WiFi(AUR) >>>    ######################"
+echo "########################################################################################"
+cd /home/$USER
+git clone https://aur.archlinux.org/rtl8821ce-dkms-git.git
+chown -R $USER:users /home/$USER/rtl8821ce-dkms-git   
+chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD 
+cd /home/$USER/rtl8821ce-dkms-git
+sudo -u $USER  makepkg -si --noconfirm
+rm -Rf /home/$USER/rtl8821ce-dkms-git
 
 
 # Права
-# chmod a+s /usr/sbin/hddtemp
+chmod a+s /usr/sbin/hddtemp
 
 systemctl enable dhcpcd
 
