@@ -62,9 +62,11 @@ while
     
     2 - Xfce+lightdm 
 
+    3 - KDE(Plasma)
+
     0 - пропустить " x_de
     echo ''
-    [[ "$x_de" =~ [^120] ]]
+    [[ "$x_de" =~ [^1230] ]]
 do
     :
 done
@@ -164,6 +166,10 @@ Section "InputClass"
 EndSection
 EOF
 
+echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
+echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
+echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
+sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
 clear
 echo "Awesome(WM) успешно установлено"
 
@@ -213,8 +219,16 @@ Section "OutputClass"
 EndSection
 EOF
 
+echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
+echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
+echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
+sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
 clear
 echo "Xfce успешно установлено"
+elif [[ $x_de == 3 ]]; then
+pacman -S plasma-meta kdebase latte-dock sddm sddm-kcm --noconfirm
+systemctl enable sddm.service -f
+clear
 fi
 
 # Root password
@@ -261,7 +275,7 @@ while true; do
     esac
 done
 
-useradd -m -g users -G audio,games,lp,optical,power,scanner,storage,video,wheel -s /bin/zsh $USER
+useradd -m -g users -G wheel -s /bin/zsh $USER
 
 echo 'Добавляем пароль для пользователя '$USER' '
 passwd "$USER"
@@ -308,10 +322,6 @@ echo "LANG=ru_RU.UTF-8" > /etc/locale.conf
 echo "KEYMAP=ru" >> /etc/vconsole.conf
 echo "FONT=cyr-sun16" >> /etc/vconsole.conf
 
-echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
-echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
-echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
-sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
 sed -i 's/MODULES=()/MODULES=(amdgpu)/g' /etc/mkinitcpio.conf
 sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
 
