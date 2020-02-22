@@ -17,7 +17,7 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Syy
 
 pack="xorg-apps xorg-server xorg-xinit xf86-input-synaptics \
-linux-headers dkms bc nano man-db dhcpcd \
+linux-headers dkms nano man-db dhcpcd \
 dialog wpa_supplicant netctl iw net-tools wmctrl \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct picom \
 gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
