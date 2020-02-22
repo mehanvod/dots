@@ -30,8 +30,8 @@ mount /dev/$Root_D /mnt
 ## boot ##
 # mkfs.ext2 /dev/$Boot_D -L boot
 mkfs.vfat -F32 -n "Boot" /dev/$Boot_D
-mkdir -p /mnt/boot
-mount /dev/$Boot_D /mnt/boot
+mkdir -p /mnt/boot/efi
+mount /dev/$Boot_D /mnt/boot/efi
 
 ## home ##
 # mkfs.ext4 -L "Home" /dev/$Home_D
@@ -90,17 +90,23 @@ Server = https://mirrors.xtom.nl/archlinux/\$repo/os/\$arch
 Server = http://mirror.truenetwork.ru/archlinux/\$repo/os/\$arch
 EOF
 elif [[ $mirrors == 2 ]]; then
-cat > /etc/pacman.d/mirrorlist << EOF
+cat > /home/bear/Downloads/mir << EOF
+## Russia
 Server = https://mirror.yandex.ru/archlinux/\$repo/os/\$arch
-Server = http://mirror.aur.rocks/\$repo/os/\$arch
-Server = https://mirror.aur.rocks/\$repo/os/\$arch
 Server = http://mirror.rol.ru/archlinux/\$repo/os/\$arch
 Server = https://mirror.rol.ru/archlinux/\$repo/os/\$arch
 Server = http://mirror.truenetwork.ru/archlinux/\$repo/os/\$arch
 Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch
 Server = http://archlinux.zepto.cloud/\$repo/os/\$arch
+## Belarus
 Server = http://ftp.byfly.by/pub/archlinux/\$repo/os/\$arch
 Server = http://mirror.datacenter.by/pub/archlinux/\$repo/os/\$arch
+## Denmark
+Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch
+## Finland
+Server = http://arch.mirror.far.fi/\$repo/os/\$arch
+## Czechia
+#Server = http://mirror.dkm.cz/archlinux/\$repo/os/\$arch
 EOF
 elif [[ $mirrors == 0 ]]; then
    echo 'смена зеркал пропущена.'   

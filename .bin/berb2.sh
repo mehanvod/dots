@@ -16,22 +16,18 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Syy
 
-pack="xorg-apps xorg-server xorg-xinit \
-xf86-input-synaptics nano man-db dhcpcd \
-dialog wpa_supplicant netctl iw net-tools linux-headers dkms \
-gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct \
-arc-gtk-theme papirus-icon-theme \
-ttf-dejavu ttf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono \
-alsa-utils gstreamer pulseaudio pulseaudio-alsa \
-ffmpeg mpc mpd mpv ncmpcpp streamlink youtube-dl youtube-viewer \
-bash-completion gtk2-perl termite xterm wmctrl zsh zsh-syntax-highlighting neovim \
-reflector htop scrot imagemagick picom \
-openssh pcmanfm samba hddtemp xclip gxkb \
-curl wget git rsync python-pip unzip file-roller unrar p7zip \
+pack="xorg-apps xorg-server xorg-xinit xf86-input-synaptics \
+linux-headers dkms bc nano man-db dhcpcd \
+dialog wpa_supplicant netctl iw net-tools wmctrl \
+gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct picom \
 gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
-gsimplecal redshift numlockx \
-galculator firefox firefox-i18n-ru \
-pavucontrol qbittorrent viewnior"
+alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
+bash-completion gtk2-perl termite xterm zsh zsh-syntax-highlighting neovim \
+openssh pcmanfm gxkb unclutter papirus-icon-theme \
+curl wget git rsync python-pip unzip file-roller unrar p7zip \
+gsimplecal redshift numlockx firefox firefox-i18n-ru \
+ttf-dejavu ttf-liberation ttf-font-awesome awesome-terminal-fonts \
+otf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono"
 
 pacman -S --noconfirm --needed $pack
 
@@ -77,71 +73,8 @@ if [[ $x_de == 0 ]]; then
 elif [[ $x_de == 1 ]]; then
 pacman -S awesome lightdm lightdm-gtk-greeter --noconfirm
 systemctl enable lightdm
-clear
-echo "Awesome(WM) успешно установлено"
-elif [[ $x_de == 2 ]]; then
-pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm
-systemctl enable lightdm
-clear
-echo "Xfce успешно установлено"
-fi
-
-# Root password
-while true; do
-    clear
-    echo -e "\nКаким должно быть ваше имя компьютера?"
-
-    printf "\n\nHostname: "
-    read -r HOST
-
-    printf "Вы выбрали %s для своего компьютера. Хотите продолжить? [y/N]: " "$HOST"
-    read -r answer
-
-    case $answer in
-        y*|Y*) break
-    esac
-done
-
-echo " Укажите пароль для "ROOT" "
-passwd
-
-echo "Прописываем имя компьютера"
-echo $HOST > /etc/hostname
-
-cat > /etc/hosts << EOF
-127.0.0.1       localhost
-::1             localhost
-127.0.0.1       $HOST.localdomain $HOST
-EOF
-
-# user add & password
-while true; do
-    clear
-    echo -e "\nКаким должно быть ваше имя пользователя?"
-
-    printf "\n\nUsername: "
-    read -r USER
-
-    printf "Вы выбрали %s для своего имени. Хотите продолжить? [y/N]: " "$USER"
-    read -r answer
-
-    case $answer in
-        y*|Y*) break
-    esac
-done
-
-# useradd -m -g users -G "adm,audio,log,network,rfkill,scanner,storage,optical,power,wheel" -s /bin/zsh "$USER"
-
-useradd -m -g users -G audio,games,lp,optical,power,scanner,storage,video,wheel -s /bin/zsh $USER
-
-echo 'Добавляем пароль для пользователя '$USER' '
-passwd "$USER"
-echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
-
-usermod -c 'Сергей Простов' $USER
 
 mkdir /etc/pacman.d/hooks
-
 cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
 [Trigger]
 Type = Package
@@ -167,6 +100,8 @@ xft-rgba=rgb
 indicators=~clock;~session;~power;
 position=5% 40%
 EOF
+
+sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
 
 cat > /etc/X11/xorg.conf.d/70-synaptics.conf << EOF
 Section "InputClass"
@@ -229,6 +164,111 @@ Section "InputClass"
 EndSection
 EOF
 
+clear
+echo "Awesome(WM) успешно установлено"
+
+elif [[ $x_de == 2 ]]; then
+pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm
+systemctl enable lightdm
+
+mkdir /etc/pacman.d/hooks
+cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Updating systemd-boot...
+When = PostTransaction
+Exec = /usr/bin/bootctl update
+EOF
+
+cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
+[greeter]
+background=/usr/share/pixmaps/013.jpg
+theme-name=Fantome
+icon-theme-name=Papirus
+font-name=Roboto 9
+xft-antialias=true
+xft-dpi=96
+xft-hintstyle=true
+xft-rgba=rgb
+indicators=~clock;~session;~power;
+position=5% 40%
+EOF
+
+sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
+
+cat > /usr/share/X11/xorg.conf.d/10-amdgpu.conf << EOF
+Section "OutputClass"
+    Identifier "AMDgpu"
+    MatchDriver "amdgpu"
+    Driver "amdgpu"
+    Option "DRI" "3"
+    Option "TearFree" "true"
+    Option "VariableRefresh" "true"
+    Option "ShadowPrimary" "true"
+    Option "AccelMethod" "string"
+EndSection
+EOF
+
+clear
+echo "Xfce успешно установлено"
+fi
+
+# Root password
+while true; do
+    clear
+    echo -e "\nКаким должно быть ваше имя компьютера?"
+
+    printf "\n\nHostname: "
+    read -r HOST
+
+    printf "Вы выбрали %s для своего компьютера. Хотите продолжить? [y/N]: " "$HOST"
+    read -r answer
+
+    case $answer in
+        y*|Y*) break
+    esac
+done
+
+echo " Укажите пароль для "ROOT" "
+passwd
+
+echo "Прописываем имя компьютера"
+echo $HOST > /etc/hostname
+
+cat > /etc/hosts << EOF
+127.0.0.1       localhost
+::1             localhost
+127.0.0.1       $HOST.localdomain $HOST
+EOF
+
+# user add & password
+while true; do
+    clear
+    echo -e "\nКаким должно быть ваше имя пользователя?"
+
+    printf "\n\nUsername: "
+    read -r USER
+
+    printf "Вы выбрали %s для своего имени. Хотите продолжить? [y/N]: " "$USER"
+    read -r answer
+
+    case $answer in
+        y*|Y*) break
+    esac
+done
+
+useradd -m -g users -G audio,games,lp,optical,power,scanner,storage,video,wheel -s /bin/zsh $USER
+
+echo 'Добавляем пароль для пользователя '$USER' '
+passwd "$USER"
+echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+
+usermod -c 'Сергей Простов' $USER
+
 echo " Настроим localtime "
 while 
     read -n1 -p  "
@@ -274,16 +314,15 @@ echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
 sed -i 's/MODULES=()/MODULES=(amdgpu)/g' /etc/mkinitcpio.conf
 sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
-sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
 
 mkinitcpio -p linux
 
 # pacman -S --noconfirm --needed grub
-pacman -S --noconfirm --needed efibootmgr
-
 # grub-install /dev/$DISK
-# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
 # grub-mkconfig -o /boot/grub/grub.cfg
+
+pacman -S --noconfirm --needed efibootmgr
+# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
 
 # Install amd-ucode for AMD CPU
 is_amd_cpu=$(lscpu | grep 'AMD' &> /dev/null && echo 'yes' || echo '')
@@ -302,7 +341,7 @@ if [[ -d "/sys/firmware/efi/efivars" ]]; then
     initrd   /amd-ucode.img
     initrd   /initramfs-linux.img
     options  root=/dev/sda2 rw
-    options  quiet mitigations=off acpi_rev_override=1
+    options  quiet splash acpi_rev_override=1
 EOF
 
   cat <<EOF > /boot/loader/loader.conf
@@ -326,7 +365,7 @@ EOF
 else
   disk=$(df / | tail -1 | cut -d' ' -f1 | sed 's#[0-9]\+##g')
   pacman --noconfirm -S grub os-prober
-  grub-install --target=x86_64-efi "$disk"
+  grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force "$DISK"
   grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
@@ -340,10 +379,6 @@ chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD
 cd /home/$USER/rtl8821ce-dkms-git
 sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/rtl8821ce-dkms-git
-
-
-# Права
-chmod a+s /usr/sbin/hddtemp
 
 systemctl enable dhcpcd
 
