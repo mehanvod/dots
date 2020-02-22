@@ -30,8 +30,8 @@ mount /dev/$Root_D /mnt
 ## boot ##
 # mkfs.ext2 /dev/$Boot_D -L boot
 mkfs.vfat -F32 -n "Boot" /dev/$Boot_D
-mkdir -p /mnt/boot/efi
-mount /dev/$Boot_D /mnt/boot/efi
+mkdir -p /mnt/boot
+mount /dev/$Boot_D /mnt/boot
 
 ## home ##
 # mkfs.ext4 -L "Home" /dev/$Home_D
