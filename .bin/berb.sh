@@ -90,7 +90,7 @@ Server = https://mirrors.xtom.nl/archlinux/\$repo/os/\$arch
 Server = http://mirror.truenetwork.ru/archlinux/\$repo/os/\$arch
 EOF
 elif [[ $mirrors == 2 ]]; then
-cat > /home/bear/Downloads/mir << EOF
+cat > /etc/pacman.d/mirrorlist << EOF
 ## Russia
 Server = https://mirror.yandex.ru/archlinux/\$repo/os/\$arch
 Server = http://mirror.rol.ru/archlinux/\$repo/os/\$arch
