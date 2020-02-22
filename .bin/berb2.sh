@@ -14,23 +14,6 @@ sed -i 's/^#VerbosePkgLists/VerbosePkgLists/g' /etc/pacman.conf
 sed -i 's/.*\VerbosePkgLists\.*/&\nILoveCandy/' /etc/pacman.conf
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
-pacman -Syy
-
-pack="xorg-apps xorg-server xorg-xinit xf86-input-synaptics \
-linux-headers dkms nano man-db dhcpcd \
-dialog wpa_supplicant netctl iw net-tools wmctrl \
-gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct picom \
-gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
-alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
-bash-completion gtk2-perl termite xterm zsh zsh-syntax-highlighting neovim \
-openssh pcmanfm gxkb unclutter papirus-icon-theme \
-curl wget git rsync python-pip unzip file-roller unrar p7zip \
-gsimplecal redshift numlockx firefox firefox-i18n-ru \
-ttf-dejavu ttf-liberation ttf-font-awesome awesome-terminal-fonts \
-otf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono"
-
-pacman -S --noconfirm --needed $pack
-
 # graphics driver
 amd=$(lspci | grep -e VGA -e 3D | grep 'AMD' 2> /dev/null || echo '')
 nvidia=$(lspci | grep -e VGA -e 3D | grep 'NVIDIA' 2> /dev/null || echo '')
@@ -72,9 +55,9 @@ do
 done
 if [[ $x_de == 0 ]]; then
   echo 'уcтановка DE пропущена' 
+
 elif [[ $x_de == 1 ]]; then
 pacman -S awesome lightdm lightdm-gtk-greeter --noconfirm
-systemctl enable lightdm
 
 mkdir /etc/pacman.d/hooks
 cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
@@ -170,12 +153,28 @@ echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
 echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
 echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
+
+pack="xorg-apps xorg-server xorg-xinit xf86-input-synaptics \
+linux-headers dkms nano man-db dhcpcd \
+dialog wpa_supplicant netctl iw net-tools wmctrl \
+gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct picom \
+gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
+alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
+bash-completion gtk2-perl termite xterm zsh zsh-syntax-highlighting neovim \
+openssh pcmanfm gxkb unclutter papirus-icon-theme \
+curl wget git rsync python-pip unzip file-roller unrar p7zip \
+gsimplecal redshift numlockx firefox firefox-i18n-ru \
+ttf-dejavu ttf-liberation ttf-font-awesome awesome-terminal-fonts \
+otf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono"
+
+pacman -S --noconfirm --needed $pack
+
+systemctl enable lightdm
 clear
 echo "Awesome(WM) успешно установлено"
 
 elif [[ $x_de == 2 ]]; then
 pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm
-systemctl enable lightdm
 
 mkdir /etc/pacman.d/hooks
 cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
@@ -223,12 +222,43 @@ echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
 echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
 echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=38"/g' /etc/profile.d/freetype2.sh
+
+pack="xorg-apps xorg-server xorg-xinit xf86-input-synaptics \
+linux-headers dkms nano man-db dhcpcd gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
+gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct picom \
+alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
+bash-completion gtk2-perl termite zsh zsh-syntax-highlighting neovim \
+openssh papirus-icon-theme dialog wpa_supplicant iw net-tools wmctrl \
+openssh networkmanager networkmanager-openconnect networkmanager-openvpn \
+networkmanager-pptp networkmanager-vpnc network-manager-applet\
+curl wget git rsync python-pip unzip file-roller unrar p7zip \
+gsimplecal redshift numlockx firefox firefox-i18n-ru \
+ttf-dejavu ttf-liberation ttf-font-awesome awesome-terminal-fonts \
+otf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono"
+pacman -S --noconfirm --needed $pack
+systemctl enable lightdm NetworkManager
 clear
 echo "Xfce успешно установлено"
+
 elif [[ $x_de == 3 ]]; then
 pacman -S plasma-meta kdebase latte-dock sddm sddm-kcm --noconfirm
+pack="xorg-apps xorg-server xorg-xinit xf86-input-synaptics \
+linux-headers dkms nano man-db dhcpcd \
+dialog wpa_supplicant iw net-tools \
+gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
+alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
+bash-completion termite zsh zsh-syntax-highlighting neovim \
+openssh networkmanager networkmanager-openconnect networkmanager-openvpn \
+networkmanager-pptp networkmanager-vpnc network-manager-applet\
+curl wget git rsync python-pip unzip unrar p7zip \
+numlockx firefox firefox-i18n-ru \
+ttf-dejavu ttf-liberation ttf-font-awesome awesome-terminal-fonts \
+otf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono"
+pacman -S --noconfirm --needed $pack
 systemctl enable sddm.service -f
+systemctl enable NetworkManager
 clear
+echo "Plasma успешно установлено"
 fi
 
 # Root password
