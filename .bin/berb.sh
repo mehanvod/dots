@@ -16,8 +16,8 @@ fi
 
 Boot_D="sda1"
 Root_D="sda2"
-Home_D="sda3"
-Swap_D="sda4"
+Swap_D="sda3"
+Home_D="sda4"
 
 loadkeys ru
 setfont cyr-sun16
@@ -33,14 +33,14 @@ mkfs.vfat -F32 -n "Boot" /dev/$Boot_D
 mkdir -p /mnt/boot
 mount /dev/$Boot_D /mnt/boot
 
+## swap ##
+mkswap -L "Swap" /dev/$Swap_D
+swapon /dev/$Swap_D
+
 ## home ##
 # mkfs.ext4 -L "Home" /dev/$Home_D
 mkdir -p /mnt/home
 mount /dev/$Home_D /mnt/home
-
-## swap ##
-mkswap -L "Swap" /dev/$Swap_D
-swapon /dev/$Swap_D
 
 ## Обновление ключей ##
 echo "

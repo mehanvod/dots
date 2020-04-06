@@ -280,9 +280,13 @@ echo "Прописываем имя компьютера"
 echo $HOST > /etc/hostname
 
 cat > /etc/hosts << EOF
-127.0.0.1       localhost
-::1             localhost
-127.0.0.1       $HOST.localdomain $HOST
+#
+# /etc/hosts: static lookup table for host names
+#
+#<ip-address>   <hostname.domain.org>   <hostname>
+127.0.0.1       localhost.localdomain   localhost   $HOST
+::1             localhost.localdomain   localhost   $HOST
+# End of file
 EOF
 
 # user add & password
@@ -400,7 +404,7 @@ EOF
 else
   disk=$(df / | tail -1 | cut -d' ' -f1 | sed 's#[0-9]\+##g')
   pacman --noconfirm -S grub os-prober
-  grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force "$DISK"
+  grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force "$disk"
   grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
