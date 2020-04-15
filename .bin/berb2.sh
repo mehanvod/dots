@@ -420,6 +420,17 @@ sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/nerd-fonts-jetbrains-mono
 
 echo "########################################################################################"
+echo "###################    <<< установка шрифта для терминала  >>>    ######################"
+echo "########################################################################################"
+cd /home/$USER
+git clone https://aur.archlinux.org/nerd-fonts-fantasque-sans-mono.git
+chown -R $USER:users /home/$USER/nerd-fonts-fantasque-sans-mono   
+chown -R $USER:users /home/$USER/nerd-fonts-fantasque-sans-mono/PKGBUILD 
+cd /home/$USER/nerd-fonts-fantasque-sans-mono
+sudo -u $USER  makepkg -si --noconfirm
+rm -Rf /home/$USER/nerd-fonts-fantasque-sans-mono
+
+echo "########################################################################################"
 echo "###################    <<< установка драйвера на WiFi(AUR) >>>    ######################"
 echo "########################################################################################"
 cd /home/$USER
