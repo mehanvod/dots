@@ -412,12 +412,12 @@ echo "##########################################################################
 echo "###################    <<< установка шрифта для терминала  >>>    ######################"
 echo "########################################################################################"
 cd /home/$USER
-git clone https://aur.archlinux.org/nerd-fonts-hack.git
-chown -R $USER:users /home/$USER/nerd-fonts-hack   
-chown -R $USER:users /home/$USER/nerd-fonts-hack/PKGBUILD 
-cd /home/$USER/nerd-fonts-hack
+git clone https://aur.archlinux.org/nerd-fonts-jetbrains-mono.git
+chown -R $USER:users /home/$USER/nerd-fonts-jetbrains-mono   
+chown -R $USER:users /home/$USER/nerd-fonts-jetbrains-mono/PKGBUILD 
+cd /home/$USER/nerd-fonts-jetbrains-mono
 sudo -u $USER  makepkg -si --noconfirm
-rm -Rf /home/$USER/nerd-fonts-hack
+rm -Rf /home/$USER/nerd-fonts-jetbrains-mono
 
 echo "########################################################################################"
 echo "###################    <<< установка драйвера на WiFi(AUR) >>>    ######################"
