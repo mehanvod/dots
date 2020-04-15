@@ -409,6 +409,17 @@ else
 fi
 
 echo "########################################################################################"
+echo "###################    <<< установка шрифта для терминала  >>>    ######################"
+echo "########################################################################################"
+cd /home/$USER
+git clone https://aur.archlinux.org/nerd-fonts-hack.git
+chown -R $USER:users /home/$USER/nerd-fonts-hack   
+chown -R $USER:users /home/$USER/nerd-fonts-hack/PKGBUILD 
+cd /home/$USER/nerd-fonts-hack
+sudo -u $USER  makepkg -si --noconfirm
+rm -Rf /home/$USER/nerd-fonts-hack
+
+echo "########################################################################################"
 echo "###################    <<< установка драйвера на WiFi(AUR) >>>    ######################"
 echo "########################################################################################"
 cd /home/$USER
