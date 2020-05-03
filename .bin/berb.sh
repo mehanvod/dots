@@ -126,7 +126,7 @@ umount /mnt
   elif [[ $boots == 0 ]]; then
    echo " очистка boot раздела пропущена, далее вы сможете его отформатировать! "   
 fi
-
+clear
 ## root ##
 mkfs.ext4 -L "Arch" /dev/$Root_D
 mount /dev/$Root_D /mnt
