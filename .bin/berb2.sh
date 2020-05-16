@@ -66,7 +66,7 @@ dialog wpa_supplicant netctl iw net-tools wmctrl \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct picom \
 gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
-bash-completion gtk2-perl termite xterm zsh zsh-syntax-highlighting neovim \
+bash-completion gtk2-perl termite zsh zsh-syntax-highlighting neovim \
 openssh pcmanfm gxkb unclutter papirus-icon-theme \
 curl wget git rsync python-pip unzip file-roller unrar p7zip \
 gsimplecal redshift numlockx firefox firefox-i18n-ru \
