@@ -430,16 +430,16 @@ cd /home/$USER/nerd-fonts-fantasque-sans-mono
 sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/nerd-fonts-fantasque-sans-mono
 
-echo "########################################################################################"
-echo "###################    <<< установка драйвера на WiFi(AUR) >>>    ######################"
-echo "########################################################################################"
-cd /home/$USER
-git clone https://aur.archlinux.org/rtl8821ce-dkms-git.git
-chown -R $USER:users /home/$USER/rtl8821ce-dkms-git   
-chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD 
-cd /home/$USER/rtl8821ce-dkms-git
-sudo -u $USER  makepkg -si --noconfirm
-rm -Rf /home/$USER/rtl8821ce-dkms-git
+# echo "########################################################################################"
+# echo "###################    <<< установка драйвера на WiFi(AUR) >>>    ######################"
+# echo "########################################################################################"
+# cd /home/$USER
+# git clone https://aur.archlinux.org/rtl8821ce-dkms-git.git
+# chown -R $USER:users /home/$USER/rtl8821ce-dkms-git   
+# chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD 
+# cd /home/$USER/rtl8821ce-dkms-git
+# sudo -u $USER  makepkg -si --noconfirm
+# rm -Rf /home/$USER/rtl8821ce-dkms-git
 
 systemctl enable dhcpcd
 
