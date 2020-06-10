@@ -63,7 +63,7 @@ pack="xorg-apps xorg-server xorg-xinit xf86-input-synaptics \
 awesome lightdm lightdm-gtk-greeter \
 linux-headers dkms nano man-db dhcpcd \
 dialog wpa_supplicant netctl iw net-tools wmctrl \
-gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct picom \
+gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5ct picom \
 gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
 bash-completion gtk2-perl termite zsh zsh-syntax-highlighting neovim \
@@ -176,7 +176,7 @@ elif [[ $x_de == 2 ]]; then
 pack="xorg-apps xorg-server xorg-xinit xf86-input-synaptics \
 xfce4 xfce4-goodies lightdm lightdm-gtk-greeter \
 linux-headers dkms nano man-db dhcpcd gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
-gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5-styleplugins qt5ct picom \
+gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5ct picom \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
 bash-completion gtk2-perl termite zsh zsh-syntax-highlighting neovim \
 openssh papirus-icon-theme dialog wpa_supplicant iw net-tools wmctrl \
