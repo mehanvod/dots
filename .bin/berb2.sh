@@ -340,7 +340,7 @@ clear
 echo  " этап пропущен " 
 fi
 
-hwclock --systohc --utc
+hwclock --systohc --localtime
 
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen
@@ -354,10 +354,6 @@ sed -i 's/MODULES=()/MODULES=(amdgpu)/g' /etc/mkinitcpio.conf
 sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
 
 mkinitcpio -p linux
-
-# pacman -S --noconfirm --needed grub
-# grub-install /dev/$DISK
-# grub-mkconfig -o /boot/grub/grub.cfg
 
 pacman -S --noconfirm --needed efibootmgr
 # grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
@@ -395,11 +391,6 @@ EOF
   # remove leading spaces
   sed -i 's#^ \+##g' /boot/loader/entries/arch.conf
   sed -i 's#^ \+##g' /boot/loader/loader.conf
-
-  # modify root partion in loader conf
-  # root_partition=$(mount  | grep 'on / ' | cut -d' ' -f1)
-  # root_partition=$(df / | tail -1 | cut -d' ' -f1)
-  # sed -i "s#/dev/sda2#$root_partition#" /boot/loader/entries/arch.conf
 
   # modify root partion in loader conf
   root_part=$(mount | grep 'on / ' | cut -d' ' -f1 | df / | tail -1 | cut -d' ' -f1)
