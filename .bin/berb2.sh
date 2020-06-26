@@ -240,16 +240,14 @@ echo "Xfce успешно установлено"
 
 elif [[ $x_de == 3 ]]; then
 pack="xorg-apps xorg-server xorg-xinit xf86-input-synaptics \
-plasma-meta kdebase latte-dock sddm sddm-kcm \
-linux-headers dkms nano man-db dhcpcd \
-dialog wpa_supplicant iw net-tools \
-gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
+plasma-meta plasma konsole kde-applications latte-dock sddm sddm-kcm \
+linux-headers dkms gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
 bash-completion termite zsh zsh-syntax-highlighting neovim \
 openssh networkmanager networkmanager-openconnect networkmanager-openvpn \
 networkmanager-pptp networkmanager-vpnc network-manager-applet \
-curl wget git rsync python-pip unzip unrar p7zip \
-numlockx firefox firefox-i18n-ru \
+curl wget git rsync python-pip unzip unrar p7zip nano man-db dhcpcd \
+dialog wpa_supplicant iw net-tools numlockx firefox firefox-i18n-ru \
 ttf-dejavu ttf-liberation ttf-font-awesome awesome-terminal-fonts \
 otf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono"
 pacman -S --noconfirm --needed $pack
