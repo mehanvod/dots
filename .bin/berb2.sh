@@ -284,8 +284,9 @@ cat > /etc/hosts << EOF
 # /etc/hosts: static lookup table for host names
 #
 #<ip-address>   <hostname.domain.org>   <hostname>
-127.0.0.1       localhost.localdomain   localhost   $HOST
-::1             localhost.localdomain   localhost   $HOST
+127.0.0.1       localhost
+::1             localhost
+127.0.1.1       $HOST.localdomain      $HOST
 # End of file
 EOF
 
