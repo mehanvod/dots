@@ -309,7 +309,7 @@ useradd -m -g users -G wheel -s /bin/zsh $USER
 
 echo 'Добавляем пароль для пользователя '$USER' '
 passwd "$USER"
-echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+sed -i 's/^# %wheel ALL=(ALL) ALL$/%wheel ALL=(ALL) ALL/' /etc/sudoers
 
 usermod -c 'Сергей Простов' $USER
 
