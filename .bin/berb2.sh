@@ -399,6 +399,11 @@ EOF
   sed -i 's#^ \+##g' /boot/loader/loader.conf
 
   # modify root partion in loader conf
+  # root_partition=$(mount  | grep 'on / ' | cut -d' ' -f1)
+  # root_partition=$(df / | tail -1 | cut -d' ' -f1)
+  # sed -i "s#/dev/sda2#$root_partition#" /boot/loader/entries/arch.conf
+
+  # modify root partion in loader conf
   root_part=$(mount | grep 'on / ' | cut -d' ' -f1 | df / | tail -1 | cut -d' ' -f1)
   pu=$(blkid -s PARTUUID -o value $root_part)
   pup=PARTUUID="$pu"
