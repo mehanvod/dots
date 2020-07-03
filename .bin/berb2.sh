@@ -61,7 +61,7 @@ if [[ $x_de == 0 ]]; then
 elif [[ $x_de == 1 ]]; then
 pack="xorg-apps xorg-server xorg-xinit xf86-input-synaptics \
 awesome lightdm lightdm-gtk-greeter \
-linux-headers dkms nano man-db dhcpcd \
+linux-headers dkms bc nano man-db dhcpcd \
 dialog wpa_supplicant netctl iw net-tools wmctrl \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5ct picom \
 gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
@@ -175,7 +175,7 @@ echo "Awesome(WM) успешно установлено"
 elif [[ $x_de == 2 ]]; then
 pack="xorg-apps xorg-server xorg-xinit xf86-input-synaptics \
 xfce4 xfce4-goodies lightdm lightdm-gtk-greeter \
-linux-headers dkms nano man-db dhcpcd gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
+linux-headers dkms bc nano man-db dhcpcd gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5ct picom \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
 bash-completion gtk2-perl termite zsh zsh-syntax-highlighting neovim \
@@ -241,7 +241,7 @@ echo "Xfce успешно установлено"
 elif [[ $x_de == 3 ]]; then
 pack="xorg-apps xorg-server xorg-xinit xf86-input-synaptics \
 plasma-meta plasma konsole kde-applications latte-dock sddm sddm-kcm \
-linux-headers dkms gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
+linux-headers dkms bc gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
 bash-completion termite zsh zsh-syntax-highlighting neovim \
 openssh networkmanager networkmanager-openconnect networkmanager-openvpn \
