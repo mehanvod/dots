@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 # Install script for Arch Linux (UEFI)
 # autor: Sergey Prostov
 # https://raw.githubusercontent.com/mehanvod/dots/master/.bin/berb.sh
