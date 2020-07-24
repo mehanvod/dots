@@ -4,7 +4,6 @@
 # autor: Sergey Prostov
 # https://raw.githubusercontent.com/mehanvod/dots/master/.bin/berb.sh
 # wget git.io/berb.sh 
-# nano berb.sh 
 # sh berb.sh
 
 # Check for root
