@@ -285,6 +285,8 @@ cat > /etc/hosts << EOF
 127.0.0.1       localhost
 ::1             localhost
 127.0.1.1       $HOST.localdomain      $HOST
+192.168.0.104   homepage.loc
+192.168.0.104   mytest2.loc
 # End of file
 EOF
 
