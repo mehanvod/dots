@@ -240,7 +240,7 @@ echo "Xfce успешно установлено"
 
 elif [[ $x_de == 3 ]]; then
 pack="xorg-server xorg-drivers xf86-input-synaptics \
-plasma-meta plasma konsole kde-applications latte-dock sddm sddm-kcm \
+plasma-meta plasma plasma-pa plasma-desktop kde-system-meta kde-utilities-meta kio-extras konsole kde-applications latte-dock sddm sddm-kcm \
 linux-headers dkms bc gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
 bash-completion termite zsh zsh-syntax-highlighting zsh-autosuggestions neovim \
