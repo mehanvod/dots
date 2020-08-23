@@ -16,28 +16,6 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Syy
 
-# graphics driver
-amd=$(lspci | grep -e VGA -e 3D | grep 'AMD' 2> /dev/null || echo '')
-nvidia=$(lspci | grep -e VGA -e 3D | grep 'NVIDIA' 2> /dev/null || echo '')
-intel=$(lspci | grep -e VGA -e 3D | grep 'Intel' 2> /dev/null || echo '')
-if [[ -n "$nvidia" ]]; then
-  pacman -S --noconfirm nvidia
-fi
-
-if [[ -n "$amd" ]]; then
-  pacman -S --noconfirm xf86-video-amdgpu
-fi
-
-if [[ -n "$intel" ]]; then
-  pacman -S --noconfirm xf86-video-intel
-fi
-
-if [[ -n "$nvidia" && -n "$intel" ]]; then
-  pacman -S --noconfirm bumblebee
-  gpasswd -a $username bumblebee
-  systemctl enable bumblebeed
-fi
-
 echo "#####################################################################"
 echo ""
 echo " Установка DE(WM). Выберите пункт для установки "
@@ -353,7 +331,7 @@ sed -i 's/^# %wheel ALL=(ALL) ALL$/%wheel ALL=(ALL) ALL/' /etc/sudoers
 
 usermod -c 'Сергей Простов' $USER
 
-echo " Очистим папку конфигов, кеш, и скрытые каталоги в /home/$username от старой системы ? "
+echo " Очистим папку конфигов, кеш, и скрытые каталоги в /home/$USER от старой системы ? "
 while
     read -n1 -p  "
     1 - да
@@ -368,9 +346,31 @@ if [[ $i_rm == 0 ]]; then
 clear
 echo " очистка пропущена "
 elif [[ $i_rm == 1 ]]; then
-rm -rf /home/$username/.*
+rm -rf /home/$USER/.*
 clear
 echo " очистка завершена "
+fi
+
+# graphics driver
+amd=$(lspci | grep -e VGA -e 3D | grep 'AMD' 2> /dev/null || echo '')
+nvidia=$(lspci | grep -e VGA -e 3D | grep 'NVIDIA' 2> /dev/null || echo '')
+intel=$(lspci | grep -e VGA -e 3D | grep 'Intel' 2> /dev/null || echo '')
+if [[ -n "$nvidia" ]]; then
+  pacman -S --noconfirm --needed nvidia
+fi
+
+if [[ -n "$amd" ]]; then
+  pacman -S --noconfirm --needed xf86-video-amdgpu
+fi
+
+if [[ -n "$intel" ]]; then
+  pacman -S --noconfirm --needed xf86-video-intel
+fi
+
+if [[ -n "$nvidia" && -n "$intel" ]]; then
+  pacman -S --noconfirm --needed bumblebee
+  gpasswd -a $USER bumblebee
+  systemctl enable bumblebeed
 fi
 
 echo " Настроим localtime "
