@@ -234,6 +234,11 @@ otf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono"
 pacman -S --noconfirm --needed $pack
 systemctl enable sddm.service -f
 systemctl enable NetworkManager
+
+echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
+echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
+echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
+
 echo "Plasma успешно установлено"
 
 elif [[ $x_de == 4 ]]; then
@@ -249,6 +254,11 @@ ttf-dejavu ttf-liberation ttf-font-awesome awesome-terminal-fonts"
 pacman -S --noconfirm --needed $pack
 systemctl enable gdm.service -f
 systemctl enable NetworkManager
+
+echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
+echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
+echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
+
 echo " Gnome успешно установлен "
 fi
 
