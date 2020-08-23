@@ -49,9 +49,11 @@ while
 
     3 - KDE(Plasma)
 
+    4 - gmome
+
     0 - пропустить " x_de
     echo ''
-    [[ "$x_de" =~ [^1230] ]]
+    [[ "$x_de" =~ [^12340] ]]
 do
     :
 done
@@ -240,10 +242,11 @@ echo "Xfce успешно установлено"
 
 elif [[ $x_de == 3 ]]; then
 pack="xorg-server xorg-drivers xf86-input-synaptics \
-plasma-meta plasma plasma-pa plasma-desktop kde-system-meta kde-utilities-meta kio-extras konsole kde-applications latte-dock sddm sddm-kcm \
+plasma-meta plasma plasma-pa plasma-desktop kde-system-meta sddm sddm-kcm \
+kde-utilities-meta kio-extras konsole kde-applications latte-dock \
 linux-headers dkms bc gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
-bash-completion termite zsh zsh-syntax-highlighting zsh-autosuggestions neovim \
+bash-completion termite zsh zsh-syntax-highlighting zsh-autosuggestions \
 openssh networkmanager networkmanager-openconnect networkmanager-openvpn \
 networkmanager-pptp networkmanager-vpnc network-manager-applet \
 curl wget git rsync python-pip unzip unrar p7zip nano man-db dhcpcd \
@@ -254,6 +257,43 @@ pacman -S --noconfirm --needed $pack
 systemctl enable sddm.service -f
 systemctl enable NetworkManager
 echo "Plasma успешно установлено"
+
+elif [[ $x_de == 4 ]]; then
+pack="xorg-server xorg-drivers xf86-input-synaptics \
+gnome gnome-extra gdm linux-headers dkms bc \
+alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
+zsh zsh-syntax-highlighting zsh-autosuggestions \
+curl wget git rsync unzip unrar p7zip nano man-db dhcpcd \
+openssh networkmanager networkmanager-openconnect networkmanager-openvpn \
+networkmanager-pptp networkmanager-vpnc network-manager-applet \
+firefox firefox-i18n-ru otf-font-awesome \
+ttf-dejavu ttf-liberation ttf-font-awesome awesome-terminal-fonts"
+pacman -S --noconfirm --needed $pack
+systemctl enable gdm.service -f
+systemctl enable NetworkManager
+echo " Gnome успешно установлен "
+fi
+
+echo ""
+echo " Добавим dhcpcd в автозагрузку( для проводного интернета, который  получает настройки от роутера ) ? "
+echo ""
+echo "при необходимости это можно будет сделать уже в установленной системе "
+while
+    read -n1 -p  "
+    1 - включить dhcpcd
+
+    0 - не включать dhcpcd " x_dhcpcd
+    echo ''
+    [[ "$x_dhcpcd" =~ [^10] ]]
+do
+    :
+done
+if [[ $x_dhcpcd == 0 ]]; then
+  echo ' dhcpcd не включен в автозагрузку, при необходиости это можно будет сделать уже в установленной системе '
+elif [[ $x_dhcpcd == 1 ]]; then
+systemctl enable dhcpcd.service
+clear
+echo "Dhcpcd успешно добавлен в автозагрузку"
 fi
 
 # Root password
@@ -458,7 +498,5 @@ chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD
 cd /home/$USER/rtl8821ce-dkms-git
 sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/rtl8821ce-dkms-git
-
-systemctl enable dhcpcd
 
 echo "Настройка Системы Завершена"
