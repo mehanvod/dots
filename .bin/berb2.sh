@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Install script for Arch Linux (UEFI & systemd-boot)
-# autor: Sergey Prostov 
+# autor: Sergey Prostov
 # https://raw.githubusercontent.com/mehanvod/dots/master/.bin/berb2.sh
 # wget git.io/berb2.sh
 # nano berb2.sh
@@ -41,11 +41,11 @@ fi
 echo "#####################################################################"
 echo ""
 echo " Установка DE(WM). Выберите пункт для установки "
-while 
+while
     read -n1 -p  "
     1 - Awesome(WM)+lightdm
-    
-    2 - Xfce+lightdm 
+
+    2 - Xfce+lightdm
 
     3 - KDE(Plasma)
 
@@ -56,7 +56,7 @@ do
     :
 done
 if [[ $x_de == 0 ]]; then
-  echo 'уcтановка DE пропущена' 
+  echo 'уcтановка DE пропущена'
 
 elif [[ $x_de == 1 ]]; then
 pack="xorg-server xorg-drivers xf86-input-synaptics \
@@ -115,7 +115,7 @@ Section "InputClass"
         Option "VertEdgeScroll" "1"
         Option "VertTwoFingerScroll" "1"
         Option "HorizEdgeScroll" "0"
-        Option "HorizTwoFingerScroll" "0"        
+        Option "HorizTwoFingerScroll" "0"
 EndSection
 
 Section "InputClass"
@@ -313,16 +313,36 @@ sed -i 's/^# %wheel ALL=(ALL) ALL$/%wheel ALL=(ALL) ALL/' /etc/sudoers
 
 usermod -c 'Сергей Простов' $USER
 
+echo " Очистим папку конфигов, кеш, и скрытые каталоги в /home/$username от старой системы ? "
+while
+    read -n1 -p  "
+    1 - да
+
+    0 - нет: " i_rm      # sends right after the keypress
+    echo ''
+    [[ "$i_rm" =~ [^10] ]]
+do
+    :
+done
+if [[ $i_rm == 0 ]]; then
+clear
+echo " очистка пропущена "
+elif [[ $i_rm == 1 ]]; then
+rm -rf /home/$username/.*
+clear
+echo " очистка завершена "
+fi
+
 echo " Настроим localtime "
-while 
+while
     read -n1 -p  "
     1 - Москва
-    
+
     2 - Екатеринбург
-    
+
     3 - Новосибирск
 
-    0 - пропустить(если нет вашего варианта) : " wm_time 
+    0 - пропустить(если нет вашего варианта) : " wm_time
     echo ''
     [[ "$wm_time" =~ [^1230] ]]
 do
@@ -331,15 +351,15 @@ done
 if [[ $wm_time == 1 ]]; then
 ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 echo " Москва "
-elif [[ $wm_time == 2 ]]; then  
+elif [[ $wm_time == 2 ]]; then
 ln -sf /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
 echo " Екатеринбург "
-elif [[ $wm_time == 3 ]]; then 
+elif [[ $wm_time == 3 ]]; then
 ln -sf /usr/share/zoneinfo/Asia/Novosibirsk /etc/localtime
 echo " Новосибирск "
-elif [[ $wm_time == 0 ]]; then 
+elif [[ $wm_time == 0 ]]; then
 clear
-echo  " этап пропущен " 
+echo  " этап пропущен "
 fi
 
 hwclock --systohc --utc
@@ -411,8 +431,8 @@ echo "###################    <<< установка шрифта для терм
 echo "########################################################################################"
 cd /home/$USER
 git clone https://aur.archlinux.org/nerd-fonts-jetbrains-mono.git
-chown -R $USER:users /home/$USER/nerd-fonts-jetbrains-mono   
-chown -R $USER:users /home/$USER/nerd-fonts-jetbrains-mono/PKGBUILD 
+chown -R $USER:users /home/$USER/nerd-fonts-jetbrains-mono
+chown -R $USER:users /home/$USER/nerd-fonts-jetbrains-mono/PKGBUILD
 cd /home/$USER/nerd-fonts-jetbrains-mono
 sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/nerd-fonts-jetbrains-mono
@@ -422,8 +442,8 @@ echo "###################    <<< установка шрифта для терм
 echo "########################################################################################"
 cd /home/$USER
 git clone https://aur.archlinux.org/nerd-fonts-fantasque-sans-mono.git
-chown -R $USER:users /home/$USER/nerd-fonts-fantasque-sans-mono   
-chown -R $USER:users /home/$USER/nerd-fonts-fantasque-sans-mono/PKGBUILD 
+chown -R $USER:users /home/$USER/nerd-fonts-fantasque-sans-mono
+chown -R $USER:users /home/$USER/nerd-fonts-fantasque-sans-mono/PKGBUILD
 cd /home/$USER/nerd-fonts-fantasque-sans-mono
 sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/nerd-fonts-fantasque-sans-mono
@@ -433,8 +453,8 @@ echo "###################    <<< установка драйвера на WiFi(A
 echo "########################################################################################"
 cd /home/$USER
 git clone https://aur.archlinux.org/rtl8821ce-dkms-git.git
-chown -R $USER:users /home/$USER/rtl8821ce-dkms-git   
-chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD 
+chown -R $USER:users /home/$USER/rtl8821ce-dkms-git
+chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD
 cd /home/$USER/rtl8821ce-dkms-git
 sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/rtl8821ce-dkms-git
