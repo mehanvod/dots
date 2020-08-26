@@ -480,6 +480,17 @@ echo "##########################################################################
 echo "###################    <<< установка шрифта для терминала  >>>    ######################"
 echo "########################################################################################"
 cd /home/$USER
+git clone https://aur.archlinux.org/ttf-iosevka.git
+chown -R $USER:users /home/$USER/ttf-iosevka
+chown -R $USER:users /home/$USER/ttf-iosevka/PKGBUILD
+cd /home/$USER/ttf-iosevka
+sudo -u $USER  makepkg -si --noconfirm
+rm -Rf /home/$USER/ttf-iosevka
+
+echo "########################################################################################"
+echo "###################    <<< установка шрифта для терминала  >>>    ######################"
+echo "########################################################################################"
+cd /home/$USER
 git clone https://aur.archlinux.org/nerd-fonts-jetbrains-mono.git
 chown -R $USER:users /home/$USER/nerd-fonts-jetbrains-mono
 chown -R $USER:users /home/$USER/nerd-fonts-jetbrains-mono/PKGBUILD
