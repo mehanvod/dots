@@ -491,23 +491,12 @@ echo "##########################################################################
 echo "###################    <<< установка шрифта для терминала  >>>    ######################"
 echo "########################################################################################"
 cd /home/$USER
-git clone https://aur.archlinux.org/nerd-fonts-jetbrains-mono.git
-chown -R $USER:users /home/$USER/nerd-fonts-jetbrains-mono
-chown -R $USER:users /home/$USER/nerd-fonts-jetbrains-mono/PKGBUILD
-cd /home/$USER/nerd-fonts-jetbrains-mono
+git clone   https://aur.archlinux.org/ttf-material-design-icons-extended.git
+chown -R $USER:users /home/$USER/ttf-material-design-icons-extended
+chown -R $USER:users /home/$USER/ttf-material-design-icons-extended/PKGBUILD
+cd /home/$USER/ttf-material-design-icons-extended
 sudo -u $USER  makepkg -si --noconfirm
-rm -Rf /home/$USER/nerd-fonts-jetbrains-mono
-
-echo "########################################################################################"
-echo "###################    <<< установка шрифта для терминала  >>>    ######################"
-echo "########################################################################################"
-cd /home/$USER
-git clone https://aur.archlinux.org/nerd-fonts-fantasque-sans-mono.git
-chown -R $USER:users /home/$USER/nerd-fonts-fantasque-sans-mono
-chown -R $USER:users /home/$USER/nerd-fonts-fantasque-sans-mono/PKGBUILD
-cd /home/$USER/nerd-fonts-fantasque-sans-mono
-sudo -u $USER  makepkg -si --noconfirm
-rm -Rf /home/$USER/nerd-fonts-fantasque-sans-mono
+rm -Rf /home/$USER/ttf-material-design-icons-extended
 
 echo "########################################################################################"
 echo "###################    <<< установка драйвера на WiFi(AUR) >>>    ######################"
@@ -520,4 +509,6 @@ cd /home/$USER/rtl8821ce-dkms-git
 sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/rtl8821ce-dkms-git
 
-echo "Настройка Системы Завершена"
+echo "########################################################################################"
+echo "###################      <<< Настройка Системы Завершена >>>      ######################"
+echo "########################################################################################"
