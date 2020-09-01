@@ -73,7 +73,7 @@ cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
 background=/usr/share/pixmaps/001.jpg
 theme-name=Fantome
 icon-theme-name=Papirus
-font-name=Roboto 9
+font-name=Iosevka 9
 xft-antialias=true
 xft-dpi=96
 xft-hintstyle=true
