@@ -3,7 +3,7 @@
 # Install script for Arch Linux (UEFI)
 # autor: Sergey Prostov
 # https://raw.githubusercontent.com/mehanvod/dots/master/.bin/berb.sh
-# wget git.io/berb.sh 
+# wget git.io/berb.sh
 # sh berb.sh
 
 # Check for root
@@ -21,18 +21,17 @@ Home_D="sda4"
 
 loadkeys ru
 setfont cyr-sun16
-timedatectl set-ntp true
 
 ## Обновление ключей ##
 echo "
-Данный этап поможет вам избежать проблем с ключами 
+Данный этап поможет вам избежать проблем с ключами
 Pacmаn, если используете не свежий образ ArchLinux для установки! "
 echo " Обновим ключи?  "
-while 
+while
     read -n1 -p  "
     1 - да
-    
-    0 - нет: " x_key 
+
+    0 - нет: " x_key
     echo ''
     [[ "$x_key" =~ [^10] ]]
 do
@@ -40,19 +39,19 @@ do
 done
  if [[ $x_key == 1 ]]; then
   clear
-  pacman-key --refresh-keys 
+  pacman-key --refresh-keys
   elif [[ $x_key == 0 ]]; then
-   echo " Обновление ключей пропущено "   
+   echo " Обновление ключей пропущено "
 fi
 
 ## Зеркала ##
 echo 'Хотите сменить зеркала на более быстрые?'
-while 
+while
     read -n1 -p  "
     1 - Максимальная скорость
 
-    2 - Средняя скорость(стабильнее) 
-    
+    2 - Средняя скорость(стабильнее)
+
     0 - нет: " mirrors # sends right after the keypress
     echo ''
     [[ "$mirrors" =~ [^120] ]]
@@ -90,7 +89,7 @@ Server = http://arch.mirror.far.fi/\$repo/os/\$arch
 #Server = http://mirror.dkm.cz/archlinux/\$repo/os/\$arch
 EOF
 elif [[ $mirrors == 0 ]]; then
-   echo 'смена зеркал пропущена.'   
+   echo 'смена зеркал пропущена.'
 fi
 
 pacman -Sy --noconfirm
@@ -101,11 +100,11 @@ echo " если вам необходимо полность очистить bo
 echo " При установке дуал бут раздел не нужно форматировать!!! "
 echo ""
 echo 'удалим старый загрузчик linux'
-while 
+while
     read -n1 -p  "
-    1 - удалим старый загрузчкик линукс 
-    
-    0 -(пропустить) - данный этап можно пропустить если установка производиться первый раз или несколько OS  " boots 
+    1 - удалим старый загрузчкик линукс
+
+    0 -(пропустить) - данный этап можно пропустить если установка производиться первый раз или несколько OS  " boots
     echo ''
     [[ "$boots" =~ [^10] ]]
 do
@@ -124,7 +123,7 @@ ls | grep -v Boot | grep -v Microsoft | xargs rm -rfv
 cd /root
 umount /mnt
   elif [[ $boots == 0 ]]; then
-   echo " очистка boot раздела пропущена, далее вы сможете его отформатировать! "   
+   echo " очистка boot раздела пропущена, далее вы сможете его отформатировать! "
 fi
 clear
 ## root ##
