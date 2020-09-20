@@ -496,7 +496,7 @@ git clone   https://aur.archlinux.org/ttf-material-design-icons-extended.git
 chown -R $USER:users /home/$USER/ttf-material-design-icons-extended
 chown -R $USER:users /home/$USER/ttf-material-design-icons-extended/PKGBUILD
 cd /home/$USER/ttf-material-design-icons-extended
-sudo -u $USER  makepkg -si --noconfirm
+sudo -u $USER  makepkg -si --skipinteg --noconfirm
 rm -Rf /home/$USER/ttf-material-design-icons-extended
 
 echo "########################################################################################"
@@ -510,6 +510,10 @@ cd /home/$USER/rtl8821ce-dkms-git
 sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/rtl8821ce-dkms-git
 
+clear
 echo "########################################################################################"
 echo "###################      <<< Настройка Системы Завершена >>>      ######################"
 echo "########################################################################################"
+cd
+umount -a
+reboot
