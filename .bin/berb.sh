@@ -147,10 +147,49 @@ mount /dev/$Home_D /mnt/home
 
 pacstrap /mnt base base-devel linux linux-firmware
 
-cp berb2.sh /mnt/berb2.sh
-chmod u+x /mnt/berb2.sh
+# cp berb2.sh /mnt/berb2.sh
+# chmod u+x /mnt/berb2.sh
 
 genfstab -U -p /mnt >> /mnt/etc/fstab
 
 # arch-chroot /mnt sh -c "$(curl -fsSL git.io/berb2.sh)"
-arch-chroot /mnt ./berb2.sh
+# arch-chroot /mnt ./berb2.sh
+
+
+###############################
+clear
+echo "Если вы производите установку используя Wifi тогда рекомендую  "1" "
+echo ""
+echo "если проводной интернет тогда "2" "
+echo ""
+echo 'wifi или dhcpcd ?'
+while
+    read -n1 -p  "1 - wifi, 2 - dhcpcd: " int # sends right after the keypress
+    echo ''
+    [[ "$int" =~ [^12] ]]
+do
+    :
+done
+if [[ $int == 1 ]]; then
+
+  curl -LO https://raw.githubusercontent.com/mehanvod/dots/master/.bin/berb2.sh
+  mv berb2.sh /mnt
+  chmod +x /mnt/berb2.sh
+  echo 'первый этап готов '
+  echo 'ARCH-LINUX chroot'
+  echo '1. проверь  интернет для продолжения установки в черуте || 2.команда для запуска ./berb2.sh или sh berb2.sh'
+  arch-chroot /mnt
+echo "################################################################"
+echo "###################    T H E   E N D      ######################"
+echo "################################################################"
+umount -a
+reboot
+  elif [[ $int == 2 ]]; then
+  arch-chroot /mnt sh -c "$(curl -fsSL https://raw.githubusercontent.com/mehanvod/dots/master/.bin/berb2.sh)"
+echo "################################################################"
+echo "###################    T H E   E N D      ######################"
+echo "################################################################"
+umount -a
+reboot
+
+fi
