@@ -500,19 +500,19 @@ cd /home/$USER/ttf-material-design-icons-extended
 sudo -u $USER  makepkg -si --skipinteg --noconfirm
 rm -Rf /home/$USER/ttf-material-design-icons-extended
 
-echo "########################################################################################"
-echo "###################    <<< установка драйвера на WiFi(AUR) >>>    ######################"
-echo "########################################################################################"
-cd /home/$USER
-git clone https://aur.archlinux.org/rtl8821ce-dkms-git.git
-chown -R $USER:users /home/$USER/rtl8821ce-dkms-git
-chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD
-cd /home/$USER/rtl8821ce-dkms-git
-sudo -u $USER  makepkg -si --noconfirm
-rm -Rf /home/$USER/rtl8821ce-dkms-git
-echo "########################################################################################"
-echo "###############      <<< установка драйвера WiFi завершена  >>>      ###################"
-echo "########################################################################################"
+# echo "########################################################################################"
+# echo "###################    <<< установка драйвера на WiFi(AUR) >>>    ######################"
+# echo "########################################################################################"
+# cd /home/$USER
+# git clone https://aur.archlinux.org/rtl8821ce-dkms-git.git
+# chown -R $USER:users /home/$USER/rtl8821ce-dkms-git
+# chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD
+# cd /home/$USER/rtl8821ce-dkms-git
+# sudo -u $USER  makepkg -si --noconfirm
+# rm -Rf /home/$USER/rtl8821ce-dkms-git
+# echo "########################################################################################"
+# echo "###############      <<< установка драйвера WiFi завершена  >>>      ###################"
+# echo "########################################################################################"
 clear
 exit
 exit
