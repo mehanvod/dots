@@ -122,7 +122,7 @@ Section "InputClass"
 EndSection
 EOF
 
-cat > /usr/share/X11/xorg.conf.d/10-amdgpu.conf << EOF
+cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
 Section "OutputClass"
     Identifier "AMDgpu"
     MatchDriver "amdgpu"
