@@ -98,28 +98,6 @@ Section "InputClass"
         Option "HorizEdgeScroll" "0"
         Option "HorizTwoFingerScroll" "0"
 EndSection
-
-Section "InputClass"
-        Identifier "touchpad ignore duplicates"
-        MatchIsTouchpad "on"
-        MatchOS "Linux"
-        MatchDevicePath "/dev/input/mouse*"
-        Option "Ignore" "on"
-EndSection
-
-Section "InputClass"
-        Identifier "Default clickpad buttons"
-        MatchDriver "synaptics"
-        Option "SoftButtonAreas" "50% 0 82% 0 0 0 0 0"
-        Option "SecondarySoftButtonAreas" "58% 0 0 15% 42% 58% 0 15%"
-EndSection
-
-Section "InputClass"
-        Identifier "Disable clickpad buttons on Apple touchpads"
-        MatchProduct "Apple|bcm5974"
-        MatchDriver "synaptics"
-        Option "SoftButtonAreas" "0 0 0 0 0 0 0 0"
-EndSection
 EOF
 
 cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
