@@ -47,7 +47,7 @@ dialog wpa_supplicant netctl iw net-tools wmctrl \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5ct picom \
 gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g gtk2-perl bash-completion \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
-termite zsh zsh-syntax-highlighting zsh-autosuggestions neovim \
+termite zsh zsh-syntax-highlighting zsh-autosuggestions \
 openssh pcmanfm gxkb unclutter papirus-icon-theme \
 curl wget git rsync python-pip unzip file-roller unrar p7zip \
 gsimplecal redshift numlockx firefox firefox-i18n-ru \
@@ -138,7 +138,7 @@ xfce4 xfce4-goodies lightdm lightdm-gtk-greeter \
 linux-headers dkms bc nano man-db dhcpcd gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5ct picom \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
-bash-completion gtk2-perl termite zsh zsh-syntax-highlighting zsh-autosuggestions neovim \
+bash-completion gtk2-perl termite zsh zsh-syntax-highlighting zsh-autosuggestions \
 openssh papirus-icon-theme dialog wpa_supplicant iw net-tools wmctrl \
 openssh networkmanager networkmanager-openconnect networkmanager-openvpn \
 networkmanager-pptp networkmanager-vpnc network-manager-applet \
