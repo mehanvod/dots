@@ -178,7 +178,7 @@ EOF
 
 sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
 
-cat > /usr/share/X11/xorg.conf.d/10-amdgpu.conf << EOF
+cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
 Section "OutputClass"
     Identifier "AMDgpu"
     MatchDriver "amdgpu"
