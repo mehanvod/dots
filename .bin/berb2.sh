@@ -113,6 +113,17 @@ Section "OutputClass"
 EndSection
 EOF
 
+cat > /etc/modprobe.d/radeon.conf << EOF
+blacklist radeon
+options radeon si_support=0
+options radeon cik_support=0
+EOF
+
+cat > /etc/modprobe.d/amdgpu.conf << EOF
+options amdgpu si_support=1
+options amdgpu cik_support=1
+EOF
+
 cat > /etc/X11/xorg.conf.d/00-keyboard.conf << EOF
 Section "InputClass"
         Identifier "system-keyboard"
@@ -189,6 +200,17 @@ Section "OutputClass"
     Option "ShadowPrimary" "true"
     Option "AccelMethod" "string"
 EndSection
+EOF
+
+cat > /etc/modprobe.d/radeon.conf << EOF
+blacklist radeon
+options radeon si_support=0
+options radeon cik_support=0
+EOF
+
+cat > /etc/modprobe.d/amdgpu.conf << EOF
+options amdgpu si_support=1
+options amdgpu cik_support=1
 EOF
 
 echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
