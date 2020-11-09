@@ -428,7 +428,6 @@ if [[ -d "/sys/firmware/efi/efivars" ]]; then
     initrd   /initramfs-linux.img
     options  root=/dev/sda2 rw
     options  quiet splash acpi_backlight=vendor
-    # options  quiet splash acpi_backlight=vendor amdgpu.dc=0 radeon.cik_support=0 radeon.si_support=0 amdgpu.cik_support=1 amdgpu.si_support=1
 EOF
 
   cat <<EOF > /boot/loader/loader.conf
