@@ -203,7 +203,6 @@ EndSection
 EOF
 
 cat > /etc/modprobe.d/radeon.conf << EOF
-blacklist radeon
 options radeon si_support=0
 options radeon cik_support=0
 EOF
@@ -424,7 +423,7 @@ echo "LANG=ru_RU.UTF-8" > /etc/locale.conf
 echo "KEYMAP=ru" >> /etc/vconsole.conf
 echo "FONT=cyr-sun16" >> /etc/vconsole.conf
 
-sed -i 's/MODULES=()/MODULES=(amdgpu)/g' /etc/mkinitcpio.conf
+sed -i 's/MODULES=()/MODULES=(amdgpu radeon)/g' /etc/mkinitcpio.conf
 sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
 
 mkinitcpio -p linux
