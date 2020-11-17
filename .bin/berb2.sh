@@ -40,7 +40,7 @@ if [[ $x_de == 0 ]]; then
   echo 'уcтановка DE пропущена'
 
 elif [[ $x_de == 1 ]]; then
-pack="xorg-server xorg-drivers xf86-input-synaptics \
+pack="xorg-server xorg-apps xf86-input-synaptics \
 awesome lightdm lightdm-gtk-greeter \
 linux-headers dkms bc nano man-db dhcpcd \
 dialog wpa_supplicant netctl iw net-tools wmctrl \
@@ -144,7 +144,7 @@ sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export F
 echo "Awesome(WM) успешно установлено"
 
 elif [[ $x_de == 2 ]]; then
-pack="xorg-server xorg-drivers xf86-input-synaptics \
+pack="xorg-server xorg-apps xf86-input-synaptics \
 xfce4 xfce4-goodies lightdm lightdm-gtk-greeter \
 linux-headers dkms bc nano man-db dhcpcd gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5ct picom \
