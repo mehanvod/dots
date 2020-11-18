@@ -3,6 +3,7 @@
 # autor: Sergey Prostov
 # https://raw.githubusercontent.com/mehanvod/dots/master/.bin/berb2.sh
 # wget git.io/berb2.sh
+# curl -OL git.io/berb2.sh
 # nano berb2.sh
 
 DISK="sda"
