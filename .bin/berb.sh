@@ -170,7 +170,6 @@ do
     :
 done
 if [[ $int == 1 ]]; then
-
   curl -LO https://raw.githubusercontent.com/mehanvod/dots/master/.bin/berb2.sh
   mv berb2.sh /mnt
   chmod +x /mnt/berb2.sh
@@ -190,5 +189,4 @@ echo "###################    T H E   E N D      ######################"
 echo "################################################################"
 umount -a
 reboot
-
 fi
