@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
-
 # Install script for Arch Linux (UEFI)
 # autor: Sergey Prostov
 # https://raw.githubusercontent.com/mehanvod/dots/master/.bin/berb.sh
 # wget git.io/berb.sh
 # curl -OL git.io/berb.sh
-# sh berb.sh
 
 # Check for root
 if [[ $EUID -ne 0 ]]; then
