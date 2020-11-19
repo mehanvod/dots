@@ -114,7 +114,6 @@ EndSection
 EOF
 
 cat > /etc/modprobe.d/radeon.conf << EOF
-blacklist radeon
 options radeon si_support=0
 options radeon cik_support=0
 EOF
