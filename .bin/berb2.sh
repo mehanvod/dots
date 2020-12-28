@@ -44,7 +44,7 @@ pack="xorg-server xorg-apps xf86-input-synaptics \
 awesome lightdm lightdm-gtk-greeter \
 linux-headers dkms bc nano man-db dhcpcd \
 dialog wpa_supplicant netctl iw net-tools wmctrl \
-gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5ct picom \
+gtk-engines gtk-engine-murrine qt5ct picom \
 gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g gtk2-perl bash-completion \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
 termite zsh zsh-syntax-highlighting zsh-autosuggestions \
