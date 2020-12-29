@@ -190,11 +190,8 @@ Section "OutputClass"
     Identifier "AMDgpu"
     MatchDriver "amdgpu"
     Driver "amdgpu"
-    Option "DRI" "3"
     Option "TearFree" "true"
-    Option "VariableRefresh" "true"
     Option "ShadowPrimary" "true"
-    Option "AccelMethod" "string"
 EndSection
 EOF
 
@@ -232,6 +229,26 @@ pacman -S --noconfirm --needed $pack
 systemctl enable sddm.service -f
 systemctl enable NetworkManager
 
+cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
+Section "OutputClass"
+    Identifier "AMDgpu"
+    MatchDriver "amdgpu"
+    Driver "amdgpu"
+    Option "TearFree" "true"
+    Option "ShadowPrimary" "true"
+EndSection
+EOF
+
+cat > /etc/modprobe.d/radeon.conf << EOF
+options radeon si_support=0
+options radeon cik_support=0
+EOF
+
+cat > /etc/modprobe.d/amdgpu.conf << EOF
+options amdgpu si_support=1
+options amdgpu cik_support=1
+EOF
+
 echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
 echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
 echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
@@ -251,6 +268,26 @@ ttf-dejavu ttf-liberation ttf-font-awesome awesome-terminal-fonts"
 pacman -S --noconfirm --needed $pack
 systemctl enable gdm.service -f
 systemctl enable NetworkManager
+
+cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
+Section "OutputClass"
+    Identifier "AMDgpu"
+    MatchDriver "amdgpu"
+    Driver "amdgpu"
+    Option "TearFree" "true"
+    Option "ShadowPrimary" "true"
+EndSection
+EOF
+
+cat > /etc/modprobe.d/radeon.conf << EOF
+options radeon si_support=0
+options radeon cik_support=0
+EOF
+
+cat > /etc/modprobe.d/amdgpu.conf << EOF
+options amdgpu si_support=1
+options amdgpu cik_support=1
+EOF
 
 echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
 echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
