@@ -106,10 +106,7 @@ Section "OutputClass"
     MatchDriver "amdgpu"
     Driver "amdgpu"
     Option "TearFree" "true"
-    Option "DRI" "3"
-    Option "VariableRefresh" "true"
     Option "ShadowPrimary" "true"
-    Option "AccelMethod" "string"
 EndSection
 EOF
 
