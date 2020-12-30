@@ -80,7 +80,7 @@ xft-dpi=96
 xft-hintstyle=true
 xft-rgba=rgb
 indicators=~clock;~session;~power;
-position=5% 40%
+# position=5% 40%
 EOF
 
 sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
@@ -345,7 +345,7 @@ cat > /etc/hosts << EOF
 #<ip-address>   <hostname.domain.org>   <hostname>
 127.0.0.1       localhost
 ::1             localhost
-127.0.1.1       $HOST.localdomain      $HOST
+127.0.1.1       $HOST.localdomain       $HOST
 192.168.0.104   homepage.loc
 192.168.0.104   www.homepage.loc
 192.168.0.104   startpage.loc
@@ -446,7 +446,7 @@ elif [[ $wm_time == 0 ]]; then
 echo  " этап пропущен "
 fi
 
-hwclock --systohc --utc
+hwclock --systohc
 
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen

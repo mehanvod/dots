@@ -149,7 +149,7 @@ pacstrap /mnt base base-devel linux linux-firmware
 # cp berb2.sh /mnt/berb2.sh
 # chmod u+x /mnt/berb2.sh
 
-genfstab -U -p /mnt >> /mnt/etc/fstab
+genfstab -U /mnt >> /mnt/etc/fstab
 
 # arch-chroot /mnt sh -c "$(curl -fsSL git.io/berb2.sh)"
 # arch-chroot /mnt ./berb2.sh
