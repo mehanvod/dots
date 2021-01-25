@@ -228,24 +228,24 @@ pacman -S --noconfirm --needed $pack
 systemctl enable sddm.service -f
 systemctl enable NetworkManager
 
-# cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
-# Section "OutputClass"
-#     Identifier "AMDgpu"
-#     MatchDriver "amdgpu"
-#     Driver "amdgpu"
-#     Option "TearFree" "true"
-# EndSection
-# EOF
+cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
+Section "OutputClass"
+    Identifier "AMDgpu"
+    MatchDriver "amdgpu"
+    Driver "amdgpu"
+    Option "TearFree" "true"
+EndSection
+EOF
 
-# cat > /etc/modprobe.d/radeon.conf << EOF
-# options radeon si_support=0
-# options radeon cik_support=0
-# EOF
+cat > /etc/modprobe.d/radeon.conf << EOF
+options radeon si_support=0
+options radeon cik_support=0
+EOF
 
-# cat > /etc/modprobe.d/amdgpu.conf << EOF
-# options amdgpu si_support=1
-# options amdgpu cik_support=1
-# EOF
+cat > /etc/modprobe.d/amdgpu.conf << EOF
+options amdgpu si_support=1
+options amdgpu cik_support=1
+EOF
 
 echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
 echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
@@ -454,8 +454,8 @@ echo "LANG=ru_RU.UTF-8" > /etc/locale.conf
 echo "KEYMAP=ru" >> /etc/vconsole.conf
 echo "FONT=cyr-sun16" >> /etc/vconsole.conf
 
-# sed -i 's/MODULES=()/MODULES=(amdgpu radeon)/g' /etc/mkinitcpio.conf
-# sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
+sed -i 's/MODULES=()/MODULES=(amdgpu radeon)/g' /etc/mkinitcpio.conf
+sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
 
 mkinitcpio -p linux
 clear
