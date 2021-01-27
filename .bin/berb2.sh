@@ -215,16 +215,13 @@ elif [[ $x_de == 3 ]]; then
 pack="xorg-server xorg-drivers xf86-input-synaptics \
 plasma-meta plasma plasma-pa plasma-desktop kde-system-meta sddm sddm-kcm \
 kde-utilities-meta kio-extras konsole kde-applications latte-dock \
-linux-headers dkms bc gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
-alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
-bash-completion termite zsh zsh-syntax-highlighting zsh-autosuggestions \
-openssh networkmanager networkmanager-openconnect networkmanager-openvpn \
-networkmanager-pptp networkmanager-vpnc network-manager-applet \
+linux-headers dkms bc ntfs-3g alsa-utils pulseaudio pavucontrol \
+zsh zsh-syntax-highlighting zsh-autosuggestions pacman-contrib \
+openssh networkmanager networkmanager-openvpn network-manager-applet ppp \
 curl wget git rsync python-pip unzip unrar p7zip nano man-db dhcpcd \
-dialog wpa_supplicant iw net-tools numlockx firefox firefox-i18n-ru \
-ttf-dejavu ttf-liberation ttf-font-awesome awesome-terminal-fonts \
-otf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono"
+iw net-tools firefox firefox-i18n-ru"
 pacman -S --noconfirm --needed $pack
+pacman -R konqueror --noconfirm
 systemctl enable sddm.service -f
 systemctl enable NetworkManager
 
@@ -509,9 +506,22 @@ else
   grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
-echo "########################################################################################"
-echo "###################    <<< установка шрифта для терминала  >>>    ######################"
-echo "########################################################################################"
+echo "################################################################"
+echo ""
+echo " Установим шрифт ttf-iosevka ? : "
+while
+    read -n1 -p  "
+    1 - да,
+
+    0 - нет: " inst_iosevka # sends right after the keypress
+    echo ''
+    [[ "$inst_iosevka" =~ [^10] ]]
+do
+    :
+done
+if [[ $inst_iosevka == 0 ]]; then
+  echo 'уcтановка  пропущена'
+elif [[ $inst_iosevka == 1 ]]; then
 cd /home/$USER
 git clone https://aur.archlinux.org/ttf-iosevka.git
 chown -R $USER:users /home/$USER/ttf-iosevka
@@ -519,10 +529,25 @@ chown -R $USER:users /home/$USER/ttf-iosevka/PKGBUILD
 cd /home/$USER/ttf-iosevka
 sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/ttf-iosevka
+clear
+fi
 
-echo "########################################################################################"
-echo "###################    <<< установка шрифта для терминала  >>>    ######################"
-echo "########################################################################################"
+echo "################################################################"
+echo ""
+echo " Установим шрифт ttf-material-design-icons-extended ? : "
+while
+    read -n1 -p  "
+    1 - да,
+
+    0 - нет: " inst_mdie # sends right after the keypress
+    echo ''
+    [[ "$inst_mdie" =~ [^10] ]]
+do
+    :
+done
+if [[ $inst_mdie == 0 ]]; then
+  echo 'уcтановка  пропущена'
+elif [[ $inst_mdie == 1 ]]; then
 cd /home/$USER
 git clone   https://aur.archlinux.org/ttf-material-design-icons-extended.git
 chown -R $USER:users /home/$USER/ttf-material-design-icons-extended
@@ -530,10 +555,25 @@ chown -R $USER:users /home/$USER/ttf-material-design-icons-extended/PKGBUILD
 cd /home/$USER/ttf-material-design-icons-extended
 sudo -u $USER  makepkg -si --skipinteg --noconfirm
 rm -Rf /home/$USER/ttf-material-design-icons-extended
+clear
+fi
 
-echo "########################################################################################"
-echo "###################    <<< установка драйвера на WiFi(AUR) >>>    ######################"
-echo "########################################################################################"
+echo "################################################################"
+echo ""
+echo " Установим драйвер на WiFi(AUR) ? : "
+while
+    read -n1 -p  "
+    1 - да,
+
+    0 - нет: " inst_rtl # sends right after the keypress
+    echo ''
+    [[ "$inst_rtl" =~ [^10] ]]
+do
+    :
+done
+if [[ $inst_rtl == 0 ]]; then
+  echo 'уcтановка  пропущена'
+elif [[ $inst_rtl == 1 ]]; then
 cd /home/$USER
 git clone https://aur.archlinux.org/rtl8821ce-dkms-git.git
 chown -R $USER:users /home/$USER/rtl8821ce-dkms-git
@@ -541,9 +581,7 @@ chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD
 cd /home/$USER/rtl8821ce-dkms-git
 sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/rtl8821ce-dkms-git
-echo "########################################################################################"
-echo "###############      <<< установка драйвера WiFi завершена  >>>      ###################"
-echo "########################################################################################"
+fi
 
 clear
 exit
