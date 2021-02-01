@@ -144,7 +144,32 @@ swapon /dev/$Swap_D
 mkdir -p /mnt/home
 mount /dev/$Home_D /mnt/home
 
-pacstrap /mnt base base-devel linux linux-firmware
+# kernel
+while [[ $kernel != "1" ]] && [[ $kernel != "2" ]] && [[ $kernel != "3" ]] && [[ $kernel != "4" ]]; do
+    echo "####################"
+    echo "Какое ядро ​​установить:"
+    echo "1) linux           - Ядро Linux"
+    echo "2) linux-lts       - Ядро LTS Linux"
+    echo "3) linux-zen       - Ядро Zen Linux"
+    echo "4) linux-hardened  - Ядро Linux, ориентированное на безопасность"
+    echo "####################"
+    read -n1 -p">" kernel
+done
+echo; echo
+if [[ $kernel == "1" ]]; then
+    kernel="linux"
+elif [[ $kernel == "2" ]]; then
+    kernel="linux-lts"
+elif [[ $kernel == "3" ]]; then
+    kernel="linux-zen"
+elif [[ $kernel == "4" ]]; then
+    kernel="linux-hardened"
+else
+    kernel=""
+fi
+
+packages="base base-devel $kernel linux-firmware"
+pacstrap /mnt $packages
 
 # cp berb2.sh /mnt/berb2.sh
 # chmod u+x /mnt/berb2.sh
