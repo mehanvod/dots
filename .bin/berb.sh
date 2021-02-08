@@ -70,6 +70,8 @@ Server = http://mirror.truenetwork.ru/archlinux/\$repo/os/\$arch
 EOF
 elif [[ $mirrors == 2 ]]; then
 cat > /etc/pacman.d/mirrorlist << EOF
+## Finland
+Server = http://arch.mirror.far.fi/\$repo/os/\$arch
 ## Russia
 Server = https://mirror.yandex.ru/archlinux/\$repo/os/\$arch
 Server = http://mirror.rol.ru/archlinux/\$repo/os/\$arch
@@ -82,8 +84,6 @@ Server = http://ftp.byfly.by/pub/archlinux/\$repo/os/\$arch
 Server = http://mirror.datacenter.by/pub/archlinux/\$repo/os/\$arch
 ## Denmark
 Server = https://mirrors.dotsrc.org/archlinux/\$repo/os/\$arch
-## Finland
-Server = http://arch.mirror.far.fi/\$repo/os/\$arch
 ## Czechia
 #Server = http://mirror.dkm.cz/archlinux/\$repo/os/\$arch
 EOF
@@ -91,7 +91,7 @@ elif [[ $mirrors == 0 ]]; then
    echo 'смена зеркал пропущена.'
 fi
 
-pacman -Sy --noconfirm
+# pacman -Sy --noconfirm
 echo ""
 lsblk -f
 echo " Здесь вы можете удалить boot от старой системы, файлы Windows загрузчика не затрагиваются."
