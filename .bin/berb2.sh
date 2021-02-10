@@ -460,17 +460,6 @@ clear
 pacman -S --noconfirm --needed efibootmgr
 # grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --force
 
-# Install amd-ucode for AMD CPU
-is_amd_cpu=$(lscpu | grep 'AMD' &> /dev/null && echo 'yes' || echo '')
-is_intel_cpu=$(lscpu | grep 'Intel' &> /dev/null && echo 'yes' || echo '')
-if [[ -n "$is_amd_cpu" ]]; then
-  pacman -S --noconfirm amd-ucode
-fi
-
-if [[ -n "$is_intel_cpu" ]]; then
-  pacman -S --noconfirm intel-ucode
-fi
-
 # Bootloader
 # Use system-boot for EFI mode, and grub for others
 if [[ -d "/sys/firmware/efi/efivars" ]]; then
@@ -491,6 +480,7 @@ EOF
     editor 1
 EOF
 
+is_intel_cpu=$(lscpu | grep 'Intel' &> /dev/null && echo 'yes' || echo '')
   if [[ -n "$is_intel_cpu" ]]; then
     sed -i 's#/amd-ucode.img#/intel-ucode.img#' /boot/loader/entries/arch.conf
   fi

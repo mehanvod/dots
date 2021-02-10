@@ -168,7 +168,26 @@ else
     kernel=""
 fi
 
-packages="base base-devel $kernel linux-firmware"
+# microcode
+while [[ $microcode != "1" ]] && [[ $microcode != "2" ]] && [[ $microcode != "3" ]]; do
+    echo "####################"
+    echo "Install what microcode:"
+    echo "1) amd-ucode  - Microcode AMD"
+    echo "2) intel-ucode  - Microcode Intel"
+    echo "3) not install microcode"
+    echo "####################"
+    read -n1 -p">" microcode
+done
+echo; echo
+if [[ $microcode == "1" ]]; then
+    microcode="amd-ucode"
+elif [[ $microcode == "2" ]]; then
+    microcode="intel-ucode"
+else
+    microcode=""
+fi
+
+packages="base base-devel $kernel linux-firmware $microcode"
 pacstrap /mnt $packages
 
 # cp berb2.sh /mnt/berb2.sh
