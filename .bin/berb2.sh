@@ -71,7 +71,7 @@ EOF
 
 cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
 [greeter]
-background=/usr/share/pixmaps/001.jpg
+background=/usr/share/pixmaps/002.jpg
 theme-name=Fantome
 icon-theme-name=Papirus
 font-name=Iosevka 9
@@ -80,7 +80,7 @@ xft-dpi=96
 xft-hintstyle=true
 xft-rgba=rgb
 indicators=~clock;~session;~power;
-# position=5% 40%
+position=5% 40%
 EOF
 
 sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
@@ -190,7 +190,6 @@ Section "OutputClass"
     MatchDriver "amdgpu"
     Driver "amdgpu"
     Option "TearFree" "true"
-    Option "ShadowPrimary" "true"
 EndSection
 EOF
 
@@ -269,7 +268,6 @@ Section "OutputClass"
     MatchDriver "amdgpu"
     Driver "amdgpu"
     Option "TearFree" "true"
-    Option "ShadowPrimary" "true"
 EndSection
 EOF
 
