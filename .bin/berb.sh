@@ -91,7 +91,8 @@ elif [[ $mirrors == 0 ]]; then
    echo 'смена зеркал пропущена.'
 fi
 
-# pacman -Sy --noconfirm
+pacman -Sy --noconfirm
+
 echo ""
 lsblk -f
 echo " Здесь вы можете удалить boot от старой системы, файлы Windows загрузчика не затрагиваются."

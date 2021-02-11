@@ -15,7 +15,7 @@ sed -i 's/.*\VerbosePkgLists\.*/&\nILoveCandy/' /etc/pacman.conf
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 timedatectl set-ntp true
-pacman -Syu  --noconfirm
+pacman -Sy  --noconfirm
 
 echo "#####################################################################"
 echo ""
