@@ -478,6 +478,22 @@ EOF
     editor   no
 EOF
 
+kernel_lts=`pacman -Qe linux-lts 2>/dev/null | grep -o "^linux-lts"`
+  if [[ -n "$kernel_lts" ]]; then
+    sed -i 's#/vmlinuz-linux#/vmlinuz-linux-lts#' /boot/loader/entries/arch.conf
+    sed -i 's#/initramfs-linux.img#/initramfs-linux-lts.img#' /boot/loader/entries/arch.conf
+  fi
+kernel_zen=`pacman -Qe linux-zen 2>/dev/null | grep -o "^linux-zen"`
+  if [[ -n "$kernel_zen" ]]; then
+    sed -i 's#/vmlinuz-linux#/vmlinuz-linux-zen#' /boot/loader/entries/arch.conf
+    sed -i 's#/initramfs-linux.img#/initramfs-linux-zen.img#' /boot/loader/entries/arch.conf
+  fi
+kernel_hardened=`pacman -Qe linux-hardened 2>/dev/null | grep -o "^linux-hardened"`
+  if [[ -n "$kernel_hardened" ]]; then
+    sed -i 's#/vmlinuz-linux#/vmlinuz-linux-hardened#' /boot/loader/entries/arch.conf
+    sed -i 's#/initramfs-linux.img#/initramfs-linux-hardened.img#' /boot/loader/entries/arch.conf
+  fi
+
 is_intel_cpu=$(lscpu | grep 'Intel' &> /dev/null && echo 'yes' || echo '')
   if [[ -n "$is_intel_cpu" ]]; then
     sed -i 's#/amd-ucode.img#/intel-ucode.img#' /boot/loader/entries/arch.conf
