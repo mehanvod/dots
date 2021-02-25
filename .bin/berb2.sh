@@ -17,6 +17,17 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 timedatectl set-ntp true
 pacman -Sy  --noconfirm
 
+# check kernel for install headers
+kernel=`pacman -Qe linux 2>/dev/null | grep -o "^linux"`
+kernel=`echo $kernel | sed -E 's/([a-z\-]+)/\1-headers/'`
+kernel_lts=`pacman -Qe linux-lts 2>/dev/null | grep -o "^linux-lts"`
+kernel_lts=`echo $kernel_lts | sed -E 's/([a-z\-]+)/\1-headers/'`
+kernel_zen=`pacman -Qe linux-zen 2>/dev/null | grep -o "^linux-zen"`
+kernel_zen=`echo $kernel_zen | sed -E 's/([a-z\-]+)/\1-headers/'`
+kernel_hardened=`pacman -Qe linux-hardened 2>/dev/null | grep -o "^linux-hardened"`
+kernel_hardened=`echo $kernel_hardened | sed -E 's/([a-z\-]+)/\1-headers/'`
+headers=`echo "$kernel $kernel_lts $kernel_zen $kernel_hardened"`
+
 echo "#####################################################################"
 echo ""
 echo " Установка DE(WM). Выберите пункт для установки "
@@ -40,9 +51,8 @@ if [[ $x_de == 0 ]]; then
   echo 'уcтановка DE пропущена'
 
 elif [[ $x_de == 1 ]]; then
-pack="xorg-server xorg-apps xf86-input-synaptics \
-awesome lightdm lightdm-gtk-greeter \
-linux-headers dkms bc nano man-db dhcpcd \
+pack="$headers xorg-server xorg-apps xf86-input-synaptics \
+awesome lightdm lightdm-gtk-greeter dkms bc nano man-db dhcpcd \
 dialog wpa_supplicant netctl iw net-tools wmctrl \
 gtk-engines gtk-engine-murrine qt5ct picom \
 gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g gtk2-perl \
@@ -55,19 +65,6 @@ ttf-dejavu ttf-liberation ttf-font-awesome awesome-terminal-fonts \
 otf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono"
 pacman -S --noconfirm --needed $pack
 systemctl enable lightdm
-
-mkdir /etc/pacman.d/hooks
-cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
-[Trigger]
-Type = Package
-Operation = Upgrade
-Target = systemd
-
-[Action]
-Description = Updating systemd-boot...
-When = PostTransaction
-Exec = /usr/bin/bootctl update
-EOF
 
 cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
 [greeter]
@@ -139,9 +136,9 @@ sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export F
 echo "Awesome(WM) успешно установлено"
 
 elif [[ $x_de == 2 ]]; then
-pack="xorg-server xorg-apps xf86-input-synaptics \
+pack="$headers xorg-server xorg-apps xf86-input-synaptics \
 xfce4 xfce4-goodies lightdm lightdm-gtk-greeter \
-linux-headers dkms bc nano man-db dhcpcd gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
+dkms bc nano man-db dhcpcd gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5ct picom \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
 bash-completion gtk2-perl termite zsh zsh-syntax-highlighting zsh-autosuggestions \
@@ -154,19 +151,6 @@ ttf-dejavu ttf-liberation ttf-font-awesome awesome-terminal-fonts \
 otf-font-awesome ttf-fantasque-sans-mono ttf-jetbrains-mono"
 pacman -S --noconfirm --needed $pack
 systemctl enable lightdm NetworkManager
-
-mkdir /etc/pacman.d/hooks
-cat > /etc/pacman.d/hooks/systemd-boot.hook << EOF
-[Trigger]
-Type = Package
-Operation = Upgrade
-Target = systemd
-
-[Action]
-Description = Updating systemd-boot...
-When = PostTransaction
-Exec = /usr/bin/bootctl update
-EOF
 
 cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
 [greeter]
@@ -211,10 +195,10 @@ sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export F
 echo "Xfce успешно установлено"
 
 elif [[ $x_de == 3 ]]; then
-pack="xorg-server xorg-drivers xf86-input-synaptics \
+pack="$headers xorg-server xorg-drivers xf86-input-synaptics \
 plasma-meta plasma plasma-pa plasma-desktop kde-system-meta sddm sddm-kcm \
 kde-utilities-meta kio-extras konsole kde-applications \
-linux-headers dkms bc ntfs-3g pulseaudio pavucontrol \
+dkms bc ntfs-3g pulseaudio pavucontrol \
 zsh zsh-syntax-highlighting zsh-autosuggestions pacman-contrib \
 openssh networkmanager networkmanager-openvpn network-manager-applet ppp \
 curl wget git rsync python-pip unzip unrar p7zip nano man-db dhcpcd \
@@ -249,8 +233,8 @@ echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 echo "Plasma успешно установлено"
 
 elif [[ $x_de == 4 ]]; then
-pack="xorg-server xorg-drivers xf86-input-synaptics \
-gnome gnome-extra gdm linux-headers dkms bc \
+pack="$headers xorg-server xorg-drivers xf86-input-synaptics \
+gnome gnome-extra gdm dkms bc \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
 zsh zsh-syntax-highlighting zsh-autosuggestions \
 curl wget git rsync unzip unrar p7zip nano man-db dhcpcd \
@@ -287,6 +271,19 @@ echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 
 echo " Gnome успешно установлен "
 fi
+
+mkdir /etc/pacman.d/hooks
+cat > /etc/pacman.d/hooks/100-systemd-boot.hook << EOF
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Updating systemd-boot
+When = PostTransaction
+Exec = /usr/bin/bootctl update
+EOF
 
 echo ""
 echo " Добавим dhcpcd в автозагрузку( для проводного интернета, который  получает настройки от роутера ) ? "
@@ -475,9 +472,10 @@ if [[ -d "/sys/firmware/efi/efivars" ]]; then
 EOF
 
   cat <<EOF > /boot/loader/loader.conf
-    default arch
-    timeout 0
-    editor 1
+    default  arch.conf
+    timeout  4
+    console-mode max
+    editor   no
 EOF
 
 is_intel_cpu=$(lscpu | grep 'Intel' &> /dev/null && echo 'yes' || echo '')
