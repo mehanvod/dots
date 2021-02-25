@@ -77,7 +77,7 @@ xft-dpi=96
 xft-hintstyle=true
 xft-rgba=rgb
 indicators=~clock;~session;~power;
-position=5% 40%
+# position=5% 40%
 EOF
 
 sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
@@ -163,7 +163,7 @@ xft-dpi=96
 xft-hintstyle=true
 xft-rgba=rgb
 indicators=~clock;~session;~power;
-position=5% 40%
+# position=5% 40%
 EOF
 
 sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
