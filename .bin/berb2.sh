@@ -123,8 +123,8 @@ Section "InputClass"
         MatchIsKeyboard "on"
         Option "XkbLayout" "us,ru"
         Option "XkbModel" "pc105"
-        Option "XkbVariant" ","
-        Option "XkbOptions" "grp:alt_shift_toggle,terminate:ctrl_alt_bksp"
+        Option "XkbVariant" "qwerty"
+        Option "XkbOptions" "grp:lalt_lshift_toggle,grp_led:scroll"
 EndSection
 EOF
 
@@ -445,8 +445,19 @@ echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 
 echo "LANG=ru_RU.UTF-8" > /etc/locale.conf
-echo "KEYMAP=ru" >> /etc/vconsole.conf
-echo "FONT=cyr-sun16" >> /etc/vconsole.conf
+
+cat <<EOF > /boot/loader/entries/arch.conf
+#
+# File /etc/vconsole.conf
+#
+LOCALE="ru_RU.UTF-8"
+KETMAP="ruwin_alt_sh-UTF-8"
+FONT="cyr-sun16"
+CONSOLEMAP=""
+TIMEZONE="Europe/Moscow"
+HARDWARECLOCK="UTC"
+USECOLOR="yes"
+EOF
 
 sed -i 's/MODULES=()/MODULES=(amdgpu radeon)/g' /etc/mkinitcpio.conf
 sed -i 's/#SystemMaxUse=/SystemMaxUse=5M/g' /etc/systemd/journald.conf
