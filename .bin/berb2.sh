@@ -479,7 +479,7 @@ if [[ -d "/sys/firmware/efi/efivars" ]]; then
     initrd   /amd-ucode.img
     initrd   /initramfs-linux.img
     options  root=/dev/sda2 rw
-    options  quiet splash iommu=soft acpi_backlight=vendor rd.udev.log_priority=3
+    options  quiet splash acpi_backlight=vendor rd.udev.log_priority=3
 EOF
 
   cat <<EOF > /boot/loader/loader.conf
