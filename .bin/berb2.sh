@@ -233,15 +233,12 @@ echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 echo "Plasma успешно установлено"
 
 elif [[ $x_de == 4 ]]; then
-pack="$headers xorg-server xorg-drivers xf86-input-synaptics \
-gnome gnome-extra gdm dkms bc \
-alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
+pack="$headers xorg-server gnome gnome-extra gdm dkms bc \
 zsh zsh-syntax-highlighting zsh-autosuggestions \
-curl wget git rsync unzip unrar p7zip nano man-db dhcpcd \
+curl wget git rsync nano man-db dhcpcd \
 openssh networkmanager networkmanager-openconnect networkmanager-openvpn \
 networkmanager-pptp networkmanager-vpnc network-manager-applet \
-firefox firefox-i18n-ru otf-font-awesome \
-ttf-dejavu ttf-liberation ttf-font-awesome awesome-terminal-fonts"
+firefox firefox-i18n-ru ttf-dejavu ttf-liberation"
 pacman -S --noconfirm --needed $pack
 systemctl enable gdm.service -f
 systemctl enable NetworkManager
