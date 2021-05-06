@@ -51,8 +51,8 @@ if [[ $x_de == 0 ]]; then
   echo 'уcтановка DE пропущена'
 
 elif [[ $x_de == 1 ]]; then
-pack="$headers xorg-server xorg-drivers xf86-input-synaptics \
-awesome lightdm lightdm-gtk-greeter dkms bc nano man-db dhcpcd \
+pack="$headers xorg-server xf86-input-synaptics \
+awesome lightdm lightdm-gtk-greeter nano man-db dhcpcd \
 dialog wpa_supplicant netctl iw net-tools wmctrl \
 gtk-engines gtk-engine-murrine qt5ct picom \
 gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g gtk2-perl \
@@ -136,9 +136,9 @@ sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export F
 echo "Awesome(WM) успешно установлено"
 
 elif [[ $x_de == 2 ]]; then
-pack="$headers xorg-server xorg-drivers xf86-input-synaptics \
+pack="$headers xorg-server xf86-input-synaptics \
 xfce4 xfce4-goodies lightdm lightdm-gtk-greeter \
-dkms bc nano man-db dhcpcd gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
+nano man-db dhcpcd gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 gtk-engines gtk-engine-murrine xdg-user-dirs-gtk qt5ct picom \
 alsa-utils gstreamer pulseaudio pulseaudio-alsa pavucontrol \
 bash-completion gtk2-perl termite zsh zsh-syntax-highlighting zsh-autosuggestions \
@@ -195,10 +195,9 @@ sed -i 's/#export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export F
 echo "Xfce успешно установлено"
 
 elif [[ $x_de == 3 ]]; then
-pack="$headers xorg-server xorg-drivers xf86-input-synaptics \
-plasma-meta plasma plasma-pa plasma-desktop kde-system-meta sddm sddm-kcm \
+pack="$headers xorg-server plasma-meta plasma plasma-pa plasma-desktop kde-system-meta sddm sddm-kcm \
 kde-utilities-meta kio-extras konsole kde-applications \
-dkms bc ntfs-3g pulseaudio pavucontrol \
+ntfs-3g pulseaudio pavucontrol \
 zsh zsh-syntax-highlighting zsh-autosuggestions pacman-contrib \
 openssh networkmanager networkmanager-openvpn network-manager-applet ppp \
 curl wget git rsync python-pip unzip unrar p7zip nano man-db dhcpcd \
