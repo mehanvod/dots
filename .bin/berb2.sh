@@ -68,7 +68,7 @@ systemctl enable lightdm
 
 cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
 [greeter]
-background=/usr/share/pixmaps/002.jpg
+background=/usr/share/pixmaps/003.jpg
 theme-name=Fantome
 icon-theme-name=Papirus
 font-name=Iosevka 9
@@ -154,7 +154,7 @@ systemctl enable lightdm NetworkManager
 
 cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
 [greeter]
-background=/usr/share/pixmaps/001.jpg
+background=/usr/share/pixmaps/003.jpg
 theme-name=Fantome
 icon-theme-name=Papirus
 font-name=Roboto 9
