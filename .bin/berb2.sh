@@ -442,10 +442,7 @@ locale-gen
 
 echo "LANG=ru_RU.UTF-8" > /etc/locale.conf
 
-cat <<EOF > /boot/loader/entries/arch.conf
-#
-# File /etc/vconsole.conf
-#
+cat > /etc/vconsole.conf <<EOF
 LOCALE="ru_RU.UTF-8"
 KETMAP="ruwin_alt_sh-UTF-8"
 FONT="cyr-sun16"
