@@ -594,25 +594,47 @@ chown -R $USER:users /home/$USER/rtl8821ce-dkms-git/PKGBUILD
 cd /home/$USER/rtl8821ce-dkms-git
 sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/rtl8821ce-dkms-git
+clear
 fi
 
 echo "################################################################"
 echo ""
-echo " Скопировать файлы кофигурации в домашнюю директорию ? : "
+echo " Скопировать файлы кофигурации Awesome WM в домашнюю директорию ? : "
 while
     read -n1 -p  "
     1 - да,
 
-    0 - нет: " cp_home_dir # sends right after the keypress
+    0 - нет: " cp_home_awe # sends right after the keypress
     echo ''
-    [[ "$cp_home_dir" =~ [^10] ]]
+    [[ "$cp_home_awe" =~ [^10] ]]
 do
     :
 done
-if [[ $cp_home_dir == 0 ]]; then
+if [[ $cp_home_awe == 0 ]]; then
   echo 'уcтановка  пропущена'
-elif [[ $cp_home_dir == 1 ]]; then
-cp -a -T /home/$USER/Documents/dotfiles/home_dir/. /home/$USER/
+elif [[ $cp_home_awe == 1 ]]; then
+cp -a -T /home/$USER/Documents/dotfiles/home_dir/. /home/$USER
+clear
+fi
+
+echo "################################################################"
+echo ""
+echo " Скопировать файлы кофигурации KDE Plasma в домашнюю директорию ? : "
+while
+    read -n1 -p  "
+    1 - да,
+
+    0 - нет: " cp_home_kde # sends right after the keypress
+    echo ''
+    [[ "$cp_home_kde" =~ [^10] ]]
+do
+    :
+done
+if [[ $cp_home_kde == 0 ]]; then
+    echo 'уcтановка  пропущена'
+elif [[ $cp_home_kde == 1 ]]; then
+cd /home/$USER/Documents/y_disk/archlinux/de/kde
+tar xf plasma.tar.gz -C /home/$USER
 fi
 
 clear
