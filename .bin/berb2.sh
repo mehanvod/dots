@@ -596,6 +596,25 @@ sudo -u $USER  makepkg -si --noconfirm
 rm -Rf /home/$USER/rtl8821ce-dkms-git
 fi
 
+echo "################################################################"
+echo ""
+echo " Скопировать файлы кофигурации в домашнюю директорию ? : "
+while
+    read -n1 -p  "
+    1 - да,
+
+    0 - нет: " cp_home_dir # sends right after the keypress
+    echo ''
+    [[ "$cp_home_dir" =~ [^10] ]]
+do
+    :
+done
+if [[ $cp_home_dir == 0 ]]; then
+  echo 'уcтановка  пропущена'
+elif [[ $cp_home_dir == 1 ]]; then
+cp -a -T /home/$USER/Documents/dotfiles/home_dir/. /home/$USER/
+fi
+
 clear
 exit
 exit
