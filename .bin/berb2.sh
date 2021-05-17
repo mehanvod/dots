@@ -97,16 +97,6 @@ Section "InputClass"
 EndSection
 EOF
 
-cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
-Section "OutputClass"
-    Identifier "AMDgpu"
-    MatchDriver "amdgpu"
-    Driver "amdgpu"
-    Option "TearFree" "true"
-    Option "ShadowPrimary" "true"
-EndSection
-EOF
-
 cat > /etc/modprobe.d/radeon.conf << EOF
 options radeon si_support=0
 options radeon cik_support=0
@@ -115,6 +105,15 @@ EOF
 cat > /etc/modprobe.d/amdgpu.conf << EOF
 options amdgpu si_support=1
 options amdgpu cik_support=1
+EOF
+
+cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
+Section "Device"
+    Identifier "AMD"
+    Driver "amdgpu"
+    Option "TearFree" "true"
+    Option "ShadowPrimary" "true"
+EndSection
 EOF
 
 cat > /etc/X11/xorg.conf.d/00-keyboard.conf << EOF
@@ -168,15 +167,6 @@ EOF
 
 sed -i 's/#greeter-setup-script=/greeter-setup-script=\/usr\/bin\/numlockx on/g' /etc/lightdm/lightdm.conf
 
-cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
-Section "OutputClass"
-    Identifier "AMDgpu"
-    MatchDriver "amdgpu"
-    Driver "amdgpu"
-    Option "TearFree" "true"
-EndSection
-EOF
-
 cat > /etc/modprobe.d/radeon.conf << EOF
 options radeon si_support=0
 options radeon cik_support=0
@@ -185,6 +175,14 @@ EOF
 cat > /etc/modprobe.d/amdgpu.conf << EOF
 options amdgpu si_support=1
 options amdgpu cik_support=1
+EOF
+
+cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
+Section "Device"
+    Identifier "AMD"
+    Driver "amdgpu"
+    Option "TearFree" "true"
+EndSection
 EOF
 
 echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
@@ -207,15 +205,6 @@ pacman -R konqueror --noconfirm
 systemctl enable sddm.service -f
 systemctl enable NetworkManager
 
-cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
-Section "OutputClass"
-    Identifier "AMDgpu"
-    MatchDriver "amdgpu"
-    Driver "amdgpu"
-    Option "TearFree" "true"
-EndSection
-EOF
-
 cat > /etc/modprobe.d/radeon.conf << EOF
 options radeon si_support=0
 options radeon cik_support=0
@@ -224,6 +213,14 @@ EOF
 cat > /etc/modprobe.d/amdgpu.conf << EOF
 options amdgpu si_support=1
 options amdgpu cik_support=1
+EOF
+
+cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
+Section "Device"
+    Identifier "AMD"
+    Driver "amdgpu"
+    Option "TearFree" "true"
+EndSection
 EOF
 
 echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
@@ -242,15 +239,6 @@ pacman -S --noconfirm --needed $pack
 systemctl enable gdm.service -f
 systemctl enable NetworkManager
 
-cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
-Section "OutputClass"
-    Identifier "AMDgpu"
-    MatchDriver "amdgpu"
-    Driver "amdgpu"
-    Option "TearFree" "true"
-EndSection
-EOF
-
 cat > /etc/modprobe.d/radeon.conf << EOF
 options radeon si_support=0
 options radeon cik_support=0
@@ -259,6 +247,14 @@ EOF
 cat > /etc/modprobe.d/amdgpu.conf << EOF
 options amdgpu si_support=1
 options amdgpu cik_support=1
+EOF
+
+cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
+Section "Device"
+    Identifier "AMD"
+    Driver "amdgpu"
+    Option "TearFree" "true"
+EndSection
 EOF
 
 echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
