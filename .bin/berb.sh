@@ -132,7 +132,7 @@ mount /dev/$Root_D /mnt
 
 ## boot ##
 # mkfs.ext2 /dev/$Boot_D -L boot
-mkfs.vfat -F32 -n "Boot" /dev/$Boot_D
+# mkfs.vfat -F32 -n "Boot" /dev/$Boot_D
 mkdir -p /mnt/boot
 mount /dev/$Boot_D /mnt/boot
 
@@ -141,14 +141,14 @@ mount /dev/$Boot_D /mnt/boot
 # swapon /dev/$Swap_D
 
 ## home ##
-mkfs.ext4 -L "Home" /dev/$Home_D
+# mkfs.ext4 -L "Home" /dev/$Home_D
 mkdir -p /mnt/home
 mount /dev/$Home_D /mnt/home
 
 # kernel
 while [[ $kernel != "1" ]] && [[ $kernel != "2" ]] && [[ $kernel != "3" ]] && [[ $kernel != "4" ]]; do
     echo "####################"
-    echo "Какое ядро ​​установить:"
+    echo "Какое ядро установить:"
     echo "1) linux           - Ядро Linux"
     echo "2) linux-lts       - Ядро LTS Linux"
     echo "3) linux-zen       - Ядро Zen Linux"
