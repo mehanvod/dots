@@ -16,7 +16,7 @@ fi
 Boot_D="sdb1"
 Root_D="sdb2"
 # Swap_D="sdb3"
-Home_D="sdb4"
+Home_D="sdb3"
 
 loadkeys ru
 setfont cyr-sun16
@@ -141,7 +141,7 @@ mount /dev/$Boot_D /mnt/boot
 # swapon /dev/$Swap_D
 
 ## home ##
-# mkfs.ext4 -L "Home" /dev/$Home_D
+mkfs.ext4 -L "Home" /dev/$Home_D
 mkdir -p /mnt/home
 mount /dev/$Home_D /mnt/home
 
