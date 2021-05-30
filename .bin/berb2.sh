@@ -633,6 +633,39 @@ cd /home/$USER/Documents/y_disk/archlinux/de/kde
 tar xf plasma*.tar.gz -C /home/$USER
 fi
 
+echo "################################################################"
+echo ""
+echo " Примонтировать HDD ? : "
+while
+    read -n1 -p  "
+    1 - да,
+
+    0 - нет: " mount_hdd # sends right after the keypress
+    echo ''
+    [[ "$mount_hdd" =~ [^10] ]]
+do
+    :
+done
+if [[ $mount_hdd == 0 ]]; then
+    echo 'Монтирование пропущено'
+elif [[ $mount_hdd == 1 ]]; then
+[ -d /mnt/files" ] || mkdir -p /mnt/files"
+mount /dev/sda1 /mnt/files
+chmod 0777 /mnt/files
+hdd_part=/dev/sda1
+hdd_uuid=$(blkid -s UUID -o value $hdd_part)
+echo "
+# /dev/sda1 LABEL=Files
+UUID=$hdd_uuid   /mnt/files  ext4        rw,relatime 0 0" | tee --append /etc/fstab
+ln -s /mnt/files/Documents $HOME/Documents
+ln -s /mnt/files/Downloads $HOME/Downloads
+ln -s /mnt/files/Music $HOME/Music
+ln -s /mnt/files/Pictures $HOME/Pictures
+ln -s /mnt/files/Public $HOME/Public
+ln -s /mnt/files/Templates $HOME/Templates
+ln -s /mnt/files/Videos $HOME/Videos
+fi
+
 clear
 exit
 exit
