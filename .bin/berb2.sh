@@ -531,14 +531,20 @@ done
 if [[ $mount_hdd == 0 ]]; then
     echo 'Монтирование пропущено'
 elif [[ $mount_hdd == 1 ]]; then
-[ -d /mnt/files" ] || mkdir -p /mnt/files"
+[ -d /mnt/files ] || mkdir -p /mnt/files
 mount /dev/sda1 /mnt/files
 chmod 0777 /mnt/files
 hdd_part=/dev/sda1
 hdd_uuid=$(blkid -s UUID -o value $hdd_part)
-echo "
-# /dev/sda1 LABEL=Files
+echo "# /dev/sda1 LABEL=Files
 UUID=$hdd_uuid   /mnt/files  ext4        rw,relatime 0 0" | tee --append /etc/fstab
+ln -s /mnt/files/Documents /home/$USER/Documents
+ln -s /mnt/files/Downloads /home/$USER/Downloads
+ln -s /mnt/files/Music /home/$USER/Music
+ln -s /mnt/files/Pictures /home/$USER/Pictures
+ln -s /mnt/files/Public /home/$USER/Public
+ln -s /mnt/files/Templates/home/$USER/Templates
+ln -s /mnt/files/Videos /home/$USER/Videos
 fi
 
 echo "################################################################"
