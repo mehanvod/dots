@@ -8,7 +8,7 @@
 DISK="sdb"
 
 sed -i 's/^#Color/Color/g' /etc/pacman.conf
-sed -i 's/^#TotalDownload/TotalDownload/g' /etc/pacman.conf
+# sed -i 's/^#TotalDownload/TotalDownload/g' /etc/pacman.conf
 sed -i 's/^#CheckSpace/CheckSpace/g' /etc/pacman.conf
 sed -i 's/^#VerbosePkgLists/VerbosePkgLists/g' /etc/pacman.conf
 sed -i 's/.*\VerbosePkgLists\.*/&\nILoveCandy/' /etc/pacman.conf
