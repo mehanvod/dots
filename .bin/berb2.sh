@@ -538,6 +538,7 @@ hdd_part=/dev/sda1
 hdd_uuid=$(blkid -s UUID -o value $hdd_part)
 echo "# /dev/sda1 LABEL=Files
 UUID=$hdd_uuid   /mnt/files  ext4        rw,relatime 0 0" | tee --append /etc/fstab
+ln -s /mnt/files/Desktop /home/$USER/Desktop
 ln -s /mnt/files/Documents /home/$USER/Documents
 ln -s /mnt/files/Downloads /home/$USER/Downloads
 ln -s /mnt/files/Music /home/$USER/Music
