@@ -544,7 +544,7 @@ ln -s /mnt/files/Downloads /home/$USER/Downloads
 ln -s /mnt/files/Music /home/$USER/Music
 ln -s /mnt/files/Pictures /home/$USER/Pictures
 ln -s /mnt/files/Public /home/$USER/Public
-ln -s /mnt/files/Templates/home/$USER/Templates
+ln -s /mnt/files/Templates /home/$USER/Templates
 ln -s /mnt/files/Videos /home/$USER/Videos
 fi
 
