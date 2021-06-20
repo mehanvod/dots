@@ -195,10 +195,9 @@ echo "Xfce успешно установлено"
 elif [[ $x_de == 3 ]]; then
 pack="$headers xorg-server plasma-meta plasma plasma-pa plasma-desktop kde-system-meta sddm sddm-kcm \
 kde-utilities-meta kio-extras konsole kde-applications \
-ntfs-3g pulseaudio pavucontrol \
 zsh zsh-syntax-highlighting zsh-autosuggestions pacman-contrib \
 openssh networkmanager networkmanager-openvpn network-manager-applet ppp \
-curl wget git rsync python-pip unzip unrar p7zip nano man-db dhcpcd \
+curl wget git rsync python-pip unzip unrar p7zip nano man-db \
 iw net-tools firefox firefox-i18n-ru"
 pacman -S --noconfirm --needed $pack
 pacman -R konqueror --noconfirm
@@ -229,9 +228,9 @@ echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 echo "Plasma успешно установлено"
 
 elif [[ $x_de == 4 ]]; then
-pack="$headers xorg-server gnome gnome-extra gdm dkms bc \
+pack="$headers xorg-server gnome gnome-extra gdm \
 zsh zsh-syntax-highlighting zsh-autosuggestions \
-curl wget git rsync nano man-db dhcpcd \
+curl wget git rsync nano man-db \
 openssh networkmanager networkmanager-openconnect networkmanager-openvpn \
 networkmanager-pptp networkmanager-vpnc network-manager-applet \
 firefox firefox-i18n-ru ttf-dejavu ttf-liberation"
