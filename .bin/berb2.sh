@@ -11,7 +11,8 @@ sed -i 's/^#Color/Color/g' /etc/pacman.conf
 # sed -i 's/^#TotalDownload/TotalDownload/g' /etc/pacman.conf
 sed -i 's/^#CheckSpace/CheckSpace/g' /etc/pacman.conf
 sed -i 's/^#VerbosePkgLists/VerbosePkgLists/g' /etc/pacman.conf
-sed -i 's/.*\VerbosePkgLists\.*/&\nILoveCandy/' /etc/pacman.conf
+sed -i 's/^#ParallelDownloads = 5/ParallelDownloads = 5/g' /etc/pacman.conf
+sed -i 's/.*\ParallelDownloads = 5\.*/&\nILoveCandy/' /etc/pacman.conf
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 timedatectl set-ntp true
