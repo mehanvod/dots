@@ -467,7 +467,7 @@ if [[ -d "/sys/firmware/efi/efivars" ]]; then
     linux    /vmlinuz-linux
     initrd   /amd-ucode.img
     initrd   /initramfs-linux.img
-    options  root=/dev/sdb2 rw
+    options  root=/dev/sdb3 rw
     options  quiet splash acpi_backlight=vendor rd.udev.log_priority=3
 EOF
 
@@ -507,7 +507,7 @@ is_intel_cpu=$(lscpu | grep 'Intel' &> /dev/null && echo 'yes' || echo '')
   root_part=$(mount | grep 'on / ' | cut -d' ' -f1 | df / | tail -1 | cut -d' ' -f1)
   pu=$(blkid -s PARTUUID -o value $root_part)
   pup=PARTUUID="$pu"
-  sed -i "s#/dev/sdb2#$pup#" /boot/loader/entries/arch.conf
+  sed -i "s#/dev/sdb3#$pup#" /boot/loader/entries/arch.conf
 else
   disk=$(df / | tail -1 | cut -d' ' -f1 | sed 's#[0-9]\+##g')
   pacman --noconfirm -S grub os-prober

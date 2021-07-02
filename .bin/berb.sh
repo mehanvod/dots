@@ -14,8 +14,8 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 Boot_D="sdb1"
-Root_D="sdb2"
-# Swap_D="sdb3"
+Swap_D="sdb2"
+Root_D="sdb3"
 Home_D="sdb3"
 
 loadkeys ru
@@ -130,15 +130,15 @@ clear
 mkfs.ext4 -L "Arch" /dev/$Root_D
 mount /dev/$Root_D /mnt
 
+## swap ##
+mkswap -L "Swap" /dev/$Swap_D
+swapon /dev/$Swap_D
+
 ## boot ##
 # mkfs.ext2 /dev/$Boot_D -L boot
 # mkfs.vfat -F32 -n "Boot" /dev/$Boot_D
 mkdir -p /mnt/boot
 mount /dev/$Boot_D /mnt/boot
-
-## swap ##
-# mkswap -L "Swap" /dev/$Swap_D
-# swapon /dev/$Swap_D
 
 ## home ##
 mkfs.ext4 -L "Home" /dev/$Home_D
