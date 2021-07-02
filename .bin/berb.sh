@@ -16,7 +16,7 @@ fi
 Boot_D="sdb1"
 Swap_D="sdb2"
 Root_D="sdb3"
-Home_D="sdb3"
+Home_D="sdb4"
 
 loadkeys ru
 setfont cyr-sun16
