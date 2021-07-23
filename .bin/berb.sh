@@ -14,9 +14,9 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 Boot_D="sdb1"
-Swap_D="sdb2"
-Root_D="sdb3"
-Home_D="sdb4"
+# Swap_D="sdb2"
+Root_D="sdb2"
+Home_D="sdb3"
 
 loadkeys ru
 setfont cyr-sun16
@@ -131,8 +131,8 @@ mkfs.ext4 -L "Arch" /dev/$Root_D
 mount /dev/$Root_D /mnt
 
 ## swap ##
-mkswap -L "Swap" /dev/$Swap_D
-swapon /dev/$Swap_D
+# mkswap -L "Swap" /dev/$Swap_D
+# swapon /dev/$Swap_D
 
 ## boot ##
 # mkfs.ext2 /dev/$Boot_D -L boot
