@@ -663,7 +663,7 @@ if [[ $cp_home_kde == 0 ]]; then
     echo 'уcтановка  пропущена'
 elif [[ $cp_home_kde == 1 ]]; then
 cd /home/$USER/Documents/y_disk/archlinux/de/kde
-tar xf plasma*.tar.gz -C /home/$USER
+tar --strip-components=1 xf plasma*.tar.gz -C /home/$USER
 fi
 
 clear
