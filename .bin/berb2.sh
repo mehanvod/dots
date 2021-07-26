@@ -643,7 +643,7 @@ if [[ $cp_home_awe == 0 ]]; then
   echo 'уcтановка  пропущена'
 elif [[ $cp_home_awe == 1 ]]; then
 cp -a -T /home/$USER/Documents/dotfiles/home_dir/. /home/$USER
-clear
+exit
 fi
 
 echo "################################################################"
@@ -662,10 +662,11 @@ done
 if [[ $cp_home_kde == 0 ]]; then
     echo 'уcтановка  пропущена'
 elif [[ $cp_home_kde == 1 ]]; then
-cd /home/$USER/Documents/y_disk/archlinux/de/kde
-tar --strip-components=1 xf plasma*.tar.gz -C /home/$USER
+cp -a -T /home/$USER/Documents/plasma/. /home/$USER
+exit
 fi
 
 clear
+echo " Установка завершена для выхода введите >> exit << "
 exit
 exit
