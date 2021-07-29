@@ -330,10 +330,8 @@ cat > /etc/hosts << EOF
 127.0.1.1       $HOST.localdomain       $HOST
 192.168.0.104   homepage.loc
 192.168.0.104   www.homepage.loc
-192.168.0.104   homepage2.loc
-192.168.0.104   www.homepage2.loc
-192.168.0.104   homepage3.loc
-192.168.0.104   www.homepage3.loc
+192.168.0.104   startpage.loc
+192.168.0.104   www.startpage.loc
 # End of file
 EOF
 
