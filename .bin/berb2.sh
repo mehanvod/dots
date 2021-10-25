@@ -229,7 +229,7 @@ echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 echo "Plasma успешно установлено"
 
 elif [[ $x_de == 4 ]]; then
-pack="$headers xorg-server gnome gnome-extra gdm \
+pack="$headers gnome gnome-extra gdm \
 zsh zsh-syntax-highlighting zsh-autosuggestions \
 curl wget git rsync nano man-db \
 openssh networkmanager networkmanager-openconnect networkmanager-openvpn \
@@ -249,16 +249,16 @@ options amdgpu si_support=1
 options amdgpu cik_support=1
 EOF
 
-cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
-Section "Device"
-    Identifier "AMD"
-    Driver "amdgpu"
-    Option "TearFree" "true"
-EndSection
-EOF
+# cat > /etc/X11/xorg.conf.d/20-amdgpu.conf << EOF
+# Section "Device"
+#     Identifier "AMD"
+#     Driver "amdgpu"
+#     Option "TearFree" "true"
+# EndSection
+# EOF
 
 echo 'include "/usr/share/nano/*.nanorc"' >> /etc/nanorc
-echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
+# echo 'QT_QPA_PLATFORMTHEME=qt5ct' >> /etc/environment
 echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 
 echo " Gnome успешно установлен "
