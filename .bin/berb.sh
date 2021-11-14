@@ -13,10 +13,10 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-Boot_D="sdb1"
-Swap_D="sdb2"
-Root_D="sdb3"
-Home_D="sdb4"
+Boot_D="sda1"
+Swap_D="sda2"
+Root_D="sda3"
+Home_D="sda4"
 
 loadkeys ru
 setfont cyr-sun16
@@ -114,7 +114,7 @@ if [[ $boots == 1 ]]; then
   clear
  lsblk -f
   echo ""
-read -p "Укажите boot раздел (sdb1/sdb1 ( например sdb1 )):" bootd
+read -p "Укажите boot раздел (dev/sda1 ( например sda1 )):" bootd
 mount /dev/$bootd /mnt
 cd /mnt
 ls | grep -v EFI | xargs rm -rfv
