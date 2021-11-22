@@ -624,44 +624,34 @@ rm -Rf /home/$USER/rtl8821ce-dkms-git
 clear
 fi
 
-echo "################################################################"
-echo ""
-echo " Скопировать файлы кофигурации Awesome WM в домашнюю директорию ? : "
+## Файлы кофигурации ##
+echo  'Скопировать файлы кофигурации в домашнюю директорию ? :'
 while
     read -n1 -p  "
-    1 - да,
+    1 - Awesome WM
 
-    0 - нет: " cp_home_awe # sends right after the keypress
+    2 - KDE Plasma
+
+    0 - нет: " cp_home_conf # sends right after the keypress
     echo ''
-    [[ "$cp_home_awe" =~ [^10] ]]
+    [[ "$cp_home_conf" =~ [^120] ]]
 do
     :
 done
-if [[ $cp_home_awe == 0 ]]; then
-  echo 'уcтановка  пропущена'
-elif [[ $cp_home_awe == 1 ]]; then
-cp -a -T /home/$USER/Documents/dotfiles/home_dir/. /home/$USER
-exit
-fi
-
-echo "################################################################"
-echo ""
-echo " Скопировать файлы кофигурации KDE Plasma в домашнюю директорию ? : "
-while
-    read -n1 -p  "
-    1 - да,
-
-    0 - нет: " cp_home_kde # sends right after the keypress
-    echo ''
-    [[ "$cp_home_kde" =~ [^10] ]]
-do
-    :
-done
-if [[ $cp_home_kde == 0 ]]; then
-    echo 'уcтановка  пропущена'
-elif [[ $cp_home_kde == 1 ]]; then
-cp -a -T /home/$USER/Documents/plasma/. /home/$USER
-exit
+if [[ $cp_home_conf == 1 ]]; then
+    cp -a -T /home/$USER/Documents/dotfiles/home_dir/. /home/$USER
+    tput setaf 4
+    echo 'Файлы кофигурации Awesome WM скопированы.'
+    tput sgr0
+elif [[ $cp_home_conf == 2 ]]; then
+    cp -a -T /home/$USER/Documents/plasma/. /home/$USER
+    tput setaf 4
+    echo 'Файлы кофигурации KDE Plasma скопированы.'
+    tput sgr0
+elif [[ $cp_home_conf == 0 ]]; then
+    tput setaf 8
+    echo 'Копирование файлов кофигурации пропущено.'
+    tput sgr0
 fi
 
 clear
