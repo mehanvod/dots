@@ -55,8 +55,7 @@ elif [[ $x_de == 1 ]]; then
 pack="$headers xorg-server xf86-input-synaptics \
 awesome lightdm lightdm-gtk-greeter nano man-db dhcpcd \
 dialog wpa_supplicant netctl iw net-tools wmctrl \
-gtk-engines gtk-engine-murrine qt5ct picom \
-gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g gtk2-perl \
+qt5ct picom gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
 alsa-utils gstreamer pulseaudio pulseaudio-bluetooth pavucontrol \
 kitty xterm zsh zsh-syntax-highlighting zsh-autosuggestions \
 openssh pcmanfm gxkb unclutter papirus-icon-theme \
