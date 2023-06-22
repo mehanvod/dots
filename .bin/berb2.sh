@@ -15,6 +15,7 @@ sed -i 's/^#ParallelDownloads = 5/ParallelDownloads = 5/g' /etc/pacman.conf
 sed -i 's/.*\ParallelDownloads = 5\.*/&\nILoveCandy/' /etc/pacman.conf
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
+timedatectl set-local-rtc 1 --adjust-system-clock
 timedatectl set-ntp true
 pacman -Sy  --noconfirm
 
@@ -112,7 +113,7 @@ Section "Device"
     Identifier "AMD"
     Driver "amdgpu"
     Option "TearFree" "true"
-    Option "ShadowPrimary" "true"
+    # Option "ShadowPrimary" "true"
 EndSection
 EOF
 
@@ -276,27 +277,27 @@ When = PostTransaction
 Exec = /usr/bin/bootctl update
 EOF
 
-echo ""
-echo " Добавим dhcpcd в автозагрузку( для проводного интернета, который  получает настройки от роутера ) ? "
-echo ""
-echo "при необходимости это можно будет сделать уже в установленной системе "
-while
-    read -n1 -p  "
-    1 - включить dhcpcd
+# echo ""
+# echo " Добавим dhcpcd в автозагрузку( для проводного интернета, который  получает настройки от роутера ) ? "
+# echo ""
+# echo "при необходимости это можно будет сделать уже в установленной системе "
+# while
+#     read -n1 -p  "
+#     1 - включить dhcpcd
 
-    0 - не включать dhcpcd " x_dhcpcd
-    echo ''
-    [[ "$x_dhcpcd" =~ [^10] ]]
-do
-    :
-done
-if [[ $x_dhcpcd == 0 ]]; then
-  echo ' dhcpcd не включен в автозагрузку, при необходиости это можно будет сделать уже в установленной системе '
-elif [[ $x_dhcpcd == 1 ]]; then
-systemctl enable dhcpcd.service
-clear
-echo "Dhcpcd успешно добавлен в автозагрузку"
-fi
+#     0 - не включать dhcpcd " x_dhcpcd
+#     echo ''
+#     [[ "$x_dhcpcd" =~ [^10] ]]
+# do
+#     :
+# done
+# if [[ $x_dhcpcd == 0 ]]; then
+#   echo ' dhcpcd не включен в автозагрузку, при необходиости это можно будет сделать уже в установленной системе '
+# elif [[ $x_dhcpcd == 1 ]]; then
+# systemctl enable dhcpcd.service
+# clear
+# echo "Dhcpcd успешно добавлен в автозагрузку"
+# fi
 
 # Root password
 while true; do
