@@ -57,7 +57,7 @@ pack="$headers xorg-server xf86-input-synaptics \
 awesome lightdm lightdm-gtk-greeter nano man-db dhcpcd \
 dialog wpa_supplicant netctl iw net-tools wmctrl \
 qt5ct picom gvfs gvfs-afc gvfs-mtp gvfs-smb ntfs-3g \
-alsa-utils gstreamer pulseaudio pulseaudio-bluetooth pavucontrol \
+alsa-utils gstreamer pipewire pipewire-alsa pipewire-pulse gst-plugin-pipewire pavucontrol \
 kitty xterm zsh zsh-syntax-highlighting zsh-autosuggestions \
 openssh pcmanfm gxkb unclutter papirus-icon-theme \
 curl wget git rsync python-pip unzip file-roller unrar p7zip \
